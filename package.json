@@ -1,0 +1,18 @@
+{
+  "name": "weft",
+  "version": "0.1.0",
+  "private": true,
+  "license": "SEE LICENSE IN LICENSE",
+  "type": "module",
+  "description": "A zero-dependency thread-routing puzzle: draw glowing threads between matching spools, fill every cell of the loom, and restore the tapestry across twelve chambers.",
+  "scripts": {
+    "start": "node scripts/serve.mjs --open",
+    "test": "node --test tests",
+    "ui:snapshot": "node scripts/ui-inventory.mjs",
+    "dogfood": "node scripts/dogfood.mjs",
+    "levels:generate": "node scripts/generate-levels.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'none'; object-src 'none'">
+<title>Weft — an Aegean thread puzzle</title>
+<meta name="description" content="A zero-dependency thread-routing puzzle: connect matching spools, fill every cell of the loom, and restore the tapestry across twelve chambers.">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#071018">
+<link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./src/theme.css">
+<link rel="stylesheet" href="./src/styles.css">
+<script type="module" src="./src/ui/app.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="page-grain" aria-hidden="true"></div>
+
+<main class="shell" id="main">
+  <section class="screen title-screen" data-screen="title" data-panel="title" aria-labelledby="title-heading">
+    <div class="title-copy">
+      <p class="eyebrow">AegeanWorks · a thread-routing puzzle</p>
+      <h1 class="wordmark" id="title-heading">Weft<span class="wordmark-dot">.</span></h1>
+      <p class="lede">Two spools. One thread. Fill every cell of the loom and restore the tapestry.</p>
+      <div class="title-actions">
+        <button class="btn btn-primary" id="btn-play" type="button" data-ui="play">Play</button>
+        <button class="btn btn-ghost" id="btn-how" type="button" data-ui="how-to-play">How to play</button>
+      </div>
+      <p class="title-meta" id="title-progress">12 chambers · no account · no network</p>
+      <button class="sound-toggle" id="btn-sound-title" type="button" aria-pressed="true" data-ui="sound-title">Sound on</button>
+    </div>
+    <div class="title-art" aria-hidden="true">
+      <div class="loom-ring loom-ring-1"></div>
+      <div class="loom-ring loom-ring-2"></div>
+      <div class="loom-ring loom-ring-3"></div>
+      <svg class="title-thread" viewBox="0 0 100 100">
+        <path d="M18 76 C 30 56, 42 72, 50 50 S 70 28, 84 20"></path>
+      </svg>
+      <span class="title-spool title-spool-a"></span>
+      <span class="title-spool title-spool-b"></span>
+    </div>
+  </section>
+
+  <section class="screen levels-screen" data-screen="levels" data-panel="levels" aria-labelledby="levels-heading" hidden>
+    <header class="page-head">
+      <button class="btn btn-ghost btn-small" id="btn-back-title" type="button" data-ui="back-title">← Title</button>
+      <div class="page-head-title">
+        <p class="eyebrow">The campaign</p>
+        <h1 id="levels-heading">Chambers</h1>
+      </div>
+      <p class="page-head-meta" id="levels-progress">0 of 12 woven</p>
+    </header>
+    <div class="level-grid" id="level-grid" aria-label="Chambers"></div>
+    <p class="footnote">Chambers unlock in order. A chamber is woven when every spool is joined and every cell is covered.</p>
+  </section>
+
+  <section class="screen game-screen" data-screen="game" data-panel="game" aria-labelledby="level-name" hidden>
+    <header class="game-bar">
+      <button class="btn btn-ghost btn-small" id="btn-levels" type="button" data-ui="chambers">← Chambers</button>
+      <div class="game-title">
+        <p class="eyebrow" id="level-kicker">Chamber 01</p>
+        <h1 id="level-name">First Thread</h1>
+      </div>
+      <dl class="game-stats">
+        <div><dt>Time</dt><dd id="timer">00:00</dd></div>
+        <div><dt>Threads</dt><dd id="move-count">0</dd></div>
+      </dl>
+    </header>
+    <div class="loom-stage">
+      <div class="loom" id="board" data-panel="loom" role="group" aria-label="Thread loom" aria-describedby="board-help" aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight Enter Space Escape"></div>
+      <p class="sr-only" id="board-help">Drag from a spool to its twin, or use the arrow keys and Enter. Every cell must be covered.</p>
+      <p class="status-line" id="status" data-cue="status" role="status" aria-live="polite"></p>
+    </div>
+    <div class="game-controls">
+      <button class="btn btn-ghost" id="btn-undo" type="button" data-ui="undo">Undo</button>
+      <button class="btn btn-ghost" id="btn-reset" type="button" data-ui="reset">Reset</button>
+      <button class="btn btn-ghost" id="btn-hint" type="button" data-ui="hint">Hint</button>
+      <button class="btn btn-ghost" id="btn-sound-game" type="button" aria-pressed="true" data-ui="sound-game">Sound on</button>
+    </div>
+    <p class="game-help" id="game-help">Drag between matching spools. Threads run orthogonally, never cross, and every cell must be woven.</p>
+  </section>
+</main>
+
+<dialog class="modal" id="help-dialog" data-panel="help" aria-labelledby="help-title">
+  <div class="modal-body">
+    <p class="eyebrow">How to weave</p>
+    <h2 id="help-title">One loom, twelve chambers</h2>
+    <ol class="rules">
+      <li><strong>Find the twins.</strong> Every colour has two spools. Connect them with a single thread.</li>
+      <li><strong>Stay orthogonal.</strong> A thread moves up, down, left or right — never diagonally.</li>
+      <li><strong>Never cross.</strong> Two threads may not share a cell, and a thread may not pass through another colour's spool.</li>
+      <li><strong>Cover everything.</strong> The chamber is woven only when every cell of the loom carries exactly one thread.</li>
+    </ol>
+    <p class="modal-note">Keyboard: focus the loom, use the arrow keys to move, and Enter or Space to start from a spool. The thread closes when it reaches its twin; Escape cancels the draft.</p>
+    <form method="dialog" class="modal-actions">
+      <button class="btn btn-primary" value="close">Ready</button>
+    </form>
+  </div>
+</dialog>
+
+<dialog class="modal win-modal" id="win-dialog" data-panel="win" data-cue="win" aria-labelledby="win-title">
+  <div class="modal-body">
+    <p class="eyebrow" id="win-kicker">Chamber 01 woven</p>
+    <h2 id="win-title">Tapestry restored</h2>
+    <p class="win-summary" id="win-summary"></p>
+    <dl class="win-stats">
+      <div><dt>Time</dt><dd id="win-time">00:00</dd></div>
+      <div><dt>Threads</dt><dd id="win-moves">0</dd></div>
+      <div><dt>Hints</dt><dd id="win-hints">0</dd></div>
+    </dl>
+    <div class="modal-actions">
+      <button class="btn btn-primary" id="btn-next" type="button" data-ui="next-chamber">Next chamber</button>
+      <button class="btn btn-ghost" id="btn-replay" type="button" data-ui="replay">Replay</button>
+      <button class="btn btn-ghost" id="btn-win-levels" type="button" data-ui="win-chambers">Chambers</button>
+    </div>
+  </div>
+</dialog>
+
+<noscript><p class="noscript">Weft needs JavaScript to draw the loom.</p></noscript>
+</body>
+</html>

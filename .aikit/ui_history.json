@@ -1,0 +1,30 @@
+[
+  {
+    "schema": 1,
+    "surface": "app",
+    "baseline_commit": "7dc7141d08e2f9554dc50a4798e46a97ab6c975e",
+    "contract_hash": "6b437c28104ade566ef850ac61b1cb8cf003a9181f3abdcbf0d1abc07287c794",
+    "started_at": 1793297230.5184855,
+    "finished_at": 1793297267.6367135,
+    "strikes": 0,
+    "reviewer": "opencode",
+    "allowed_removals": [],
+    "final_snapshot_digest": "f8c92facdd35416a07eaa9a3ddbdb4844b83d48137b5ffe61a8e6a4fadd8421e",
+    "final_snapshot_entries": 20,
+    "surface_digest": "5911060a824e45959670f6d59785b261d4b95aded8e8cc808702717b1d842a69"
+  },
+  {
+    "schema": 1,
+    "surface": "app",
+    "baseline_commit": "2f0586baef00035c43fd28079e4974b77dde2d0f",
+    "contract_hash": "6b437c28104ade566ef850ac61b1cb8cf003a9181f3abdcbf0d1abc07287c794",
+    "started_at": 1793298058.9180458,
+    "finished_at": 1793298076.5232954,
+    "strikes": 0,
+    "reviewer": "opencode",
+    "allowed_removals": [],
+    "final_snapshot_digest": "f8c92facdd35416a07eaa9a3ddbdb4844b83d48137b5ffe61a8e6a4fadd8421e",
+    "final_snapshot_entries": 20,
+    "surface_digest": "ef24afb51d2d33b032c903c0f76abb3740bb6dcc8f0687b608a19b6b77a15d7c"
+  }
+]

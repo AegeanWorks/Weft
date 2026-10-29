@@ -1,0 +1,44 @@
+/*
+ * Weft theme tokens: the only file with raw colour and font values.
+ * Every other stylesheet reads these custom properties.
+ */
+:root {
+  color-scheme: dark;
+  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --font-ui: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+
+  --ink: #071018;
+  --ink-2: #0a1720;
+  --ink-3: #0f222b;
+  --panel: #122a33;
+  --panel-2: #183640;
+  --line: #28474f;
+  --line-strong: #3e6a72;
+  --text: #eaf4f1;
+  --muted: #9ab6b3;
+  --muted-2: #6f8f8d;
+
+  --bronze: #d6a45c;
+  --bronze-bright: #f1c97e;
+  --bronze-dim: #8a6436;
+  --focus: #f1c97e;
+  --danger: #f0786a;
+
+  --thread-coral: #f0786a;
+  --thread-amber: #f2b84b;
+  --thread-jade: #6fcf97;
+  --thread-lapis: #6ea8fe;
+  --thread-violet: #b48cf2;
+  --thread-rose: #f28ab2;
+  --thread-teal: #55d6c2;
+  --thread-gold: #e8c15a;
+  --thread-pearl: #d9e6e3;
+
+  --shadow: 0 24px 60px rgba(3, 8, 12, 0.55);
+  --shadow-soft: 0 10px 30px rgba(3, 8, 12, 0.35);
+  --glow: 0 0 18px rgba(241, 201, 126, 0.22);
+  --cell-hover: rgba(241, 201, 126, 0.05);
+  --grain-line: rgba(241, 201, 126, 0.035);
+  --backdrop: rgba(3, 8, 12, 0.74);
+  --owner: transparent;
+}

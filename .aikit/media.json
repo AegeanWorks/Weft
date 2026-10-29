@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "name": "weft",
+  "repo": "Weft",
+  "has_ui": false,
+  "ui_kind": "library",
+  "palette": [
+    "#120712",
+    "#301223",
+    "#f566f0",
+    "#f5a08e"
+  ],
+  "motif": "terminal",
+  "layout": "editorial",
+  "assets": {
+    "logo": {
+      "path": "assets/logo.svg",
+      "status": "approved",
+      "commit": "",
+      "generated_at": "2026-10-29T20:44:55",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "structural",
+        "notes": "512px square mark: dark Aegean field, brass concentric rings, coral-to-teal thread and two spool endpoints; legible at 256px and consistent with the site palette.",
+        "score": 92,
+        "reviewed_at": "2026-10-29T21:18:28"
+      }
+    },
+    "social_preview": {
+      "path": "assets/social-preview.svg",
+      "status": "approved",
+      "commit": "",
+      "generated_at": "2026-10-29T20:44:55",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "structural",
+        "notes": "1280x640 card: Weft wordmark, thread-routing motif, AegeanWorks kicker and the 12-chamber promise; strong contrast, no external fonts or third-party marks.",
+        "score": 90,
+        "reviewed_at": "2026-10-29T21:18:29"
+      }
+    }
+  },
+  "screenshots": []
+}
