@@ -169,15 +169,16 @@ function resetTimer() {
 }
 
 function setScreen(name, { focus = true } = {}) {
-  for (const section of document.querySelectorAll("[data-screen]")) {
+  for (const section of document.querySelectorAll("section[data-screen]")) {
     section.hidden = section.dataset.screen !== name;
   }
   state.screen = name;
   document.body.dataset.screen = name;
+  window.scrollTo(0, 0);
   if (!focus) {
     return;
   }
-  const heading = document.querySelector(`[data-screen="${name}"] h1`);
+  const heading = document.querySelector(`section[data-screen="${name}"] h1`);
   if (heading) {
     heading.setAttribute("tabindex", "-1");
     heading.focus({ preventScroll: true });

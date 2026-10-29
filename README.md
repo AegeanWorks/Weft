@@ -154,7 +154,7 @@ The game is also covered by a real browser smoke pass during development: the ti
 
 ## Verification
 
-- `npm test` runs 51 unit and integration tests with no browser and no network beyond loopback.
+- `npm test` runs 52 unit and integration tests with no browser and no network beyond loopback.
 - `npm run dogfood` starts the real server, launches Edge/Chrome headless, solves the first chamber and checks the victory dialog and save.
 - `python aikit.py check weft` runs the test, mechanics, hygiene, guidelines and secret gates.
 - The test suite checks every stored solution, every cell total, path immutability, crossing refusal, corrupt saves, sequential unlocks, MIME types, path traversal and the UI inventory.

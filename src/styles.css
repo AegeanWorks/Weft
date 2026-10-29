@@ -57,7 +57,7 @@ button {
   padding: clamp(20px, 4vw, 48px);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .screen {

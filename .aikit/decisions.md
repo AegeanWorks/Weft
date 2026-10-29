@@ -40,3 +40,11 @@ contract, a dependency, a data format or the architecture; IDs are consecutive a
 - **Decision**: Publish Weft as a browser-mode game with `index.html`, `src/` and `assets/` as its runtime entries. The website sync records the game repository's commit, date, version and digest; the Play page loads the iframe from the copied path.
 - **Consequences**: A new game release enters the site only after a commit and a sync run. Old commit directories are removed by the sync, so deep links to an old build are not stable. The game must keep every asset path relative to its own directory.
 
+### ADR-005: Screen Changes Target Sections, Never the Body
+- **Date**: 2026-10-29
+- **Status**: Accepted
+- **Context**: `setScreen` selected every `[data-screen]` element. After the first title-screen call set `body.dataset.screen`, the next screen change matched the body too, set `body.hidden = true`, and rendered the level cards inside a `display:none` document. The page was blank even though the DOM and state were correct. Centering an overflowing levels grid and retaining the title scroll offset made small viewports worse.
+- **Decision**: Restrict the screen loop and heading lookup to `section[data-screen]`; keep `body.dataset.screen` as a state marker only; reset `window.scrollTo(0, 0)` on every screen change; and start the shell from the top (`justify-content: flex-start`) instead of centering overflowing screens. Add a regression assertion for the selector and scroll reset. Bump the game to 0.1.1.
+- **Consequences**: The title, chamber index and board stay visible after every transition and always start at the top; the body marker remains available to screenshots and tests. The title screen still centers within its own min-height. The fix needs a refreshed Play build, but old build directories remain available for cached catalogs.
+- Cross-principle check: no principle section changed. Serves PRINCIPLE-003 (the state marker no longer changes layout semantics), PRINCIPLE-011 (a transition never leaves a blank screen) and PRINCIPLE-014 (the regression is pinned).
+
