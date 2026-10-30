@@ -68,5 +68,19 @@
     "final_snapshot_digest": "410ff09a8424a5cbc1b901fd745fdccca018fec9e193afc3b045e1b681422d3e",
     "final_snapshot_entries": 23,
     "surface_digest": "2e98fc750e44367899a7970997ef2ee04b6546a33c571de50ec2bd19ca0e2524"
+  },
+  {
+    "schema": 1,
+    "surface": "app",
+    "baseline_commit": "a4e3ee6bd3fee7905dab29ff8184d9319693d612",
+    "contract_hash": "6b437c28104ade566ef850ac61b1cb8cf003a9181f3abdcbf0d1abc07287c794",
+    "started_at": 1793358332.9964182,
+    "finished_at": 1793358337.989258,
+    "strikes": 0,
+    "reviewer": "opencode:weft-playability (headless render + dogfood)",
+    "allowed_removals": [],
+    "final_snapshot_digest": "410ff09a8424a5cbc1b901fd745fdccca018fec9e193afc3b045e1b681422d3e",
+    "final_snapshot_entries": 23,
+    "surface_digest": "772d9647fbac41c6f3345a153606e563db9d91f0384907dfe2431a3b017905ff"
   }
 ]
