@@ -1,67 +1,17 @@
 {
   "version": 1,
   "active_task": {
-    "task_id": "weft-playability-v1",
-    "last_phase": "phase 5",
+    "task_id": "weft-patterns-v1",
+    "last_phase": "phase 4",
     "active_phase": 5,
     "status": "completed",
-    "updated_at": 1793358410.9153588,
-    "owner": "opencode:weft-playability",
-    "started_by": "opencode:weft-playability",
+    "updated_at": 1793360981.9053504,
+    "owner": "opencode:weft-patterns",
+    "started_by": "opencode:weft-patterns",
     "continuations": [],
-    "completed_at": 1793358411.992734
+    "completed_at": 1793360982.1975904
   },
   "checkpoints": [
-    {
-      "task_id": "weft-act2-v1",
-      "phase": "resumed",
-      "phase_num": 4,
-      "description": "Resumed 'weft-act2-v1' after a pause",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793345099.2601452,
-      "timestamp_str": "2026-10-30 10:24:59",
-      "agent": "opencode"
-    },
-    {
-      "task_id": "weft-act2-v1",
-      "phase": "completed",
-      "phase_num": 5,
-      "description": "Task 'weft-act2-v1' completed successfully.",
-      "status": "completed",
-      "timestamp": 1793345140.2612317,
-      "timestamp_str": "2026-10-30 10:25:40",
-      "agent": "opencode:weft-act2",
-      "continued_from": "opencode"
-    },
-    {
-      "task_id": "weft-stars-v1",
-      "phase": "phase 2",
-      "phase_num": 2,
-      "description": "[1/5] Plan Weft 0.3.0: derive 1-3 stars from hint use, preserve the best star rating across runs, show stars on chamber cards and the victory dialog, and total them on the title and chamber index",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793347501.0763257,
-      "timestamp_str": "2026-10-30 11:05:01",
-      "agent": "opencode:weft-stars",
-      "impact_assessment": {
-        "why": "Best time is the only progression signal after a solve; hints are recorded but never surfaced, so a clean solve and a hinted solve look identical on the chamber index and the eighteen chambers have only one replay goal.",
-        "benefits": "A legible 0-54 star total gives every chamber a second goal, rewards replaying without the hint ghost, and makes old saves useful immediately by deriving stars from their stored hint counts.",
-        "risks": "contract: progress entries gain an additive stars field and the win dialog/chamber cards gain star elements; dependency: none; concurrency: single writer on a clean weft tree; state: weft.progress.v1 stays version 1, and existing entries without stars normalize from hints",
-        "mitigation": "Failing-first tests for star derivation, max-star preservation and totals; dogfood asserts a clean three-star solve and the saved record; visual render check before the commit and a post-commit UI blessing"
-      }
-    },
-    {
-      "task_id": "weft-stars-v1",
-      "phase": "phase 3",
-      "phase_num": 3,
-      "description": "[2/5] Delivered star ratings: starsFor derives 1-3 from hints, save entries gain an additive stars field, recordSolve keeps the best rating and the fastest time, and the chamber cards, victory dialog, title and chamber index show the 0-54 total; README and ADR-007 cover it",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793347885.022922,
-      "timestamp_str": "2026-10-30 11:11:25",
-      "agent": "opencode:weft-stars"
-    },
     {
       "task_id": "weft-stars-v1",
       "phase": "completed",
@@ -279,6 +229,61 @@
       "timestamp": 1793358411.9927375,
       "timestamp_str": "2026-10-30 14:06:51",
       "agent": "opencode:weft-playability"
+    },
+    {
+      "task_id": "weft-patterns-v1",
+      "phase": "phase 2",
+      "phase_num": 2,
+      "description": "[1/4] Plan Weft 0.6.0 colour-independent threads: give all nine colours a unique SVG dash pattern on the thread and spool ring, keep solid coral as the control, document the accessibility choice and verify the loom at desktop and mobile sizes",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793360835.5225663,
+      "timestamp_str": "2026-10-30 14:47:15",
+      "agent": "opencode:weft-patterns",
+      "impact_assessment": {
+        "why": "Every thread and spool is identified by hue alone; a player with red-green or blue-purple colour vision deficiency cannot reliably match the nine pairs or follow a drawn path.",
+        "benefits": "A dash texture on each thread and its spool ring makes pairs and routes readable without colour, adds no asset, no setting and no storage, and keeps the existing glow aesthetic.",
+        "risks": "contract: SVG stroke-dasharray values on thread cores, drafts and spool rings; dependency: none; concurrency: single writer on a clean weft tree; state: no save or schema change",
+        "mitigation": "Keep a unique pattern map with a unit test, leave coral solid as the baseline, choose patterns distinct from the existing draft and hint dashes, and review desktop and 390px screenshots before delivery"
+      }
+    },
+    {
+      "task_id": "weft-patterns-v1",
+      "phase": "phase 3",
+      "phase_num": 3,
+      "description": "[2/4] Added the unique dash-pattern map, applied it to threads, drafts and spool rings, tested all nine colours and documented the accessibility choice in README and ADR-010",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793360973.947196,
+      "timestamp_str": "2026-10-30 14:49:33",
+      "agent": "opencode:weft-patterns"
+    },
+    {
+      "task_id": "weft-patterns-v1",
+      "phase": "phase 4",
+      "phase_num": 4,
+      "description": "[3/4] Phase 4 green: 5/5 gates, 72 tests, dogfood unchanged and green, and desktop renders show nine distinguishable thread and spool patterns; checklists: passed",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793360981.9053504,
+      "timestamp_str": "2026-10-30 14:49:41",
+      "agent": "opencode:weft-patterns",
+      "handoff": {
+        "state": "72 tests, 5/5 gates, no schema change",
+        "next": "commit the a11y patterns, record the post-commit UI blessing, push and sync the Play catalog",
+        "open": "none",
+        "evidence": "node --test tests, node scripts/dogfood.mjs, python aikit.py check weft"
+      }
+    },
+    {
+      "task_id": "weft-patterns-v1",
+      "phase": "completed",
+      "phase_num": 5,
+      "description": "Task 'weft-patterns-v1' completed successfully.",
+      "status": "completed",
+      "timestamp": 1793360982.1975915,
+      "timestamp_str": "2026-10-30 14:49:42",
+      "agent": "opencode:weft-patterns"
     }
   ]
 }

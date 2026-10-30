@@ -76,3 +76,10 @@ contract, a dependency, a data format or the architecture; IDs are consecutive a
 - **Decision**: Add a Best stat to the game HUD, filled from the campaign or daily record and labelled for screen readers. Render the daily result line inside the victory dialog before copying, so it stays selectable when the clipboard is unavailable. Bind Ctrl/Cmd+Z to the same `undo()` path as the button, and raise the locked-card opacity from 0.46 to 0.55.
 - **Consequences**: A replay has a visible target without leaving the board, and a daily result is never lost to a permission prompt. The HUD reads the same record as the index, so the two cannot disagree. The shortcut is harmless outside the game screen and no save field changes. The modal now carries a line of selectable text; the copy button remains an enhancement rather than the only way to share.
 
+### ADR-010: Threads Carry a Pattern as Well as a Colour
+- **Date**: 2026-10-30
+- **Status**: Accepted
+- **Context**: Nine thread colours identify both ends of every pair and every drawn route. Players with red-green or blue-purple colour-vision deficiency can lose a pair or follow the wrong thread, and the game had no second visual channel.
+- **Decision**: Give every colour a unique SVG `stroke-dasharray` in `src/ui/threads.js`, applied to the thread core, the live draft and the spool ring. Coral stays solid as the control; the other eight use distinct dash, dot and dash-dot rhythms. A unit test requires every colour to have a unique pattern and an unknown colour to fall back to solid.
+- **Consequences**: Pairs and routes are readable without hue, at desktop and mobile cell sizes, with no asset, setting or stored preference. The draft keeps the same texture as its colour, so the preview does not introduce a second vocabulary. The glow remains solid behind the dashes, so the woven aesthetic stays intact. The pattern is a presentation detail; the pure engine and saves are unchanged.
+

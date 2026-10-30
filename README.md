@@ -49,7 +49,7 @@ A zero-dependency thread-routing puzzle: draw glowing threads between matching s
 
 Every chamber is a square loom with coloured spool pairs. Draw one orthogonal thread between each pair. Threads may not cross, may not share a cell and may not pass through another colour's spool. The chamber is woven only when every pair is connected **and every cell is covered** — so the last thread usually has to take the long way home.
 
-The campaign grows from a 5×5 loom with three threads to a 9×9 loom with nine; Act II takes it to 10×10–12×12 with eight or nine. Each chamber has a stored solution used by the hint ghost and checked by the test suite. Progress, best times, star ratings, hint counts and sound preference are saved under `weft.progress.v1`; a missing or corrupt record resets safely.
+The campaign grows from a 5×5 loom with three threads to a 9×9 loom with nine; Act II takes it to 10×10–12×12 with eight or nine. Each chamber has a stored solution used by the hint ghost and checked by the test suite. Every colour also carries a unique dash pattern on its thread and spool ring, so the loom is readable without relying on hue. Progress, best times, star ratings, hint counts and sound preference are saved under `weft.progress.v1`; a missing or corrupt record resets safely.
 
 | # | Chamber | Loom | Threads |
 |---|---|---|---|
@@ -114,7 +114,8 @@ weft/
 │   │   ├── app.js             <- screens, SVG loom, pointer and keyboard input
 │   │   ├── audio.js           <- generated WebAudio cues, no audio files
 │   │   ├── daily.js           <- separate daily save and streak
-│   │   └── progress.js        <- versioned saves, best times, stars, unlocks
+│   │   ├── progress.js        <- versioned saves, best times, stars, unlocks
+│   │   └── threads.js         <- colour-independent dash patterns
 │   ├── styles.css             <- layout and motion using theme tokens
 │   └── theme.css              <- the only file with raw colour and font values
 └── tests/
@@ -124,6 +125,7 @@ weft/
     ├── levels.test.js         <- all eighteen chambers solve and stay total
     ├── progress.test.js       <- corrupt saves, best times, stars, sequential unlocks
     ├── server.test.js         <- path containment, MIME, 404s and traversal
+    ├── threads.test.js        <- every colour has a unique dash pattern
     └── ui.test.js             <- screens, controls, tokens, imports, inventory
 ```
 
@@ -134,6 +136,7 @@ weft/
 - **One generator for campaign and daily.** `src/game/generate.js` is pure and shared by the offline campaign script and the in-browser daily, so the two can never drift into different rules or a second level format.
 - **Static by construction.** There is no API, no build step and no external asset. `index.html`, `src/` and `assets/` are the complete deployment payload, which is why the AegeanWorks Play sync can copy the game by commit.
 - **Pointer and keyboard parity.** The loom is a group of real buttons. Pointer drags and arrow-key drafts use the same `beginDraft` / `extendDraft` / `commitDraft` path, and every commit goes through the pure engine.
+- **Not colour-only.** Each thread colour has a unique `stroke-dasharray` on the thread and its spool ring. Coral stays solid as the control; the other eight use distinct dash, dot and dash-dot rhythms, so colour-vision deficiency does not hide a pair.
 - **Token-only styling.** Raw colours and fonts live in `src/theme.css`; `src/styles.css` reads custom properties. The test suite rejects raw colour literals in the layout sheet.
 - **Stars are derived, not authored.** The rating comes from the hint count of the run, so no per-chamber target time can drift out of date. The stored rating only rises, while the fastest time stays independent.
 - **Records where they matter.** The game HUD shows the best time and rating for the current campaign chamber or today's daily, so a replay has a visible target without returning to the index.
@@ -174,10 +177,10 @@ The game is also covered by a real browser smoke pass during development: the ti
 
 ## Verification
 
-- `npm test` runs 70 unit and integration tests with no browser and no network beyond loopback.
+- `npm test` runs 72 unit and integration tests with no browser and no network beyond loopback.
 - `npm run dogfood` starts the real server, launches Edge/Chrome headless, solves the first chamber, checks the victory dialog, the three-star saved record and the chamber card, renders the 12×12 finale, and solves today’s daily with its separate save, HUD best and visible share line.
 - `python aikit.py check weft` runs the test, mechanics, hygiene, guidelines and secret gates.
-- The test suite checks every stored solution, every cell total, path immutability, crossing refusal, corrupt saves, sequential unlocks, daily determinism, streaks, MIME types, path traversal and the UI inventory.
+- The test suite checks every stored solution, every cell total, path immutability, crossing refusal, corrupt saves, sequential unlocks, daily determinism, streaks, unique thread patterns, MIME types, path traversal and the UI inventory.
 
 <!-- aegean:brand-assets:start -->
 ## 🎨 Brand Assets

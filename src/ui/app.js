@@ -12,6 +12,7 @@ import {
   recordDaily,
   saveDaily,
 } from "./daily.js";
+import { applyPattern } from "./threads.js";
 import {
   MAX_STARS,
   isUnlocked,
@@ -388,6 +389,7 @@ function appendThread(svg, cells, color) {
   core.setAttribute("d", d);
   core.setAttribute("stroke", colorVar(color));
   core.setAttribute("stroke-width", "0.14");
+  applyPattern(core, color);
 
   svg.append(glow, core);
 }
@@ -401,6 +403,7 @@ function appendDraft(svg, cells, color) {
   path.setAttribute("d", pathData(cells));
   path.setAttribute("stroke", colorVar(color));
   path.setAttribute("stroke-width", "0.14");
+  applyPattern(path, color);
   svg.append(path);
 }
 
@@ -431,6 +434,7 @@ function appendSpool(svg, [x, y], color) {
   ring.setAttribute("cy", String(cy));
   ring.setAttribute("r", "0.22");
   ring.setAttribute("stroke", colorVar(color));
+  applyPattern(ring, color);
 
   const core = document.createElementNS(SVG_NS, "circle");
   core.setAttribute("class", "spool-core");

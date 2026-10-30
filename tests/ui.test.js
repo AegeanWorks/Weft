@@ -138,6 +138,7 @@ test("the app imports the pure engine, levels, daily and progress", () => {
   assert.match(app, /from "\.\.\/game\/levels\.js"/);
   assert.match(app, /from "\.\.\/game\/daily\.js"/);
   assert.match(app, /from "\.\/daily\.js"/);
+  assert.match(app, /from "\.\/threads\.js"/);
   assert.match(app, /from "\.\/progress\.js"/);
   assert.match(app, /from "\.\/audio\.js"/);
   assert.doesNotMatch(app, /\bfetch\s*\(|XMLHttpRequest/);
@@ -147,18 +148,19 @@ test("the app imports the pure engine, levels, daily and progress", () => {
 
 test("the package declares the local play and regression commands", () => {
   assert.equal(packageJson.type, "module");
-  assert.equal(packageJson.version, "0.5.0");
+  assert.equal(packageJson.version, "0.6.0");
   assert.equal(packageJson.scripts.test, "node --test tests");
   assert.equal(packageJson.scripts.start, "node scripts/serve.mjs --open");
   assert.equal(packageJson.scripts["ui:snapshot"], "node scripts/ui-inventory.mjs");
 });
 
-test("the help dialog explains the star rating, daily mode and undo shortcut", () => {
+test("the help dialog explains the star rating, daily mode, undo shortcut and thread patterns", () => {
   assert.match(html, /three stars/i);
   assert.match(html, /One hint/i);
   assert.match(html, /daily weave/i);
   assert.match(html, /Ctrl\/Cmd\+Z/);
   assert.match(html, /aria-keyshortcuts="[^"]*Control\+Z/);
+  assert.match(html, /dash pattern/i);
 });
 
 test("screen switching targets sections, never the body, and resets scroll", () => {
