@@ -14,6 +14,7 @@ import { createServer as createNetServer } from "node:net";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { LEVELS, TOTAL_CHAMBERS } from "../src/game/levels.js";
+import { createDailyLevel, dateKey } from "../src/game/daily.js";
 import { startServer } from "./serve.mjs";
 
 const BASE = "http://127.0.0.1";
@@ -281,8 +282,49 @@ async function main() {
         `The last chamber did not render: cells=${lastBoard.cells}, spools=${lastBoard.spools}, name=${lastBoard.name}.`,
       );
     }
+
+    const dailyKey = dateKey();
+    const daily = createDailyLevel(dailyKey);
+    await connection.send("Page.navigate", { url: `${url}?daily=1` });
+    await wait(900);
+    const dailyBoard = await connection.evaluate(`(() => ({
+      cells: document.querySelectorAll('.cell').length,
+      spools: document.querySelectorAll('[data-spool]').length,
+      kicker: document.getElementById('level-kicker').textContent
+    }))()`);
+    if (
+      dailyBoard.cells !== daily.size * daily.size ||
+      dailyBoard.spools !== daily.pairs.length * 2 ||
+      !dailyBoard.kicker.startsWith("Daily weave")
+    ) {
+      throw new Error(
+        `The daily chamber did not render: cells=${dailyBoard.cells}, spools=${dailyBoard.spools}, kicker=${dailyBoard.kicker}.`,
+      );
+    }
+    for (const pair of daily.pairs) {
+      await drawPair(connection, pair, daily.solution[pair.color]);
+    }
+    const dailyResult = await connection.evaluate(`(() => {
+      const saved = JSON.parse(localStorage.getItem('weft.daily.v1') || '{}');
+      return {
+        win: document.getElementById('win-dialog').open,
+        nextHidden: document.getElementById('btn-next').hidden,
+        shareHidden: document.getElementById('btn-share').hidden,
+        stars: saved.days?.['${dailyKey}']?.stars
+      };
+    })()`);
+    if (
+      !dailyResult.win ||
+      !dailyResult.nextHidden ||
+      dailyResult.shareHidden ||
+      dailyResult.stars !== 3
+    ) {
+      throw new Error(
+        `The daily chamber did not close cleanly: win=${dailyResult.win}, nextHidden=${dailyResult.nextHidden}, shareHidden=${dailyResult.shareHidden}, stars=${dailyResult.stars}.`,
+      );
+    }
     console.log(
-      `[OK] Weft dogfood: title, ${TOTAL_CHAMBERS} chambers, a 3-thread solve, the victory dialog and the ${last.size}x${last.size} finale.`,
+      `[OK] Weft dogfood: title, ${TOTAL_CHAMBERS} chambers, a 3-thread solve, the victory dialog, the ${last.size}x${last.size} finale and the daily weave.`,
     );
     return 0;
   } catch (error) {

@@ -25,6 +25,7 @@
       <p class="lede">Two spools. One thread. Fill every cell of the loom and restore the tapestry.</p>
       <div class="title-actions">
         <button class="btn btn-primary" id="btn-play" type="button" data-ui="play">Play</button>
+        <button class="btn btn-ghost" id="btn-daily-title" type="button" data-ui="daily-title">Daily weave</button>
         <button class="btn btn-ghost" id="btn-how" type="button" data-ui="how-to-play">How to play</button>
       </div>
       <p class="title-meta" id="title-progress">18 chambers · no account · no network</p>
@@ -51,6 +52,13 @@
       </div>
       <p class="page-head-meta" id="levels-progress">0 of 18 woven</p>
     </header>
+    <div class="daily-strip">
+      <div>
+        <p class="eyebrow">Daily weave</p>
+        <p class="daily-strip-copy" id="daily-copy">A fresh 7×7 loom every day.</p>
+      </div>
+      <button class="btn btn-ghost btn-small" id="btn-daily-levels" type="button" data-ui="daily-levels">Weave today</button>
+    </div>
     <div class="level-grid" id="level-grid" aria-label="Chambers"></div>
     <p class="footnote">Chambers unlock in order. A chamber is woven when every spool is joined and every cell is covered.</p>
   </section>
@@ -94,6 +102,7 @@
     </ol>
     <p class="modal-note">Keyboard: focus the loom, use the arrow keys to move, and Enter or Space to start from a spool. The thread closes when it reaches its twin; Escape cancels the draft.</p>
     <p class="modal-note star-note">A clean weave without hints earns three stars. One hint earns two; more than one earns a single star.</p>
+    <p class="modal-note">The daily weave is a fresh 7×7 chamber on your local date. It has its own save and streak and never changes campaign progress.</p>
     <form method="dialog" class="modal-actions">
       <button class="btn btn-primary" value="close">Ready</button>
     </form>
@@ -114,6 +123,7 @@
     <div class="modal-actions">
       <button class="btn btn-primary" id="btn-next" type="button" data-ui="next-chamber">Next chamber</button>
       <button class="btn btn-ghost" id="btn-replay" type="button" data-ui="replay">Replay</button>
+      <button class="btn btn-ghost" id="btn-share" type="button" data-ui="share-daily" hidden>Copy result</button>
       <button class="btn btn-ghost" id="btn-win-levels" type="button" data-ui="win-chambers">Chambers</button>
     </div>
   </div>

@@ -5,7 +5,7 @@
 <p align="center"><a href="LICENSE"><img src="https://img.shields.io/badge/license-AGL--1.1-7048e8" alt="License"></a> <a href="https://github.com/AegeanWorks/AIKit"><img src="https://img.shields.io/badge/AIKit-integrated-6f42c1" alt="AIKit Integrated"></a></p>
 <!-- aegean:media:end -->
 
-A zero-dependency thread-routing puzzle: draw glowing threads between matching spools, fill every cell of the loom, and restore the tapestry across eighteen chambers. The whole game is static HTML, CSS and ES modules, so it runs from any static host — including the AegeanWorks Play page.
+A zero-dependency thread-routing puzzle: draw glowing threads between matching spools, fill every cell of the loom, and restore the tapestry across eighteen chambers, with a fresh 7×7 daily weave. The whole game is static HTML, CSS and ES modules, so it runs from any static host — including the AegeanWorks Play page.
 
 ## ⚡ 30-Second Cold-Start Quick Reference
 
@@ -24,7 +24,7 @@ A zero-dependency thread-routing puzzle: draw glowing threads between matching s
   ```bash
   npm run ui:snapshot
   ```
-- **Real browser dogfood** (starts the server, solves the first chamber and checks the victory dialog; skips when Edge/Chrome is absent):
+- **Real browser dogfood** (starts the server, solves the first chamber, checks the victory dialog and the daily, then renders the 12×12 finale; skips when Edge/Chrome is absent):
   ```bash
   npm run dogfood
   ```
@@ -75,6 +75,8 @@ Chambers unlock in order. A finished chamber records its best time and star rati
 
 Every chamber awards up to three stars. A clean weave without hints earns three, one hint earns two, and more than one earns a single star. The best rating is kept even when a later, faster run uses more hints, and older saves derive their stars from the hint counts already stored. The title and chamber index show the campaign total out of 54.
 
+The daily weave is a fresh 7×7 chamber with six threads, generated from your local date and never fetched. It keeps its own save under `weft.daily.v1`, so a daily run does not change campaign stars or unlocks. A solved day extends the streak; the victory dialog can copy a result line such as `Weft daily 2026-10-30 · ★★★ · 01:23 · 0 hints`.
+
 ## What's Inside
 
 ```text
@@ -98,21 +100,26 @@ weft/
 │   └── social-preview.svg     <- 1280×640 social card
 ├── scripts/
 │   ├── dogfood.mjs            <- real browser solve over the DevTools protocol
-│   ├── generate-levels.mjs    <- deterministic Hamiltonian chamber generator
+│   ├── generate-levels.mjs    <- fixed campaign specs serialized by the shared generator
 │   ├── serve.mjs              <- static server, public-file allowlist, --open
 │   └── ui-inventory.mjs       <- stable data-ui / data-panel / data-cue inventory
 ├── src/
 │   ├── game/
+│   │   ├── daily.js           <- date-seeded daily chamber
 │   │   ├── engine.js          <- pure path rules, overlap checks, win detection
+│   │   ├── generate.js        <- pure Hamiltonian chamber generator
 │   │   └── levels.js          <- eighteen frozen chambers and stored solutions
 │   ├── ui/
 │   │   ├── app.js             <- screens, SVG loom, pointer and keyboard input
 │   │   ├── audio.js           <- generated WebAudio cues, no audio files
+│   │   ├── daily.js           <- separate daily save and streak
 │   │   └── progress.js        <- versioned saves, best times, stars, unlocks
 │   ├── styles.css             <- layout and motion using theme tokens
 │   └── theme.css              <- the only file with raw colour and font values
 └── tests/
+    ├── daily.test.js          <- daily saves, corrupt records, streaks
     ├── engine.test.js         <- adjacency, crossings, coverage, immutability
+    ├── generate.test.js       <- shared generator, daily determinism and validity
     ├── levels.test.js         <- all eighteen chambers solve and stay total
     ├── progress.test.js       <- corrupt saves, best times, stars, sequential unlocks
     ├── server.test.js         <- path containment, MIME, 404s and traversal
@@ -123,11 +130,12 @@ weft/
 
 - **Pure engine first.** `src/game/engine.js` has no DOM, clock, random source or storage. The browser, the tests and the level validator share one set of rules.
 - **Generated, frozen chambers.** Each level starts as a randomized Hamiltonian path, then is cut into threads. That construction makes every stored solution total by definition; `tests/levels.test.js` proves it again on every run. Act II cuts its paths evenly, so no single thread swallows a third of the loom.
+- **One generator for campaign and daily.** `src/game/generate.js` is pure and shared by the offline campaign script and the in-browser daily, so the two can never drift into different rules or a second level format.
 - **Static by construction.** There is no API, no build step and no external asset. `index.html`, `src/` and `assets/` are the complete deployment payload, which is why the AegeanWorks Play sync can copy the game by commit.
 - **Pointer and keyboard parity.** The loom is a group of real buttons. Pointer drags and arrow-key drafts use the same `beginDraft` / `extendDraft` / `commitDraft` path, and every commit goes through the pure engine.
 - **Token-only styling.** Raw colours and fonts live in `src/theme.css`; `src/styles.css` reads custom properties. The test suite rejects raw colour literals in the layout sheet.
 - **Stars are derived, not authored.** The rating comes from the hint count of the run, so no per-chamber target time can drift out of date. The stored rating only rises, while the fastest time stays independent.
-- **Small, versioned state.** Progress is a single localStorage record with a version. Unknown fields are ignored, corrupt JSON returns a fresh profile and a faster run replaces the stored best.
+- **Small, versioned state.** Progress is a single localStorage record with a version; the daily keeps a second, equally versioned record so a daily replay cannot touch campaign unlocks. Unknown fields are ignored, corrupt JSON returns a fresh profile and a faster run replaces the stored best.
 - **Generated sound.** WebAudio cues are synthesized after the first gesture; there are no audio files and no autoplay violation.
 
 ## AIKit Workflow
@@ -157,16 +165,17 @@ The app accepts development-only query parameters so every state can be captured
 | `/?level=first-thread&preview=hint` | Ghost route |
 | `/?level=first-thread&preview=solved` | Completed loom |
 | `/?level=first-thread&preview=win` | Victory dialog |
+| `/?daily=1` | Today’s daily loom |
 | `/?preview=help` | How-to-play dialog |
 
-The game is also covered by a real browser smoke pass during development: the title, chamber index, help dialog, empty loom, a full three-thread solve, the victory dialog and the 12×12 finale are exercised over the DevTools protocol, with the saved record checked afterwards.
+The game is also covered by a real browser smoke pass during development: the title, chamber index, help dialog, empty loom, a full three-thread solve, the victory dialog, the 12×12 finale and a daily solve are exercised over the DevTools protocol, with the saved records checked afterwards.
 
 ## Verification
 
-- `npm test` runs 58 unit and integration tests with no browser and no network beyond loopback.
-- `npm run dogfood` starts the real server, launches Edge/Chrome headless, solves the first chamber, checks the victory dialog, the three-star saved record and the chamber card, and renders the 12×12 finale.
+- `npm test` runs 70 unit and integration tests with no browser and no network beyond loopback.
+- `npm run dogfood` starts the real server, launches Edge/Chrome headless, solves the first chamber, checks the victory dialog, the three-star saved record and the chamber card, renders the 12×12 finale, and solves today’s daily with its separate save.
 - `python aikit.py check weft` runs the test, mechanics, hygiene, guidelines and secret gates.
-- The test suite checks every stored solution, every cell total, path immutability, crossing refusal, corrupt saves, sequential unlocks, MIME types, path traversal and the UI inventory.
+- The test suite checks every stored solution, every cell total, path immutability, crossing refusal, corrupt saves, sequential unlocks, daily determinism, streaks, MIME types, path traversal and the UI inventory.
 
 <!-- aegean:brand-assets:start -->
 ## 🎨 Brand Assets

@@ -3,8 +3,15 @@ import {
   isSolved,
   setPath,
 } from "../game/engine.js";
+import { createDailyLevel, dailyLabel, dateKey } from "../game/daily.js";
 import { LEVELS, TOTAL_CHAMBERS } from "../game/levels.js";
 import { createAudio } from "./audio.js";
+import {
+  dailyStreak,
+  loadDaily,
+  recordDaily,
+  saveDaily,
+} from "./daily.js";
 import {
   MAX_STARS,
   isUnlocked,
@@ -62,7 +69,11 @@ const refs = {
   btnSoundGame: required("btn-sound-game"),
   btnNext: required("btn-next"),
   btnReplay: required("btn-replay"),
+  btnShare: required("btn-share"),
   btnWinLevels: required("btn-win-levels"),
+  btnDailyTitle: required("btn-daily-title"),
+  btnDailyLevels: required("btn-daily-levels"),
+  dailyCopy: required("daily-copy"),
 };
 
 const audio = createAudio();
@@ -82,6 +93,8 @@ const state = {
   won: false,
   lastErrorAt: 0,
   progress: loadProgress(),
+  dailyProgress: loadDaily(),
+  daily: null,
   sound: true,
   timer: { started: false, running: false, startedAt: 0, elapsed: 0, interval: null },
 };
@@ -215,6 +228,23 @@ function renderTitleProgress() {
   }
 }
 
+function renderDaily() {
+  const key = dateKey();
+  const entry = state.dailyProgress.days[key];
+  const streak = dailyStreak(state.dailyProgress, key);
+  const label = dailyLabel(key);
+  if (entry) {
+    const stars = "★".repeat(entry.stars) + "☆".repeat(MAX_STARS - entry.stars);
+    refs.dailyCopy.textContent = `${label} · ${stars} · best ${formatTime(entry.bestMs)} · ${streak}-day streak`;
+    refs.btnDailyLevels.textContent = "Replay today";
+    refs.btnDailyTitle.textContent = "Daily weave ✓";
+  } else {
+    refs.dailyCopy.textContent = `${label} · a fresh 7×7 loom${streak ? ` · ${streak}-day streak` : ""}`;
+    refs.btnDailyLevels.textContent = "Weave today";
+    refs.btnDailyTitle.textContent = "Daily weave";
+  }
+}
+
 function syncSound() {
   for (const button of [refs.btnSoundTitle, refs.btnSoundGame]) {
     button.textContent = state.sound ? "Sound on" : "Sound off";
@@ -308,6 +338,7 @@ function showLevels() {
     stopTimer();
   }
   renderLevels();
+  renderDaily();
   setScreen("levels");
 }
 
@@ -474,7 +505,9 @@ function updateHud() {
     return;
   }
   const index = LEVELS.indexOf(state.level);
-  refs.levelKicker.textContent = `Chamber ${String(index + 1).padStart(2, "0")} · ${state.level.size}×${state.level.size}`;
+  refs.levelKicker.textContent = state.daily
+    ? `Daily weave · ${state.daily.label} · ${state.level.size}×${state.level.size}`
+    : `Chamber ${String(index + 1).padStart(2, "0")} · ${state.level.size}×${state.level.size}`;
   refs.levelName.textContent = state.level.name;
   refs.moveCount.textContent = String(state.moves);
   refs.timer.textContent = formatTime(currentElapsed());
@@ -490,9 +523,10 @@ function updateHud() {
   refs.btnUndo.disabled = state.undoStack.length === 0 || state.won;
   refs.btnReset.disabled = state.won || (state.moves === 0 && complete === 0);
   refs.btnHint.disabled = state.won || state.hintColor !== null;
-  const next = LEVELS[index + 1];
+  const next = state.daily ? null : LEVELS[index + 1];
   refs.btnNext.hidden = !next;
   refs.btnNext.dataset.next = next?.id ?? "";
+  refs.btnShare.hidden = !state.daily;
 }
 
 function pushUndo() {
@@ -742,10 +776,15 @@ function showHint() {
 
 function showWinDialog(elapsed) {
   const index = LEVELS.indexOf(state.level);
-  const next = LEVELS[index + 1];
+  const next = state.daily ? null : LEVELS[index + 1];
   const runStars = starsFor(state.hints);
-  const bestStars = state.progress.solved[state.level.id]?.stars ?? runStars;
-  refs.winKicker.textContent = `Chamber ${String(index + 1).padStart(2, "0")} woven`;
+  const entry = state.daily
+    ? state.dailyProgress.days[state.daily.key]
+    : state.progress.solved[state.level.id];
+  const bestStars = entry?.stars ?? runStars;
+  refs.winKicker.textContent = state.daily
+    ? `Daily weave · ${state.daily.label}`
+    : `Chamber ${String(index + 1).padStart(2, "0")} woven`;
   const summary =
     state.hints === 0
       ? "A clean weave. Every cell is covered."
@@ -760,9 +799,38 @@ function showWinDialog(elapsed) {
   renderStars(refs.winStars, runStars);
   refs.btnNext.hidden = !next;
   refs.btnNext.dataset.next = next?.id ?? "";
+  refs.btnShare.hidden = !state.daily;
   if (!refs.winDialog.open) {
     refs.winDialog.showModal();
   }
+}
+
+function shareDailyResult() {
+  if (!state.daily) {
+    return;
+  }
+  const entry = state.dailyProgress.days[state.daily.key];
+  if (!entry) {
+    return;
+  }
+  const stars = "★".repeat(entry.stars) + "☆".repeat(MAX_STARS - entry.stars);
+  const hints = entry.hints === 1 ? "1 hint" : `${entry.hints} hints`;
+  const text = `Weft daily ${state.daily.key} · ${stars} · ${formatTime(entry.bestMs)} · ${hints}`;
+  if (!navigator.clipboard?.writeText) {
+    refs.status.textContent = text;
+    return;
+  }
+  navigator.clipboard.writeText(text).then(
+    () => {
+      refs.btnShare.textContent = "Copied";
+      setTimeout(() => {
+        refs.btnShare.textContent = "Copy result";
+      }, 2000);
+    },
+    () => {
+      refs.status.textContent = text;
+    },
+  );
 }
 
 function checkWin() {
@@ -773,14 +841,21 @@ function checkWin() {
   stopTimer();
   const elapsed = state.timer.elapsed;
   if (!state.preview) {
-    state.progress = recordSolve(state.progress, state.level.id, {
+    const result = {
       bestMs: elapsed,
       hints: state.hints,
       moves: state.moves,
       at: new Date().toISOString(),
-    });
-    saveProgress(state.progress);
-    renderTitleProgress();
+    };
+    if (state.daily) {
+      state.dailyProgress = recordDaily(state.dailyProgress, state.daily.key, result);
+      saveDaily(state.dailyProgress);
+      renderDaily();
+    } else {
+      state.progress = recordSolve(state.progress, state.level.id, result);
+      saveProgress(state.progress);
+      renderTitleProgress();
+    }
   }
   refs.board.classList.add("is-won");
   updateHud();
@@ -798,14 +873,10 @@ function applySolution() {
   updateHud();
 }
 
-function openLevel(id, { preview = null } = {}) {
-  const level = LEVELS.find((candidate) => candidate.id === id);
-  if (!level) {
-    showLevels();
-    return;
-  }
+function openBoard(level, { preview = null, daily = null } = {}) {
   clearTimeout(state.hintTimer);
   state.level = level;
+  state.daily = daily;
   state.game = createGame(level);
   state.moves = 0;
   state.hints = 0;
@@ -835,6 +906,21 @@ function openLevel(id, { preview = null } = {}) {
   }
 }
 
+function openLevel(id, options = {}) {
+  const level = LEVELS.find((candidate) => candidate.id === id);
+  if (!level) {
+    showLevels();
+    return;
+  }
+  openBoard(level, options);
+}
+
+function openDaily(key = dateKey()) {
+  openBoard(createDailyLevel(key), {
+    daily: { key, label: dailyLabel(key) },
+  });
+}
+
 function openHelp() {
   if (!refs.helpDialog.open) {
     refs.helpDialog.showModal();
@@ -855,6 +941,8 @@ function focusCell(x, y) {
 
 function bindEvents() {
   refs.btnPlay.addEventListener("click", showLevels);
+  refs.btnDailyTitle.addEventListener("click", () => openDaily());
+  refs.btnDailyLevels.addEventListener("click", () => openDaily());
   refs.btnHow.addEventListener("click", openHelp);
   refs.btnBackTitle.addEventListener("click", showTitle);
   refs.btnLevels.addEventListener("click", showLevels);
@@ -874,8 +962,13 @@ function bindEvents() {
   });
   refs.btnReplay.addEventListener("click", () => {
     refs.winDialog.close();
-    openLevel(state.level.id);
+    if (state.daily) {
+      openDaily(state.daily.key);
+    } else {
+      openLevel(state.level.id);
+    }
   });
+  refs.btnShare.addEventListener("click", shareDailyResult);
   refs.btnWinLevels.addEventListener("click", () => {
     refs.winDialog.close();
     showLevels();
@@ -1003,8 +1096,14 @@ function bindEvents() {
 function boot() {
   bindEvents();
   syncSound();
+  renderDaily();
   const params = new URLSearchParams(window.location.search);
   const preview = params.get("preview");
+  const dailyParam = params.get("daily");
+  if (dailyParam) {
+    openDaily(dailyParam === "1" ? dateKey() : dailyParam);
+    return;
+  }
   const levelId = params.get("level");
   if (levelId) {
     openLevel(levelId, { preview });

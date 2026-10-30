@@ -1,56 +1,17 @@
 {
   "version": 1,
   "active_task": {
-    "task_id": "weft-stars-v1",
-    "last_phase": "phase 5",
+    "task_id": "weft-daily-v1",
+    "last_phase": "phase 4",
     "active_phase": 5,
     "status": "completed",
-    "updated_at": 1793348041.202628,
-    "owner": "opencode:weft-stars",
-    "started_by": "opencode:weft-stars",
+    "updated_at": 1793357193.3211563,
+    "owner": "opencode:weft-daily",
+    "started_by": "opencode:weft-daily",
     "continuations": [],
-    "completed_at": 1793348041.5716503
+    "completed_at": 1793357194.2291107
   },
   "checkpoints": [
-    {
-      "task_id": "weft-v1",
-      "phase": "phase 2",
-      "phase_num": 2,
-      "description": "[1/6] Plan Weft: pure thread-routing engine, twelve frozen chambers, static UI, local server, and Play-catalog deployment",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793295948.1379106,
-      "timestamp_str": "2026-10-29 20:45:48",
-      "agent": "opencode:weft",
-      "impact_assessment": {
-        "why": "The AegeanWorks Play catalog has one browser game; a second original static puzzle proves the catalog is a real multi-game surface and gives visitors a new zero-install title.",
-        "benefits": "A complete, offline-capable browser puzzle with deterministic engine tests, stored solutions for hints, versioned progress, and a one-command site sync; no runtime dependencies and no server needed on Pages.",
-        "risks": "contract: new project plus a third Play-catalog entry; dependency: none beyond Node 20 for tests and tooling; concurrency: the website playable-games task is uncommitted and must not be overwritten; state: localStorage progress and copied build digests.",
-        "mitigation": "Build and test the engine before UI, freeze every level with a stored solution, add only one new GAMES entry and one workflow checkout, preserve the existing uncommitted website work, and run the project and site gates before any commit."
-      }
-    },
-    {
-      "task_id": "weft-v1",
-      "phase": "phase 3",
-      "phase_num": 3,
-      "description": "[2/6] Deliver the pure engine, twelve chambers, static UI, server, 51 tests and browser dogfood; checklists: passed; gates: test, mechanics, dogfood, hygiene, guidelines, secrets",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793297214.1870944,
-      "timestamp_str": "2026-10-29 21:06:54",
-      "agent": "opencode:weft"
-    },
-    {
-      "task_id": "weft-v1",
-      "phase": "phase 4",
-      "phase_num": 4,
-      "description": "[4/6] Website Play catalog integrated: Weft build 473fe34, manifest entry, logo, workflow checkout, parity tests and no-JS fallback; checklists: passed; gates: test, mechanics, dogfood, hygiene, guidelines, secrets",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793297803.7975454,
-      "timestamp_str": "2026-10-29 21:16:43",
-      "agent": "opencode:weft"
-    },
     {
       "task_id": "weft-v1",
       "phase": "phase 5",
@@ -257,6 +218,61 @@
       "timestamp": 1793348041.571652,
       "timestamp_str": "2026-10-30 11:14:01",
       "agent": "opencode:weft-stars"
+    },
+    {
+      "task_id": "weft-daily-v1",
+      "phase": "phase 2",
+      "phase_num": 2,
+      "description": "[1/6] Plan Weft 0.4.0 Daily Weave: share the pure Hamiltonian generator, build a date-seeded 7x7 chamber, store it under a separate daily save with streaks, add title/chamber-index entry and a copyable result, then sync the Play catalog",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793356744.399228,
+      "timestamp_str": "2026-10-30 13:39:04",
+      "agent": "opencode:weft-daily",
+      "impact_assessment": {
+        "why": "The eighteen-chamber campaign is finite, so after the stars there is no reason to return; a date-seeded daily chamber gives a fresh puzzle every day without a backend, an account or a network call.",
+        "benefits": "A deterministic daily loom, a separate streak and result record, and one-click sharing add retention while keeping campaign progress untouched; the shared generator removes the risk of a second, drifting level implementation.",
+        "risks": "contract: new game and UI modules, a new weft.daily.v1 key, and new title/chamber-index controls; dependency: none, pure ES modules; concurrency: single writer on a clean weft tree; state: daily saves are separate from weft.progress.v1, and local-date keys must not drift across time zones",
+        "mitigation": "Extract the existing generator verbatim and prove the frozen chambers are unchanged, unit-test date keys, determinism, validity, storage and streaks, dogfood today's daily solve, and leave campaign progress untouched"
+      }
+    },
+    {
+      "task_id": "weft-daily-v1",
+      "phase": "phase 3",
+      "phase_num": 3,
+      "description": "[2/6] Implemented the shared pure generator, date-seeded 7x7 daily chamber, separate weft.daily.v1 save with streaks, title/chamber-index entry, daily game context, copyable result, styles, README and ADR-008",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793357182.653812,
+      "timestamp_str": "2026-10-30 13:46:22",
+      "agent": "opencode:weft-daily"
+    },
+    {
+      "task_id": "weft-daily-v1",
+      "phase": "phase 4",
+      "phase_num": 4,
+      "description": "[3/6] Phase 4 green: 5/5 project gates, 70 tests, dogfood solves the campaign, the 12x12 finale and today's daily with separate saves, and headless renders confirm the daily board, title button, chamber strip and help; checklists: passed",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793357193.3211563,
+      "timestamp_str": "2026-10-30 13:46:33",
+      "agent": "opencode:weft-daily",
+      "handoff": {
+        "state": "70 tests, 5/5 gates, daily save separate in weft.daily.v1",
+        "next": "commit 0.4.0, record the post-commit UI blessing, push and sync the Play catalog",
+        "open": "none",
+        "evidence": "node --test tests, node scripts/dogfood.mjs, python aikit.py check weft"
+      }
+    },
+    {
+      "task_id": "weft-daily-v1",
+      "phase": "completed",
+      "phase_num": 5,
+      "description": "Task 'weft-daily-v1' completed successfully.",
+      "status": "completed",
+      "timestamp": 1793357194.2291136,
+      "timestamp_str": "2026-10-30 13:46:34",
+      "agent": "opencode:weft-daily"
     }
   ]
 }

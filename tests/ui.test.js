@@ -34,6 +34,8 @@ test("the shell has the required screens, dialogs and controls", () => {
     "status",
     "btn-play",
     "btn-how",
+    "btn-daily-title",
+    "btn-daily-levels",
     "btn-back-title",
     "btn-levels",
     "btn-undo",
@@ -46,7 +48,9 @@ test("the shell has the required screens, dialogs and controls", () => {
     "win-stars",
     "btn-next",
     "btn-replay",
+    "btn-share",
     "btn-win-levels",
+    "daily-copy",
   ]) {
     assert.ok(found.has(id), `missing #${id}`);
   }
@@ -58,12 +62,15 @@ test("the UI inventory names every control, panel and cue", () => {
     [
       "back-title",
       "chambers",
+      "daily-levels",
+      "daily-title",
       "hint",
       "how-to-play",
       "next-chamber",
       "play",
       "replay",
       "reset",
+      "share-daily",
       "sound-game",
       "sound-title",
       "undo",
@@ -124,9 +131,11 @@ test("styles.css uses theme tokens rather than raw colour literals", () => {
   }
 });
 
-test("the app imports the pure engine, levels, progress and audio", () => {
+test("the app imports the pure engine, levels, daily and progress", () => {
   assert.match(app, /from "\.\.\/game\/engine\.js"/);
   assert.match(app, /from "\.\.\/game\/levels\.js"/);
+  assert.match(app, /from "\.\.\/game\/daily\.js"/);
+  assert.match(app, /from "\.\/daily\.js"/);
   assert.match(app, /from "\.\/progress\.js"/);
   assert.match(app, /from "\.\/audio\.js"/);
   assert.doesNotMatch(app, /\bfetch\s*\(|XMLHttpRequest/);
@@ -136,15 +145,16 @@ test("the app imports the pure engine, levels, progress and audio", () => {
 
 test("the package declares the local play and regression commands", () => {
   assert.equal(packageJson.type, "module");
-  assert.equal(packageJson.version, "0.3.0");
+  assert.equal(packageJson.version, "0.4.0");
   assert.equal(packageJson.scripts.test, "node --test tests");
   assert.equal(packageJson.scripts.start, "node scripts/serve.mjs --open");
   assert.equal(packageJson.scripts["ui:snapshot"], "node scripts/ui-inventory.mjs");
 });
 
-test("the help dialog explains the star rating", () => {
+test("the help dialog explains the star rating and daily mode", () => {
   assert.match(html, /three stars/i);
   assert.match(html, /One hint/i);
+  assert.match(html, /daily weave/i);
 });
 
 test("screen switching targets sections, never the body, and resets scroll", () => {
