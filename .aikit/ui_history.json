@@ -40,5 +40,19 @@
     "final_snapshot_digest": "f8c92facdd35416a07eaa9a3ddbdb4844b83d48137b5ffe61a8e6a4fadd8421e",
     "final_snapshot_entries": 20,
     "surface_digest": "e3a9f32d355fca4425c62d81bb574752ff39298c096e931c51fc55b01e5ed6bf"
+  },
+  {
+    "schema": 1,
+    "surface": "app",
+    "baseline_commit": "75a8d8de22442788b8d83708cb4e50b81261859f",
+    "contract_hash": "6b437c28104ade566ef850ac61b1cb8cf003a9181f3abdcbf0d1abc07287c794",
+    "started_at": 1793347917.8006852,
+    "finished_at": 1793347925.534205,
+    "strikes": 0,
+    "reviewer": "opencode:weft-stars (headless render + dogfood)",
+    "allowed_removals": [],
+    "final_snapshot_digest": "f8c92facdd35416a07eaa9a3ddbdb4844b83d48137b5ffe61a8e6a4fadd8421e",
+    "final_snapshot_entries": 20,
+    "surface_digest": "7c993780f9aa3c7859dc9f5eedf253670fee8135b59d7bc67f559562dd569bc5"
   }
 ]
