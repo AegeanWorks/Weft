@@ -6,12 +6,15 @@ import {
 import { LEVELS, TOTAL_CHAMBERS } from "../game/levels.js";
 import { createAudio } from "./audio.js";
 import {
+  MAX_STARS,
   isUnlocked,
   loadProgress,
   nextUnsolved,
   recordSolve,
   saveProgress,
   solvedCount,
+  starsFor,
+  totalStars,
 } from "./progress.js";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -44,6 +47,7 @@ const refs = {
   winDialog: required("win-dialog"),
   winKicker: required("win-kicker"),
   winSummary: required("win-summary"),
+  winStars: required("win-stars"),
   winTime: required("win-time"),
   winMoves: required("win-moves"),
   winHints: required("win-hints"),
@@ -94,6 +98,18 @@ function element(tag, className, text) {
     node.textContent = text;
   }
   return node;
+}
+
+function renderStars(target, stars) {
+  const earned = Math.max(0, Math.min(MAX_STARS, Number(stars) || 0));
+  target.replaceChildren();
+  target.setAttribute("role", "img");
+  target.setAttribute("aria-label", `${earned} of ${MAX_STARS} stars`);
+  for (let index = 1; index <= MAX_STARS; index += 1) {
+    const star = element("span", index <= earned ? "star is-on" : "star", "★");
+    star.setAttribute("aria-hidden", "true");
+    target.append(star);
+  }
 }
 
 function colorVar(color) {
@@ -187,13 +203,15 @@ function setScreen(name, { focus = true } = {}) {
 
 function renderTitleProgress() {
   const count = solvedCount(state.progress);
+  const stars = totalStars(state.progress);
+  const cap = TOTAL_CHAMBERS * MAX_STARS;
   const next = nextUnsolved(state.progress, LEVELS);
   if (count === 0) {
-    refs.titleProgress.textContent = `${TOTAL_CHAMBERS} chambers · no account · no network`;
+    refs.titleProgress.textContent = `${TOTAL_CHAMBERS} chambers · ${MAX_STARS} stars each · no account · no network`;
   } else if (next) {
-    refs.titleProgress.textContent = `${count} of ${TOTAL_CHAMBERS} chambers woven · next: ${next.name}`;
+    refs.titleProgress.textContent = `${count} of ${TOTAL_CHAMBERS} woven · ${stars}/${cap} stars · next: ${next.name}`;
   } else {
-    refs.titleProgress.textContent = `All ${TOTAL_CHAMBERS} chambers woven · the tapestry is complete`;
+    refs.titleProgress.textContent = `All ${TOTAL_CHAMBERS} woven · ${stars}/${cap} stars · the tapestry is complete`;
   }
 }
 
@@ -249,8 +267,11 @@ function renderLevels() {
     );
 
     const body = element("span", "level-card-body");
+    const stars = element("span", "level-card-stars");
+    renderStars(stars, solved?.stars ?? 0);
     body.append(
       element("span", "level-card-name", level.name),
+      stars,
       element(
         "span",
         "level-card-meta",
@@ -271,7 +292,7 @@ function renderLevels() {
     card.addEventListener("click", () => openLevel(level.id));
     refs.levelGrid.append(card);
   });
-  refs.levelsProgress.textContent = `${solvedCount(state.progress)} of ${TOTAL_CHAMBERS} woven`;
+  refs.levelsProgress.textContent = `${solvedCount(state.progress)} of ${TOTAL_CHAMBERS} woven · ${totalStars(state.progress)}/${TOTAL_CHAMBERS * MAX_STARS} stars`;
 }
 
 function showTitle() {
@@ -722,14 +743,21 @@ function showHint() {
 function showWinDialog(elapsed) {
   const index = LEVELS.indexOf(state.level);
   const next = LEVELS[index + 1];
+  const runStars = starsFor(state.hints);
+  const bestStars = state.progress.solved[state.level.id]?.stars ?? runStars;
   refs.winKicker.textContent = `Chamber ${String(index + 1).padStart(2, "0")} woven`;
-  refs.winSummary.textContent =
+  const summary =
     state.hints === 0
       ? "A clean weave. Every cell is covered."
       : "The tapestry holds, with a little help from the hint.";
+  refs.winSummary.textContent =
+    bestStars > runStars
+      ? `${summary} Best: ${bestStars} of ${MAX_STARS} stars.`
+      : summary;
   refs.winTime.textContent = formatTime(elapsed);
   refs.winMoves.textContent = String(state.moves);
   refs.winHints.textContent = String(state.hints);
+  renderStars(refs.winStars, runStars);
   refs.btnNext.hidden = !next;
   refs.btnNext.dataset.next = next?.id ?? "";
   if (!refs.winDialog.open) {

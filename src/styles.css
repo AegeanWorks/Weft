@@ -345,6 +345,28 @@ button {
   letter-spacing: 0.04em;
 }
 
+.level-card-stars {
+  display: flex;
+  gap: 3px;
+  margin-top: 8px;
+  color: var(--line);
+  font-size: 0.95rem;
+  line-height: 1;
+  letter-spacing: 0.06em;
+}
+
+.level-card[data-locked="true"] .level-card-stars {
+  display: none;
+}
+
+.star.is-on {
+  color: var(--thread-gold);
+}
+
+.level-card[data-solved="true"] .level-card-stars .star.is-on {
+  text-shadow: 0 0 10px var(--thread-gold);
+}
+
 .footnote {
   max-width: 58rem;
   margin: 26px 0 0;
@@ -718,6 +740,21 @@ button {
   margin: 0 auto;
   max-width: 38rem;
   color: var(--muted);
+}
+
+.win-stars {
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+  margin: 18px auto 0;
+  color: var(--line);
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.win-stars .star.is-on {
+  color: var(--thread-gold);
+  text-shadow: 0 0 12px var(--thread-gold);
 }
 
 .win-stats {

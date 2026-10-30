@@ -48,7 +48,7 @@ A zero-dependency thread-routing puzzle: draw glowing threads between matching s
 
 Every chamber is a square loom with coloured spool pairs. Draw one orthogonal thread between each pair. Threads may not cross, may not share a cell and may not pass through another colour's spool. The chamber is woven only when every pair is connected **and every cell is covered** — so the last thread usually has to take the long way home.
 
-The campaign grows from a 5×5 loom with three threads to a 9×9 loom with nine; Act II takes it to 10×10–12×12 with eight or nine. Each chamber has a stored solution used by the hint ghost and checked by the test suite. Progress, best times, hint counts and sound preference are saved under `weft.progress.v1`; a missing or corrupt record resets safely.
+The campaign grows from a 5×5 loom with three threads to a 9×9 loom with nine; Act II takes it to 10×10–12×12 with eight or nine. Each chamber has a stored solution used by the hint ghost and checked by the test suite. Progress, best times, star ratings, hint counts and sound preference are saved under `weft.progress.v1`; a missing or corrupt record resets safely.
 
 | # | Chamber | Loom | Threads |
 |---|---|---|---|
@@ -71,7 +71,9 @@ The campaign grows from a 5×5 loom with three threads to a 9×9 loom with nine;
 | 17 | The Far Weave | 12×12 | 8 |
 | 18 | Aegean Crown | 12×12 | 9 |
 
-Chambers unlock in order. A finished chamber records its best time; the next one opens automatically.
+Chambers unlock in order. A finished chamber records its best time and star rating; the next one opens automatically.
+
+Every chamber awards up to three stars. A clean weave without hints earns three, one hint earns two, and more than one earns a single star. The best rating is kept even when a later, faster run uses more hints, and older saves derive their stars from the hint counts already stored. The title and chamber index show the campaign total out of 54.
 
 ## What's Inside
 
@@ -106,13 +108,13 @@ weft/
 │   ├── ui/
 │   │   ├── app.js             <- screens, SVG loom, pointer and keyboard input
 │   │   ├── audio.js           <- generated WebAudio cues, no audio files
-│   │   └── progress.js        <- versioned saves, best times, unlocks
+│   │   └── progress.js        <- versioned saves, best times, stars, unlocks
 │   ├── styles.css             <- layout and motion using theme tokens
 │   └── theme.css              <- the only file with raw colour and font values
 └── tests/
     ├── engine.test.js         <- adjacency, crossings, coverage, immutability
     ├── levels.test.js         <- all eighteen chambers solve and stay total
-    ├── progress.test.js       <- corrupt saves, best times, sequential unlocks
+    ├── progress.test.js       <- corrupt saves, best times, stars, sequential unlocks
     ├── server.test.js         <- path containment, MIME, 404s and traversal
     └── ui.test.js             <- screens, controls, tokens, imports, inventory
 ```
@@ -124,6 +126,7 @@ weft/
 - **Static by construction.** There is no API, no build step and no external asset. `index.html`, `src/` and `assets/` are the complete deployment payload, which is why the AegeanWorks Play sync can copy the game by commit.
 - **Pointer and keyboard parity.** The loom is a group of real buttons. Pointer drags and arrow-key drafts use the same `beginDraft` / `extendDraft` / `commitDraft` path, and every commit goes through the pure engine.
 - **Token-only styling.** Raw colours and fonts live in `src/theme.css`; `src/styles.css` reads custom properties. The test suite rejects raw colour literals in the layout sheet.
+- **Stars are derived, not authored.** The rating comes from the hint count of the run, so no per-chamber target time can drift out of date. The stored rating only rises, while the fastest time stays independent.
 - **Small, versioned state.** Progress is a single localStorage record with a version. Unknown fields are ignored, corrupt JSON returns a fresh profile and a faster run replaces the stored best.
 - **Generated sound.** WebAudio cues are synthesized after the first gesture; there are no audio files and no autoplay violation.
 
@@ -160,8 +163,8 @@ The game is also covered by a real browser smoke pass during development: the ti
 
 ## Verification
 
-- `npm test` runs 54 unit and integration tests with no browser and no network beyond loopback.
-- `npm run dogfood` starts the real server, launches Edge/Chrome headless, solves the first chamber, checks the victory dialog and save, and renders the 12×12 finale.
+- `npm test` runs 58 unit and integration tests with no browser and no network beyond loopback.
+- `npm run dogfood` starts the real server, launches Edge/Chrome headless, solves the first chamber, checks the victory dialog, the three-star saved record and the chamber card, and renders the 12×12 finale.
 - `python aikit.py check weft` runs the test, mechanics, hygiene, guidelines and secret gates.
 - The test suite checks every stored solution, every cell total, path immutability, crossing refusal, corrupt saves, sequential unlocks, MIME types, path traversal and the UI inventory.
 

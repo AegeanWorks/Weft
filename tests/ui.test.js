@@ -43,6 +43,7 @@ test("the shell has the required screens, dialogs and controls", () => {
     "btn-sound-game",
     "help-dialog",
     "win-dialog",
+    "win-stars",
     "btn-next",
     "btn-replay",
     "btn-win-levels",
@@ -135,10 +136,15 @@ test("the app imports the pure engine, levels, progress and audio", () => {
 
 test("the package declares the local play and regression commands", () => {
   assert.equal(packageJson.type, "module");
-  assert.equal(packageJson.version, "0.2.0");
+  assert.equal(packageJson.version, "0.3.0");
   assert.equal(packageJson.scripts.test, "node --test tests");
   assert.equal(packageJson.scripts.start, "node scripts/serve.mjs --open");
   assert.equal(packageJson.scripts["ui:snapshot"], "node scripts/ui-inventory.mjs");
+});
+
+test("the help dialog explains the star rating", () => {
+  assert.match(html, /three stars/i);
+  assert.match(html, /One hint/i);
 });
 
 test("screen switching targets sections, never the body, and resets scroll", () => {

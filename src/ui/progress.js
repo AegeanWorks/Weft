@@ -8,6 +8,18 @@
 
 export const STORAGE_KEY = "weft.progress.v1";
 export const PROGRESS_VERSION = 1;
+export const MAX_STARS = 3;
+
+/**
+ * A clean weave earns three stars; one hint earns two and any more earn one.
+ * Deriving the rating keeps older saves meaningful without a migration.
+ */
+export function starsFor(hints) {
+  if (!Number.isInteger(hints) || hints <= 0) {
+    return MAX_STARS;
+  }
+  return hints === 1 ? 2 : 1;
+}
 
 export function defaultProgress() {
   return {
@@ -38,7 +50,11 @@ function normalizeEntry(entry) {
   const moves =
     Number.isInteger(entry.moves) && entry.moves >= 0 ? entry.moves : 0;
   const at = typeof entry.at === "string" && entry.at.length > 0 ? entry.at : null;
-  return { bestMs, hints, moves, at };
+  const stars =
+    Number.isInteger(entry.stars) && entry.stars >= 1 && entry.stars <= MAX_STARS
+      ? entry.stars
+      : starsFor(hints);
+  return { bestMs, hints, moves, at, stars };
 }
 
 export function normalizeProgress(value) {
@@ -116,8 +132,12 @@ export function recordSolve(progress, levelId, result) {
   }
   const previous = current.solved[levelId];
   const solved = { ...current.solved };
-  if (!previous || entry.bestMs < previous.bestMs) {
+  if (!previous) {
     solved[levelId] = entry;
+  } else if (entry.bestMs < previous.bestMs) {
+    solved[levelId] = { ...entry, stars: Math.max(previous.stars, entry.stars) };
+  } else {
+    solved[levelId] = { ...previous, stars: Math.max(previous.stars, entry.stars) };
   }
   return {
     ...current,
@@ -142,4 +162,9 @@ export function nextUnsolved(progress, levels) {
 
 export function solvedCount(progress) {
   return Object.keys(normalizeProgress(progress).solved).length;
+}
+
+export function totalStars(progress) {
+  const solved = normalizeProgress(progress).solved;
+  return Object.values(solved).reduce((sum, entry) => sum + entry.stars, 0);
 }

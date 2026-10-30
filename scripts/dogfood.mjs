@@ -227,19 +227,41 @@ async function main() {
       await drawPair(connection, pair, level.solution[pair.color]);
     }
 
-    const result = await connection.evaluate(`(() => ({
-      win: document.getElementById('win-dialog').open,
-      moves: document.getElementById('move-count').textContent,
-      threads: document.querySelectorAll('.thread-core').length,
-      saved: Boolean(localStorage.getItem('weft.progress.v1'))
-    }))()`);
+    const result = await connection.evaluate(`(() => {
+      const saved = JSON.parse(localStorage.getItem('weft.progress.v1') || '{}');
+      return {
+        win: document.getElementById('win-dialog').open,
+        moves: document.getElementById('move-count').textContent,
+        threads: document.querySelectorAll('.thread-core').length,
+        stars: document.getElementById('win-stars').getAttribute('aria-label'),
+        savedStars: saved.solved?.['first-thread']?.stars
+      };
+    })()`);
     if (!result.win || result.moves !== "3" || result.threads !== 3) {
       throw new Error(
         `The first chamber did not close: win=${result.win}, moves=${result.moves}, threads=${result.threads}.`,
       );
     }
-    if (!result.saved) {
-      throw new Error("The victory was not written to localStorage.");
+    if (result.stars !== "3 of 3 stars" || result.savedStars !== 3) {
+      throw new Error(
+        `A clean solve did not record three stars: dialog=${result.stars}, saved=${result.savedStars}.`,
+      );
+    }
+
+    await connection.send("Page.navigate", { url: `${url}?screen=levels` });
+    await wait(900);
+    const firstCard = await connection.evaluate(`(() => {
+      const card = document.querySelector('.level-card[data-level="first-thread"]');
+      const row = card?.querySelector('.level-card-stars');
+      return {
+        stars: card?.querySelectorAll('.star.is-on').length ?? 0,
+        label: row?.getAttribute('aria-label') ?? ''
+      };
+    })()`);
+    if (firstCard.stars !== 3 || firstCard.label !== "3 of 3 stars") {
+      throw new Error(
+        `The chamber card did not show three stars: on=${firstCard.stars}, label=${firstCard.label}.`,
+      );
     }
 
     const last = LEVELS.at(-1);
