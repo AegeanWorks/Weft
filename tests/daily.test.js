@@ -10,6 +10,7 @@ import {
   normalizeDaily,
   recordDaily,
   saveDaily,
+  recentDays,
 } from "../src/ui/daily.js";
 
 function memoryStorage(initial = {}) {
@@ -115,6 +116,41 @@ test("a broken day ends the streak", () => {
     "2026-10-30": { bestMs: 1 },
   });
   assert.equal(dailyStreak(daily, "2026-10-30"), 2);
+});
+
+test("recentDays returns seven dates oldest first with their records", () => {
+  const daily = solved({
+    "2026-10-25": { bestMs: 1, hints: 0, stars: 3 },
+    "2026-10-30": { bestMs: 2, hints: 1, stars: 2 },
+  });
+  const recent = recentDays(daily, "2026-10-30");
+  assert.deepEqual(
+    recent.map((day) => day.key),
+    [
+      "2026-10-24",
+      "2026-10-25",
+      "2026-10-26",
+      "2026-10-27",
+      "2026-10-28",
+      "2026-10-29",
+      "2026-10-30",
+    ],
+  );
+  assert.equal(recent[1].entry.stars, 3);
+  assert.equal(recent[6].entry.stars, 2);
+  assert.equal(recent[0].entry, null);
+});
+
+test("recentDays crosses a month and a year boundary", () => {
+  const recent = recentDays(defaultDaily(), "2026-01-01", 3);
+  assert.deepEqual(
+    recent.map((day) => day.key),
+    ["2025-12-30", "2025-12-31", "2026-01-01"],
+  );
+  assert.equal(recentDays(defaultDaily(), "2026-01-01", 1).length, 1);
+  assert.deepEqual(recentDays(defaultDaily(), "bad", 7), []);
+  assert.deepEqual(recentDays(defaultDaily(), "2026-01-01", 0), []);
+  assert.deepEqual(recentDays(defaultDaily(), "2026-01-01", 32), []);
 });
 
 test("saveDaily round-trips and reports an unavailable store", () => {

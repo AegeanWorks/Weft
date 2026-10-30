@@ -336,6 +336,25 @@ async function main() {
         `The daily result line or best rating is missing: share=${dailyResult.share}, best=${dailyResult.best}.`,
       );
     }
+    await connection.send("Page.navigate", { url: `${url}?screen=levels` });
+    await wait(900);
+    const history = await connection.evaluate(`(() => {
+      const days = [...document.querySelectorAll('.daily-day')];
+      return {
+        count: days.length,
+        lastState: days.at(-1)?.dataset.state ?? '',
+        lastLabel: days.at(-1)?.getAttribute('aria-label') ?? ''
+      };
+    })()`);
+    if (
+      history.count !== 7 ||
+      history.lastState !== "solved" ||
+      !history.lastLabel.includes("3 of 3 stars")
+    ) {
+      throw new Error(
+        `The daily history did not show seven solved days: count=${history.count}, last=${history.lastState}, label=${history.lastLabel}.`,
+      );
+    }
     console.log(
       `[OK] Weft dogfood: title, ${TOTAL_CHAMBERS} chambers, a 3-thread solve, the victory dialog, the ${last.size}x${last.size} finale and the daily weave.`,
     );

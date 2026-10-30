@@ -83,3 +83,10 @@ contract, a dependency, a data format or the architecture; IDs are consecutive a
 - **Decision**: Give every colour a unique SVG `stroke-dasharray` in `src/ui/threads.js`, applied to the thread core, the live draft and the spool ring. Coral stays solid as the control; the other eight use distinct dash, dot and dash-dot rhythms. A unit test requires every colour to have a unique pattern and an unknown colour to fall back to solid.
 - **Consequences**: Pairs and routes are readable without hue, at desktop and mobile cell sizes, with no asset, setting or stored preference. The draft keeps the same texture as its colour, so the preview does not introduce a second vocabulary. The glow remains solid behind the dashes, so the woven aesthetic stays intact. The pattern is a presentation detail; the pure engine and saves are unchanged.
 
+### ADR-011: Daily History Is a Record, Not a Back-Fill
+- **Date**: 2026-10-30
+- **Status**: Accepted
+- **Context**: The daily streak was a single number. A returning player could not see which of the last days were woven, and the only way to inspect a missed day would have been to replay it, which would silently repair a broken streak.
+- **Decision**: Derive the last seven calendar days from the existing `weft.daily.v1` days map with a pure `recentDays` helper and render them as a compact, display-only list under the daily card. Each chip carries the day number and up to three stars; today is outlined, solved days are gold and missed days stay dim. The list is not interactive.
+- **Consequences**: The streak becomes legible without changing the save format, adding a key or inventing a second streak counter. A missed day cannot be back-filled, so the number and the strip cannot disagree. The helper uses UTC midnights for the date walk, so month, year and daylight-saving boundaries are stable. A player who wants more history keeps it in the daily save; the UI deliberately shows a bounded week.
+

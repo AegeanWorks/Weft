@@ -134,3 +134,23 @@ export function dailyStreak(daily, today) {
   }
   return streak;
 }
+
+/**
+ * The last `count` calendar days ending today, oldest first. Each entry carries
+ * the normalized daily record or null. Display-only: a missed day is never
+ * filled in, so the streak cannot be rewritten by replaying history.
+ */
+export function recentDays(daily, today, count = 7) {
+  if (!DAY_PATTERN.test(today) || !Number.isInteger(count) || count < 1 || count > 31) {
+    return [];
+  }
+  const days = normalizeDaily(daily).days;
+  const [year, month, day] = today.split("-").map(Number);
+  const end = Date.UTC(year, month - 1, day);
+  const result = [];
+  for (let index = count - 1; index >= 0; index -= 1) {
+    const key = new Date(end - index * 86400000).toISOString().slice(0, 10);
+    result.push({ key, entry: days[key] ?? null });
+  }
+  return result;
+}

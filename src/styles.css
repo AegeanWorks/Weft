@@ -247,6 +247,55 @@ button {
   font-size: 0.88rem;
 }
 
+.daily-history {
+  display: flex;
+  flex-basis: 100%;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.daily-day {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+  padding: 6px 4px;
+  color: var(--muted-2);
+  background: var(--ink-3);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.daily-day[data-state="solved"] {
+  color: var(--bronze-bright);
+  border-color: var(--bronze-dim);
+}
+
+.daily-day[data-today="true"] {
+  border-color: var(--bronze);
+  box-shadow: 0 0 0 1px var(--bronze-dim);
+}
+
+.daily-day-number {
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.daily-day-stars {
+  color: var(--line);
+  font-size: 0.55rem;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.daily-day[data-state="solved"] .daily-day-stars {
+  color: var(--thread-gold);
+}
+
 .level-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));

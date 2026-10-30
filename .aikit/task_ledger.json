@@ -1,72 +1,17 @@
 {
   "version": 1,
   "active_task": {
-    "task_id": "weft-patterns-v1",
-    "last_phase": "phase 5",
+    "task_id": "weft-daily-history-v1",
+    "last_phase": "phase 4",
     "active_phase": 5,
     "status": "completed",
-    "updated_at": 1793361054.9613311,
-    "owner": "opencode:weft-patterns",
-    "started_by": "opencode:weft-patterns",
+    "updated_at": 1793362369.8937395,
+    "owner": "opencode:weft-daily-history",
+    "started_by": "opencode:weft-daily-history",
     "continuations": [],
-    "completed_at": 1793361055.2413445
+    "completed_at": 1793362370.1630383
   },
   "checkpoints": [
-    {
-      "task_id": "weft-stars-v1",
-      "phase": "phase 5",
-      "phase_num": 5,
-      "description": "[5/5] Delivered Weft 0.3.0: pushed at fdff068, UI review recorded in 75a8d8d/fdff068, Play catalog live at fdff068 with version 0.3.0; 58 tests and 5/5 gates green",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793348041.202628,
-      "timestamp_str": "2026-10-30 11:14:01",
-      "agent": "opencode:weft-stars",
-      "handoff": {
-        "state": "clean weft tree and remote synced",
-        "next": "none, 0.3.0 is delivered",
-        "open": "none",
-        "evidence": "Weft commit fdff068, AegeanWorks live.json weft 0.3.0"
-      }
-    },
-    {
-      "task_id": "weft-stars-v1",
-      "phase": "completed",
-      "phase_num": 5,
-      "description": "Task 'weft-stars-v1' completed successfully.",
-      "status": "completed",
-      "timestamp": 1793348041.571652,
-      "timestamp_str": "2026-10-30 11:14:01",
-      "agent": "opencode:weft-stars"
-    },
-    {
-      "task_id": "weft-daily-v1",
-      "phase": "phase 2",
-      "phase_num": 2,
-      "description": "[1/6] Plan Weft 0.4.0 Daily Weave: share the pure Hamiltonian generator, build a date-seeded 7x7 chamber, store it under a separate daily save with streaks, add title/chamber-index entry and a copyable result, then sync the Play catalog",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793356744.399228,
-      "timestamp_str": "2026-10-30 13:39:04",
-      "agent": "opencode:weft-daily",
-      "impact_assessment": {
-        "why": "The eighteen-chamber campaign is finite, so after the stars there is no reason to return; a date-seeded daily chamber gives a fresh puzzle every day without a backend, an account or a network call.",
-        "benefits": "A deterministic daily loom, a separate streak and result record, and one-click sharing add retention while keeping campaign progress untouched; the shared generator removes the risk of a second, drifting level implementation.",
-        "risks": "contract: new game and UI modules, a new weft.daily.v1 key, and new title/chamber-index controls; dependency: none, pure ES modules; concurrency: single writer on a clean weft tree; state: daily saves are separate from weft.progress.v1, and local-date keys must not drift across time zones",
-        "mitigation": "Extract the existing generator verbatim and prove the frozen chambers are unchanged, unit-test date keys, determinism, validity, storage and streaks, dogfood today's daily solve, and leave campaign progress untouched"
-      }
-    },
-    {
-      "task_id": "weft-daily-v1",
-      "phase": "phase 3",
-      "phase_num": 3,
-      "description": "[2/6] Implemented the shared pure generator, date-seeded 7x7 daily chamber, separate weft.daily.v1 save with streaks, title/chamber-index entry, daily game context, copyable result, styles, README and ADR-008",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793357182.653812,
-      "timestamp_str": "2026-10-30 13:46:22",
-      "agent": "opencode:weft-daily"
-    },
     {
       "task_id": "weft-daily-v1",
       "phase": "phase 4",
@@ -284,6 +229,61 @@
       "timestamp": 1793361055.241346,
       "timestamp_str": "2026-10-30 14:50:55",
       "agent": "opencode:weft-patterns"
+    },
+    {
+      "task_id": "weft-daily-history-v1",
+      "phase": "phase 2",
+      "phase_num": 2,
+      "description": "[1/4] Plan Weft 0.7.0 daily history: add a pure recent-days helper, render the last seven daily results as a compact strip under the daily card, test the rollover and states, and keep the history display-only so a streak cannot be back-filled",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793362106.8832831,
+      "timestamp_str": "2026-10-30 15:08:26",
+      "agent": "opencode:weft-daily-history",
+      "impact_assessment": {
+        "why": "The daily streak is a single number with no visible record, so a returning player cannot see which days were woven or how close the streak is to breaking.",
+        "benefits": "Seven days of results turn the streak into a legible habit, reuse the existing weft.daily.v1 data without a migration, and need no network or new asset.",
+        "risks": "contract: the levels daily strip gains a list of seven day chips and the daily save module gains one pure helper; dependency: none; concurrency: single writer on a clean weft tree; state: read-only over weft.daily.v1, no new storage key",
+        "mitigation": "Unit-test recentDays across month, year and count boundaries; keep today and past states distinct; dogfood the seven-chip strip after a real daily solve; review desktop and 390px renders"
+      }
+    },
+    {
+      "task_id": "weft-daily-history-v1",
+      "phase": "phase 3",
+      "phase_num": 3,
+      "description": "[2/4] Added the pure recentDays helper, the seven-chip history strip with solved/today/missed states, stars per day, tests across month and year boundaries, and README/ADR-011 documentation",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793362369.6266592,
+      "timestamp_str": "2026-10-30 15:12:49",
+      "agent": "opencode:weft-daily-history"
+    },
+    {
+      "task_id": "weft-daily-history-v1",
+      "phase": "phase 4",
+      "phase_num": 4,
+      "description": "[3/4] Phase 4 green: 5/5 gates, 74 tests, dogfood checks the seven-day strip after a real daily solve, and desktop/mobile renders show the solved, partial and missed days; checklists: passed",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793362369.8937395,
+      "timestamp_str": "2026-10-30 15:12:49",
+      "agent": "opencode:weft-daily-history",
+      "handoff": {
+        "state": "74 tests, 5/5 gates, history is display-only over weft.daily.v1",
+        "next": "commit 0.7.0, record the post-commit UI blessing, push and sync the Play catalog",
+        "open": "none",
+        "evidence": "node --test tests, node scripts/dogfood.mjs, python aikit.py check weft"
+      }
+    },
+    {
+      "task_id": "weft-daily-history-v1",
+      "phase": "completed",
+      "phase_num": 5,
+      "description": "Task 'weft-daily-history-v1' completed successfully.",
+      "status": "completed",
+      "timestamp": 1793362370.1630394,
+      "timestamp_str": "2026-10-30 15:12:50",
+      "agent": "opencode:weft-daily-history"
     }
   ]
 }
