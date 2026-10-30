@@ -69,3 +69,10 @@ contract, a dependency, a data format or the architecture; IDs are consecutive a
 - **Decision**: Move the Hamiltonian construction into the pure `src/game/generate.js`, shared by the fixed campaign script and the browser. Build one 7×7, six-thread chamber from the player's local `YYYY-MM-DD` date, store its best time and stars under the separate `weft.daily.v1` key, derive the streak from consecutive solved days, and offer a copyable result line. The daily has its own game-screen context and never writes `weft.progress.v1`.
 - **Consequences**: Two players on the same local date get the same loom, and a browser can generate it offline in a few milliseconds. Players in different time zones see different dailies, and changing the system clock changes the daily; both follow from having no server. The daily and campaign share one generator and one star rule, so a fix to either cannot fork the mechanics. The daily is outside the campaign total and unlock chain by design.
 
+### ADR-009: Keep the Stored Record and Share Text Visible
+- **Date**: 2026-10-30
+- **Status**: Accepted
+- **Context**: The best time and stars lived only on the chamber index, so a player replaying a chamber could not see the record they were chasing. A failed clipboard write left the daily result in a transient status line behind the modal, and undo was pointer- or button-only despite the keyboard-first loom.
+- **Decision**: Add a Best stat to the game HUD, filled from the campaign or daily record and labelled for screen readers. Render the daily result line inside the victory dialog before copying, so it stays selectable when the clipboard is unavailable. Bind Ctrl/Cmd+Z to the same `undo()` path as the button, and raise the locked-card opacity from 0.46 to 0.55.
+- **Consequences**: A replay has a visible target without leaving the board, and a daily result is never lost to a permission prompt. The HUD reads the same record as the index, so the two cannot disagree. The shortcut is harmless outside the game screen and no save field changes. The modal now carries a line of selectable text; the copy button remains an enhancement rather than the only way to share.
+

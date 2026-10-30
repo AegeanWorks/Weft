@@ -1,72 +1,17 @@
 {
   "version": 1,
   "active_task": {
-    "task_id": "weft-daily-v1",
-    "last_phase": "phase 5",
+    "task_id": "weft-playability-v1",
+    "last_phase": "phase 4",
     "active_phase": 5,
     "status": "completed",
-    "updated_at": 1793357289.8344436,
-    "owner": "opencode:weft-daily",
-    "started_by": "opencode:weft-daily",
+    "updated_at": 1793358317.1089683,
+    "owner": "opencode:weft-playability",
+    "started_by": "opencode:weft-playability",
     "continuations": [],
-    "completed_at": 1793357290.7107353
+    "completed_at": 1793358318.2475111
   },
   "checkpoints": [
-    {
-      "task_id": "weft-act2-v1",
-      "phase": "phase 2",
-      "phase_num": 2,
-      "description": "[1/5] Plan Weft 0.2.0 Act II: add six frozen chambers (10x10-12x12, 8-9 threads), regenerate deterministically, update tests, UI copy, README and ADR",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793344081.197718,
-      "timestamp_str": "2026-10-30 10:08:01",
-      "agent": "opencode:weft-act2",
-      "impact_assessment": {
-        "why": "The campaign ends at 12 chambers and 9x9, so the game has no fresh content after about twenty minutes; the generator, engine and UI are already size-agnostic, so a second act is the cheapest meaningful expansion.",
-        "benefits": "Six larger chambers extend the campaign to eighteen and give the existing best-time, hint and unlock systems more to reward; the Play build gets a visible v0.2 content update with no new dependency.",
-        "risks": "contract: TOTAL_CHAMBERS, the level index, dogfood expectations and README table change; dependency: none (same generator, stdlib Node); concurrency: single writer, weft tree clean; state: progress v1 stores solved ids, so new ids append without a schema bump",
-        "mitigation": "Update the expectations first and watch them fail, generate from fixed new seeds, prove all 18 solutions total and solvable, then run the full project gates, dogfood and UI verify before any commit."
-      }
-    },
-    {
-      "task_id": "weft-act2-v1",
-      "phase": "phase 3",
-      "phase_num": 3,
-      "description": "[2/5] Delivered Act II: six chambers 13-18 at 10x10-12x12 with 8-9 threads, an even-cut generator option that leaves the first twelve byte-identical, version 0.2.0, README table and ADR-006; 53 tests and the browser dogfood (18 cards, 12x12 finale) pass",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793344567.7899704,
-      "timestamp_str": "2026-10-30 10:16:07",
-      "agent": "opencode:weft-act2"
-    },
-    {
-      "task_id": "weft-act2-v1",
-      "phase": "phase 4",
-      "phase_num": 4,
-      "description": "[3/5] Phase 4 green: 5/5 project gates, 53 tests, dogfood 18 cards and 12x12 finale, generator deterministic; checklists: passed. UI task 'app' stays open: this content task legitimately changes protected tests/scripts/docs, so ui verify refuses it and it needs human review plus a post-commit blessing. Uncommitted: commit not authorized",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793344567.8012211,
-      "timestamp_str": "2026-10-30 10:16:07",
-      "agent": "opencode:weft-act2",
-      "handoff": {
-        "state": "0.2.0 with 53 tests, 5/5 gates green, first 12 chambers byte-identical",
-        "next": "human review of the running 18-chamber UI, then authorize commit and refresh the Play build",
-        "open": "UI task app is open with a protected-path finding, and no commit is authorized",
-        "evidence": "node --test tests, node scripts/dogfood.mjs, python aikit.py check weft"
-      }
-    },
-    {
-      "task_id": "weft-act2-v1",
-      "phase": "suspended",
-      "phase_num": 4,
-      "description": "Task 'weft-act2-v1' suspended: Awaiting human review of the 18-chamber UI and commit authorization; the open app UI task cannot close while the content task's protected tests/scripts/docs changes are present",
-      "status": "suspended",
-      "timestamp": 1793344586.2445252,
-      "timestamp_str": "2026-10-30 10:16:26",
-      "agent": "opencode:weft-act2"
-    },
     {
       "task_id": "weft-act2-v1",
       "phase": "phase 4",
@@ -279,6 +224,61 @@
       "timestamp": 1793357290.7107384,
       "timestamp_str": "2026-10-30 13:48:10",
       "agent": "opencode:weft-daily"
+    },
+    {
+      "task_id": "weft-playability-v1",
+      "phase": "phase 2",
+      "phase_num": 2,
+      "description": "[1/4] Plan Weft 0.5.0 playability: show the best time and stars in the game HUD, render the daily share line in the victory dialog, add Ctrl/Cmd+Z undo, and tighten locked-card contrast and mobile stats",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793357961.8518517,
+      "timestamp_str": "2026-10-30 13:59:21",
+      "agent": "opencode:weft-playability",
+      "impact_assessment": {
+        "why": "The best record lives only on the chamber index, a failed clipboard write leaves the daily result invisible, and undo is pointer-only, so replays and keyboard players lose information the game already stores.",
+        "benefits": "A visible best target makes star replays purposeful, a rendered share line makes the daily result recoverable even when clipboard access is blocked, and Ctrl/Cmd+Z completes keyboard parity.",
+        "risks": "contract: the game HUD gains a Best stat, the victory dialog gains a visible share line, and a new keyboard shortcut is bound; dependency: none; concurrency: single writer on a clean weft tree; state: read-only over existing saves",
+        "mitigation": "UI tests pin the new elements and help copy, dogfood asserts the best and share values after real solves, headless screenshots cover campaign and daily dialogs, and the full gate set runs before delivery"
+      }
+    },
+    {
+      "task_id": "weft-playability-v1",
+      "phase": "phase 3",
+      "phase_num": 3,
+      "description": "[2/4] Implemented the Best HUD stat, visible daily share line, Ctrl/Cmd+Z undo, locked-card contrast and mobile stat review; README and ADR-009 cover the decisions",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793358305.3363771,
+      "timestamp_str": "2026-10-30 14:05:05",
+      "agent": "opencode:weft-playability"
+    },
+    {
+      "task_id": "weft-playability-v1",
+      "phase": "phase 4",
+      "phase_num": 4,
+      "description": "[3/4] Phase 4 green: 5/5 gates, 70 tests, dogfood checks the HUD best and visible daily share line, headless renders verify the campaign/daily HUD and a true 390px mobile layout; checklists: passed",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793358317.1089683,
+      "timestamp_str": "2026-10-30 14:05:17",
+      "agent": "opencode:weft-playability",
+      "handoff": {
+        "state": "70 tests, 5/5 gates, no schema change",
+        "next": "commit 0.5.0, record the post-commit UI blessing, push and sync the Play catalog",
+        "open": "none",
+        "evidence": "node --test tests, node scripts/dogfood.mjs, python aikit.py check weft"
+      }
+    },
+    {
+      "task_id": "weft-playability-v1",
+      "phase": "completed",
+      "phase_num": 5,
+      "description": "Task 'weft-playability-v1' completed successfully.",
+      "status": "completed",
+      "timestamp": 1793358318.2475162,
+      "timestamp_str": "2026-10-30 14:05:18",
+      "agent": "opencode:weft-playability"
     }
   ]
 }

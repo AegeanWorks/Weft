@@ -312,7 +312,7 @@ button {
 }
 
 .level-card[data-locked="true"] {
-  opacity: 0.46;
+  opacity: 0.55;
   cursor: not-allowed;
 }
 
@@ -779,6 +779,14 @@ button {
 .win-stars .star.is-on {
   color: var(--thread-gold);
   text-shadow: 0 0 12px var(--thread-gold);
+}
+
+.daily-share {
+  max-width: 36rem;
+  margin: 12px auto 0;
+  color: var(--muted-2);
+  font-size: 0.78rem;
+  word-break: break-word;
 }
 
 .win-stats {

@@ -41,6 +41,7 @@ A zero-dependency thread-routing puzzle: draw glowing threads between matching s
 | Arrow keys | Move focus across the loom |
 | Enter / Space | Start a thread from the focused spool |
 | Escape | Cancel the current draft |
+| Ctrl/Cmd+Z | Undo the last committed thread |
 | Undo / Reset / Hint | Restore the last thread, clear the loom, or show one stored route |
 | Sound | Toggle the generated effects from the title or game screen |
 
@@ -75,7 +76,7 @@ Chambers unlock in order. A finished chamber records its best time and star rati
 
 Every chamber awards up to three stars. A clean weave without hints earns three, one hint earns two, and more than one earns a single star. The best rating is kept even when a later, faster run uses more hints, and older saves derive their stars from the hint counts already stored. The title and chamber index show the campaign total out of 54.
 
-The daily weave is a fresh 7×7 chamber with six threads, generated from your local date and never fetched. It keeps its own save under `weft.daily.v1`, so a daily run does not change campaign stars or unlocks. A solved day extends the streak; the victory dialog can copy a result line such as `Weft daily 2026-10-30 · ★★★ · 01:23 · 0 hints`.
+The daily weave is a fresh 7×7 chamber with six threads, generated from your local date and never fetched. It keeps its own save under `weft.daily.v1`, so a daily run does not change campaign stars or unlocks. A solved day extends the streak; the victory dialog shows a result line such as `Weft daily 2026-10-30 · ★★★ · 01:23 · 0 hints` and can copy it, so the line stays selectable when clipboard access is blocked.
 
 ## What's Inside
 
@@ -135,6 +136,7 @@ weft/
 - **Pointer and keyboard parity.** The loom is a group of real buttons. Pointer drags and arrow-key drafts use the same `beginDraft` / `extendDraft` / `commitDraft` path, and every commit goes through the pure engine.
 - **Token-only styling.** Raw colours and fonts live in `src/theme.css`; `src/styles.css` reads custom properties. The test suite rejects raw colour literals in the layout sheet.
 - **Stars are derived, not authored.** The rating comes from the hint count of the run, so no per-chamber target time can drift out of date. The stored rating only rises, while the fastest time stays independent.
+- **Records where they matter.** The game HUD shows the best time and rating for the current campaign chamber or today's daily, so a replay has a visible target without returning to the index.
 - **Small, versioned state.** Progress is a single localStorage record with a version; the daily keeps a second, equally versioned record so a daily replay cannot touch campaign unlocks. Unknown fields are ignored, corrupt JSON returns a fresh profile and a faster run replaces the stored best.
 - **Generated sound.** WebAudio cues are synthesized after the first gesture; there are no audio files and no autoplay violation.
 
@@ -173,7 +175,7 @@ The game is also covered by a real browser smoke pass during development: the ti
 ## Verification
 
 - `npm test` runs 70 unit and integration tests with no browser and no network beyond loopback.
-- `npm run dogfood` starts the real server, launches Edge/Chrome headless, solves the first chamber, checks the victory dialog, the three-star saved record and the chamber card, renders the 12×12 finale, and solves today’s daily with its separate save.
+- `npm run dogfood` starts the real server, launches Edge/Chrome headless, solves the first chamber, checks the victory dialog, the three-star saved record and the chamber card, renders the 12×12 finale, and solves today’s daily with its separate save, HUD best and visible share line.
 - `python aikit.py check weft` runs the test, mechanics, hygiene, guidelines and secret gates.
 - The test suite checks every stored solution, every cell total, path immutability, crossing refusal, corrupt saves, sequential unlocks, daily determinism, streaks, MIME types, path traversal and the UI inventory.
 

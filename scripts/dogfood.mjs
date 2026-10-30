@@ -235,6 +235,7 @@ async function main() {
         moves: document.getElementById('move-count').textContent,
         threads: document.querySelectorAll('.thread-core').length,
         stars: document.getElementById('win-stars').getAttribute('aria-label'),
+        best: document.getElementById('best').textContent,
         savedStars: saved.solved?.['first-thread']?.stars
       };
     })()`);
@@ -247,6 +248,9 @@ async function main() {
       throw new Error(
         `A clean solve did not record three stars: dialog=${result.stars}, saved=${result.savedStars}.`,
       );
+    }
+    if (!result.best.includes("3/3")) {
+      throw new Error(`The HUD did not show the best rating: best=${result.best}.`);
     }
 
     await connection.send("Page.navigate", { url: `${url}?screen=levels` });
@@ -310,6 +314,9 @@ async function main() {
         win: document.getElementById('win-dialog').open,
         nextHidden: document.getElementById('btn-next').hidden,
         shareHidden: document.getElementById('btn-share').hidden,
+        shareHiddenText: document.getElementById('daily-share').hidden,
+        share: document.getElementById('daily-share').textContent,
+        best: document.getElementById('best').textContent,
         stars: saved.days?.['${dailyKey}']?.stars
       };
     })()`);
@@ -317,10 +324,16 @@ async function main() {
       !dailyResult.win ||
       !dailyResult.nextHidden ||
       dailyResult.shareHidden ||
+      dailyResult.shareHiddenText ||
       dailyResult.stars !== 3
     ) {
       throw new Error(
         `The daily chamber did not close cleanly: win=${dailyResult.win}, nextHidden=${dailyResult.nextHidden}, shareHidden=${dailyResult.shareHidden}, stars=${dailyResult.stars}.`,
+      );
+    }
+    if (!dailyResult.share.includes(dailyKey) || !dailyResult.best.includes("3/3")) {
+      throw new Error(
+        `The daily result line or best rating is missing: share=${dailyResult.share}, best=${dailyResult.best}.`,
       );
     }
     console.log(
