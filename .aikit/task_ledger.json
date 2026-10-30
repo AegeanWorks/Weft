@@ -2,37 +2,16 @@
   "version": 1,
   "active_task": {
     "task_id": "weft-daily-v1",
-    "last_phase": "phase 4",
+    "last_phase": "phase 5",
     "active_phase": 5,
     "status": "completed",
-    "updated_at": 1793357193.3211563,
+    "updated_at": 1793357289.8344436,
     "owner": "opencode:weft-daily",
     "started_by": "opencode:weft-daily",
     "continuations": [],
-    "completed_at": 1793357194.2291107
+    "completed_at": 1793357290.7107353
   },
   "checkpoints": [
-    {
-      "task_id": "weft-v1",
-      "phase": "phase 5",
-      "phase_num": 5,
-      "description": "[5/6] Delivered Weft 0.1.0 and the AegeanWorks Play entry at website commit 90bc01c; remaining action is explicit publish and push authorization",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793297809.0577977,
-      "timestamp_str": "2026-10-29 21:16:49",
-      "agent": "opencode:weft"
-    },
-    {
-      "task_id": "weft-v1",
-      "phase": "completed",
-      "phase_num": 5,
-      "description": "Task 'weft-v1' completed successfully.",
-      "status": "completed",
-      "timestamp": 1793297812.9075103,
-      "timestamp_str": "2026-10-29 21:16:52",
-      "agent": "opencode:weft"
-    },
     {
       "task_id": "weft-act2-v1",
       "phase": "phase 2",
@@ -272,6 +251,33 @@
       "status": "completed",
       "timestamp": 1793357194.2291136,
       "timestamp_str": "2026-10-30 13:46:34",
+      "agent": "opencode:weft-daily"
+    },
+    {
+      "task_id": "weft-daily-v1",
+      "phase": "phase 5",
+      "phase_num": 5,
+      "description": "[6/6] Delivered Weft 0.4.0: shared generator, date-seeded daily, separate save and streak, copyable result; pushed at 964c8e5 and the Play catalog now serves 0.4.0 from that commit; 70 tests and 5/5 gates green",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793357289.8344436,
+      "timestamp_str": "2026-10-30 13:48:09",
+      "agent": "opencode:weft-daily",
+      "handoff": {
+        "state": "clean weft tree and remote synced",
+        "next": "none, 0.4.0 is delivered",
+        "open": "none",
+        "evidence": "Weft commit 964c8e5, AegeanWorks live.json weft 0.4.0"
+      }
+    },
+    {
+      "task_id": "weft-daily-v1",
+      "phase": "completed",
+      "phase_num": 5,
+      "description": "Task 'weft-daily-v1' completed successfully.",
+      "status": "completed",
+      "timestamp": 1793357290.7107384,
+      "timestamp_str": "2026-10-30 13:48:10",
       "agent": "opencode:weft-daily"
     }
   ]
