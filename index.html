@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'none'; object-src 'none'">
 <title>Weft — an Aegean thread puzzle</title>
-<meta name="description" content="A zero-dependency thread-routing puzzle: connect matching spools, fill every cell of the loom, and restore the tapestry across twelve chambers.">
+<meta name="description" content="A zero-dependency thread-routing puzzle: connect matching spools, fill every cell of the loom, and restore the tapestry across eighteen chambers.">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#071018">
 <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
@@ -27,7 +27,7 @@
         <button class="btn btn-primary" id="btn-play" type="button" data-ui="play">Play</button>
         <button class="btn btn-ghost" id="btn-how" type="button" data-ui="how-to-play">How to play</button>
       </div>
-      <p class="title-meta" id="title-progress">12 chambers · no account · no network</p>
+      <p class="title-meta" id="title-progress">18 chambers · no account · no network</p>
       <button class="sound-toggle" id="btn-sound-title" type="button" aria-pressed="true" data-ui="sound-title">Sound on</button>
     </div>
     <div class="title-art" aria-hidden="true">
@@ -49,7 +49,7 @@
         <p class="eyebrow">The campaign</p>
         <h1 id="levels-heading">Chambers</h1>
       </div>
-      <p class="page-head-meta" id="levels-progress">0 of 12 woven</p>
+      <p class="page-head-meta" id="levels-progress">0 of 18 woven</p>
     </header>
     <div class="level-grid" id="level-grid" aria-label="Chambers"></div>
     <p class="footnote">Chambers unlock in order. A chamber is woven when every spool is joined and every cell is covered.</p>
@@ -85,7 +85,7 @@
 <dialog class="modal" id="help-dialog" data-panel="help" aria-labelledby="help-title">
   <div class="modal-body">
     <p class="eyebrow">How to weave</p>
-    <h2 id="help-title">One loom, twelve chambers</h2>
+    <h2 id="help-title">One loom, eighteen chambers</h2>
     <ol class="rules">
       <li><strong>Find the twins.</strong> Every colour has two spools. Connect them with a single thread.</li>
       <li><strong>Stay orthogonal.</strong> A thread moves up, down, left or right — never diagonally.</li>

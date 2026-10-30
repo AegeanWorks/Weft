@@ -5,7 +5,7 @@
 <p align="center"><a href="LICENSE"><img src="https://img.shields.io/badge/license-AGL--1.1-7048e8" alt="License"></a> <a href="https://github.com/AegeanWorks/AIKit"><img src="https://img.shields.io/badge/AIKit-integrated-6f42c1" alt="AIKit Integrated"></a></p>
 <!-- aegean:media:end -->
 
-A zero-dependency thread-routing puzzle: draw glowing threads between matching spools, fill every cell of the loom, and restore the tapestry across twelve chambers. The whole game is static HTML, CSS and ES modules, so it runs from any static host — including the AegeanWorks Play page.
+A zero-dependency thread-routing puzzle: draw glowing threads between matching spools, fill every cell of the loom, and restore the tapestry across eighteen chambers. The whole game is static HTML, CSS and ES modules, so it runs from any static host — including the AegeanWorks Play page.
 
 ## ⚡ 30-Second Cold-Start Quick Reference
 
@@ -28,7 +28,7 @@ A zero-dependency thread-routing puzzle: draw glowing threads between matching s
   ```bash
   npm run dogfood
   ```
-- **Regenerate the twelve chambers** (deterministic; rerun the tests after):
+- **Regenerate the eighteen chambers** (deterministic; rerun the tests after):
   ```bash
   npm run levels:generate
   ```
@@ -48,7 +48,7 @@ A zero-dependency thread-routing puzzle: draw glowing threads between matching s
 
 Every chamber is a square loom with coloured spool pairs. Draw one orthogonal thread between each pair. Threads may not cross, may not share a cell and may not pass through another colour's spool. The chamber is woven only when every pair is connected **and every cell is covered** — so the last thread usually has to take the long way home.
 
-The campaign grows from a 5×5 loom with three threads to a 9×9 loom with nine. Each chamber has a stored solution used by the hint ghost and checked by the test suite. Progress, best times, hint counts and sound preference are saved under `weft.progress.v1`; a missing or corrupt record resets safely.
+The campaign grows from a 5×5 loom with three threads to a 9×9 loom with nine; Act II takes it to 10×10–12×12 with eight or nine. Each chamber has a stored solution used by the hint ghost and checked by the test suite. Progress, best times, hint counts and sound preference are saved under `weft.progress.v1`; a missing or corrupt record resets safely.
 
 | # | Chamber | Loom | Threads |
 |---|---|---|---|
@@ -64,6 +64,12 @@ The campaign grows from a 5×5 loom with three threads to a 9×9 loom with nine.
 | 10 | Tapestry | 8×8 | 8 |
 | 11 | The Long Weave | 9×9 | 8 |
 | 12 | Meridian Weave | 9×9 | 9 |
+| 13 | Reef Weft | 10×10 | 8 |
+| 14 | Lantern Weave | 10×10 | 9 |
+| 15 | Deep Current | 11×11 | 8 |
+| 16 | Star Loom | 11×11 | 9 |
+| 17 | The Far Weave | 12×12 | 8 |
+| 18 | Aegean Crown | 12×12 | 9 |
 
 Chambers unlock in order. A finished chamber records its best time; the next one opens automatically.
 
@@ -96,7 +102,7 @@ weft/
 ├── src/
 │   ├── game/
 │   │   ├── engine.js          <- pure path rules, overlap checks, win detection
-│   │   └── levels.js          <- twelve frozen chambers and stored solutions
+│   │   └── levels.js          <- eighteen frozen chambers and stored solutions
 │   ├── ui/
 │   │   ├── app.js             <- screens, SVG loom, pointer and keyboard input
 │   │   ├── audio.js           <- generated WebAudio cues, no audio files
@@ -105,7 +111,7 @@ weft/
 │   └── theme.css              <- the only file with raw colour and font values
 └── tests/
     ├── engine.test.js         <- adjacency, crossings, coverage, immutability
-    ├── levels.test.js         <- all twelve chambers solve and stay total
+    ├── levels.test.js         <- all eighteen chambers solve and stay total
     ├── progress.test.js       <- corrupt saves, best times, sequential unlocks
     ├── server.test.js         <- path containment, MIME, 404s and traversal
     └── ui.test.js             <- screens, controls, tokens, imports, inventory
@@ -114,7 +120,7 @@ weft/
 ## Design Decisions
 
 - **Pure engine first.** `src/game/engine.js` has no DOM, clock, random source or storage. The browser, the tests and the level validator share one set of rules.
-- **Generated, frozen chambers.** Each level starts as a randomized Hamiltonian path, then is cut into threads. That construction makes every stored solution total by definition; `tests/levels.test.js` proves it again on every run.
+- **Generated, frozen chambers.** Each level starts as a randomized Hamiltonian path, then is cut into threads. That construction makes every stored solution total by definition; `tests/levels.test.js` proves it again on every run. Act II cuts its paths evenly, so no single thread swallows a third of the loom.
 - **Static by construction.** There is no API, no build step and no external asset. `index.html`, `src/` and `assets/` are the complete deployment payload, which is why the AegeanWorks Play sync can copy the game by commit.
 - **Pointer and keyboard parity.** The loom is a group of real buttons. Pointer drags and arrow-key drafts use the same `beginDraft` / `extendDraft` / `commitDraft` path, and every commit goes through the pure engine.
 - **Token-only styling.** Raw colours and fonts live in `src/theme.css`; `src/styles.css` reads custom properties. The test suite rejects raw colour literals in the layout sheet.
@@ -150,12 +156,12 @@ The app accepts development-only query parameters so every state can be captured
 | `/?level=first-thread&preview=win` | Victory dialog |
 | `/?preview=help` | How-to-play dialog |
 
-The game is also covered by a real browser smoke pass during development: the title, chamber index, help dialog, empty loom, a full three-thread solve and the victory dialog are exercised over the DevTools protocol, with the saved record checked afterwards.
+The game is also covered by a real browser smoke pass during development: the title, chamber index, help dialog, empty loom, a full three-thread solve, the victory dialog and the 12×12 finale are exercised over the DevTools protocol, with the saved record checked afterwards.
 
 ## Verification
 
-- `npm test` runs 52 unit and integration tests with no browser and no network beyond loopback.
-- `npm run dogfood` starts the real server, launches Edge/Chrome headless, solves the first chamber and checks the victory dialog and save.
+- `npm test` runs 54 unit and integration tests with no browser and no network beyond loopback.
+- `npm run dogfood` starts the real server, launches Edge/Chrome headless, solves the first chamber, checks the victory dialog and save, and renders the 12×12 finale.
 - `python aikit.py check weft` runs the test, mechanics, hygiene, guidelines and secret gates.
 - The test suite checks every stored solution, every cell total, path immutability, crossing refusal, corrupt saves, sequential unlocks, MIME types, path traversal and the UI inventory.
 

@@ -13,7 +13,7 @@ import { existsSync, mkdtempSync, rmSync } from "node:fs";
 import { createServer as createNetServer } from "node:net";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { LEVELS } from "../src/game/levels.js";
+import { LEVELS, TOTAL_CHAMBERS } from "../src/game/levels.js";
 import { startServer } from "./serve.mjs";
 
 const BASE = "http://127.0.0.1";
@@ -209,8 +209,10 @@ async function main() {
     const chamberCount = await connection.evaluate(
       "document.querySelectorAll('.level-card').length",
     );
-    if (chamberCount !== 12) {
-      throw new Error(`The chamber index rendered ${chamberCount} cards, not 12.`);
+    if (chamberCount !== TOTAL_CHAMBERS) {
+      throw new Error(
+        `The chamber index rendered ${chamberCount} cards, not ${TOTAL_CHAMBERS}.`,
+      );
     }
 
     await connection.send("Page.navigate", { url: `${url}?level=first-thread` });
@@ -239,7 +241,27 @@ async function main() {
     if (!result.saved) {
       throw new Error("The victory was not written to localStorage.");
     }
-    console.log("[OK] Weft dogfood: title, 12 chambers, a 3-thread solve and the victory dialog.");
+
+    const last = LEVELS.at(-1);
+    await connection.send("Page.navigate", { url: `${url}?level=${last.id}` });
+    await wait(900);
+    const lastBoard = await connection.evaluate(`(() => ({
+      cells: document.querySelectorAll('.cell').length,
+      spools: document.querySelectorAll('[data-spool]').length,
+      name: document.getElementById('level-name').textContent
+    }))()`);
+    if (
+      lastBoard.cells !== last.size * last.size ||
+      lastBoard.spools !== last.pairs.length * 2 ||
+      lastBoard.name !== last.name
+    ) {
+      throw new Error(
+        `The last chamber did not render: cells=${lastBoard.cells}, spools=${lastBoard.spools}, name=${lastBoard.name}.`,
+      );
+    }
+    console.log(
+      `[OK] Weft dogfood: title, ${TOTAL_CHAMBERS} chambers, a 3-thread solve, the victory dialog and the ${last.size}x${last.size} finale.`,
+    );
     return 0;
   } catch (error) {
     console.error(`[FAIL] Weft dogfood: ${error.message}`);

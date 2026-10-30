@@ -135,7 +135,7 @@ test("the app imports the pure engine, levels, progress and audio", () => {
 
 test("the package declares the local play and regression commands", () => {
   assert.equal(packageJson.type, "module");
-  assert.equal(packageJson.version, "0.1.1");
+  assert.equal(packageJson.version, "0.2.0");
   assert.equal(packageJson.scripts.test, "node --test tests");
   assert.equal(packageJson.scripts.start, "node scripts/serve.mjs --open");
   assert.equal(packageJson.scripts["ui:snapshot"], "node scripts/ui-inventory.mjs");

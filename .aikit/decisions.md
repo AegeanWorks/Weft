@@ -48,3 +48,10 @@ contract, a dependency, a data format or the architecture; IDs are consecutive a
 - **Consequences**: The title, chamber index and board stay visible after every transition and always start at the top; the body marker remains available to screenshots and tests. The title screen still centers within its own min-height. The fix needs a refreshed Play build, but old build directories remain available for cached catalogs.
 - Cross-principle check: no principle section changed. Serves PRINCIPLE-003 (the state marker no longer changes layout semantics), PRINCIPLE-011 (a transition never leaves a blank screen) and PRINCIPLE-014 (the regression is pinned).
 
+### ADR-006: Act II extends the loom without changing the rules
+- **Date**: 2026-10-30
+- **Status**: Accepted
+- **Context**: The campaign stopped at twelve chambers and a 9×9 loom, so a solved save had nothing left to unlock and the generator, engine and UI all already accepted larger sizes. A second act had to add content without a new mechanic, a save migration or a second deployment lane.
+- **Decision**: Append six chambers (13–18) at 10×10–12×12 with eight or nine threads, generated from fixed `weft-13`…`weft-18` seeds by the existing Hamiltonian cut. Act II uses an even cut so every thread carries a similar share of the loom instead of one thread taking the remainder; the first twelve chamber definitions are regenerated unchanged. Keep the same rules, the same `weft.progress.v1` record and the same sequential unlock; only `TOTAL_CHAMBERS`, the README table and the UI copy change. Bump the game to 0.2.0.
+- **Consequences**: A completed Act I now unlocks Act II in place, and old saves keep their best times because new ids only append. The largest loom renders 144 cells in the same square stage, so cell targets shrink but the keyboard and pointer path is unchanged. Generation of all eighteen chambers takes about sixteen seconds, still a one-off script rather than a build dependency. The Play catalog needs a fresh build for 0.2.0; `tests/levels.test.js` proves all eighteen stored solutions remain total and winnable.
+

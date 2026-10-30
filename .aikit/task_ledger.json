@@ -1,15 +1,21 @@
 {
   "version": 1,
   "active_task": {
-    "task_id": "weft-v1",
-    "last_phase": "phase 5",
+    "task_id": "weft-act2-v1",
+    "last_phase": "resumed",
     "active_phase": 5,
     "status": "completed",
-    "updated_at": 1793297809.0577977,
-    "owner": "opencode:weft",
-    "started_by": "opencode:weft",
-    "continuations": [],
-    "completed_at": 1793297812.907509
+    "updated_at": 1793345099.2601452,
+    "owner": "opencode",
+    "started_by": "opencode",
+    "continuations": [
+      {
+        "agent": "opencode:weft-act2",
+        "from": "opencode",
+        "at": 1793345140.2612295
+      }
+    ],
+    "completed_at": 1793345140.2612307
   },
   "checkpoints": [
     {
@@ -71,6 +77,110 @@
       "timestamp": 1793297812.9075103,
       "timestamp_str": "2026-10-29 21:16:52",
       "agent": "opencode:weft"
+    },
+    {
+      "task_id": "weft-act2-v1",
+      "phase": "phase 2",
+      "phase_num": 2,
+      "description": "[1/5] Plan Weft 0.2.0 Act II: add six frozen chambers (10x10-12x12, 8-9 threads), regenerate deterministically, update tests, UI copy, README and ADR",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793344081.197718,
+      "timestamp_str": "2026-10-30 10:08:01",
+      "agent": "opencode:weft-act2",
+      "impact_assessment": {
+        "why": "The campaign ends at 12 chambers and 9x9, so the game has no fresh content after about twenty minutes; the generator, engine and UI are already size-agnostic, so a second act is the cheapest meaningful expansion.",
+        "benefits": "Six larger chambers extend the campaign to eighteen and give the existing best-time, hint and unlock systems more to reward; the Play build gets a visible v0.2 content update with no new dependency.",
+        "risks": "contract: TOTAL_CHAMBERS, the level index, dogfood expectations and README table change; dependency: none (same generator, stdlib Node); concurrency: single writer, weft tree clean; state: progress v1 stores solved ids, so new ids append without a schema bump",
+        "mitigation": "Update the expectations first and watch them fail, generate from fixed new seeds, prove all 18 solutions total and solvable, then run the full project gates, dogfood and UI verify before any commit."
+      }
+    },
+    {
+      "task_id": "weft-act2-v1",
+      "phase": "phase 3",
+      "phase_num": 3,
+      "description": "[2/5] Delivered Act II: six chambers 13-18 at 10x10-12x12 with 8-9 threads, an even-cut generator option that leaves the first twelve byte-identical, version 0.2.0, README table and ADR-006; 53 tests and the browser dogfood (18 cards, 12x12 finale) pass",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793344567.7899704,
+      "timestamp_str": "2026-10-30 10:16:07",
+      "agent": "opencode:weft-act2"
+    },
+    {
+      "task_id": "weft-act2-v1",
+      "phase": "phase 4",
+      "phase_num": 4,
+      "description": "[3/5] Phase 4 green: 5/5 project gates, 53 tests, dogfood 18 cards and 12x12 finale, generator deterministic; checklists: passed. UI task 'app' stays open: this content task legitimately changes protected tests/scripts/docs, so ui verify refuses it and it needs human review plus a post-commit blessing. Uncommitted: commit not authorized",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793344567.8012211,
+      "timestamp_str": "2026-10-30 10:16:07",
+      "agent": "opencode:weft-act2",
+      "handoff": {
+        "state": "0.2.0 with 53 tests, 5/5 gates green, first 12 chambers byte-identical",
+        "next": "human review of the running 18-chamber UI, then authorize commit and refresh the Play build",
+        "open": "UI task app is open with a protected-path finding, and no commit is authorized",
+        "evidence": "node --test tests, node scripts/dogfood.mjs, python aikit.py check weft"
+      }
+    },
+    {
+      "task_id": "weft-act2-v1",
+      "phase": "suspended",
+      "phase_num": 4,
+      "description": "Task 'weft-act2-v1' suspended: Awaiting human review of the 18-chamber UI and commit authorization; the open app UI task cannot close while the content task's protected tests/scripts/docs changes are present",
+      "status": "suspended",
+      "timestamp": 1793344586.2445252,
+      "timestamp_str": "2026-10-30 10:16:26",
+      "agent": "opencode:weft-act2"
+    },
+    {
+      "task_id": "weft-act2-v1",
+      "phase": "phase 4",
+      "phase_num": 4,
+      "description": "[3/5] Phase 4 green: 5/5 project gates, 54 tests, dogfood 18 cards and 12x12 finale, generator deterministic, Act II threads within a quarter of the loom; checklists: passed. UI task 'app' stays open pending human review because this content task changes protected tests/scripts/docs. Uncommitted: commit not authorized",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793344677.7699873,
+      "timestamp_str": "2026-10-30 10:17:57",
+      "agent": "opencode:weft-act2",
+      "handoff": {
+        "state": "0.2.0 with 54 tests, 5/5 gates green, first 12 chambers byte-identical",
+        "next": "human review of the running 18-chamber UI, then authorize commit and refresh the Play build",
+        "open": "UI task app is open with a protected-path finding, and no commit is authorized",
+        "evidence": "node --test tests, node scripts/dogfood.mjs, python aikit.py check weft"
+      }
+    },
+    {
+      "task_id": "weft-act2-v1",
+      "phase": "suspended",
+      "phase_num": 4,
+      "description": "Task 'weft-act2-v1' suspended: Awaiting human review of the 18-chamber UI and commit authorization; the open app UI task cannot close while the content task's protected tests/scripts/docs changes are present",
+      "status": "suspended",
+      "timestamp": 1793344686.4281173,
+      "timestamp_str": "2026-10-30 10:18:06",
+      "agent": "opencode:weft-act2"
+    },
+    {
+      "task_id": "weft-act2-v1",
+      "phase": "resumed",
+      "phase_num": 4,
+      "description": "Resumed 'weft-act2-v1' after a pause",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793345099.2601452,
+      "timestamp_str": "2026-10-30 10:24:59",
+      "agent": "opencode"
+    },
+    {
+      "task_id": "weft-act2-v1",
+      "phase": "completed",
+      "phase_num": 5,
+      "description": "Task 'weft-act2-v1' completed successfully.",
+      "status": "completed",
+      "timestamp": 1793345140.2612317,
+      "timestamp_str": "2026-10-30 10:25:40",
+      "agent": "opencode:weft-act2",
+      "continued_from": "opencode"
     }
   ]
 }
