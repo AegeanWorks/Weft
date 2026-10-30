@@ -96,5 +96,19 @@
     "final_snapshot_digest": "410ff09a8424a5cbc1b901fd745fdccca018fec9e193afc3b045e1b681422d3e",
     "final_snapshot_entries": 23,
     "surface_digest": "0d7145d0a8cd8018ae3e353b36069f104c7c7fda8ef0c3554c37c2077b71c7b3"
+  },
+  {
+    "schema": 1,
+    "surface": "app",
+    "baseline_commit": "7ead248414984d3fa01e2afeece04055091863bf",
+    "contract_hash": "6b437c28104ade566ef850ac61b1cb8cf003a9181f3abdcbf0d1abc07287c794",
+    "started_at": 1793362386.4100401,
+    "finished_at": 1793362388.0190575,
+    "strikes": 0,
+    "reviewer": "opencode:weft-daily-history (headless render + dogfood)",
+    "allowed_removals": [],
+    "final_snapshot_digest": "410ff09a8424a5cbc1b901fd745fdccca018fec9e193afc3b045e1b681422d3e",
+    "final_snapshot_entries": 23,
+    "surface_digest": "1f0ce12a1d370d9235110b9454c66ad9a84ee28bd1188be56a60a0f884307e73"
   }
 ]
