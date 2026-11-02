@@ -5,7 +5,7 @@
 <p align="center"><a href="LICENSE"><img src="https://img.shields.io/badge/license-AGL--1.1-7048e8" alt="License"></a> <a href="https://github.com/AegeanWorks/AIKit"><img src="https://img.shields.io/badge/AIKit-integrated-6f42c1" alt="AIKit Integrated"></a></p>
 <!-- aegean:media:end -->
 
-A zero-dependency thread-routing puzzle: draw glowing threads between matching spools, fill every cell of the loom, and restore the tapestry across eighteen chambers, with a fresh 7×7 daily weave. The whole game is static HTML, CSS and ES modules, so it runs from any static host — including the AegeanWorks Play page.
+A zero-dependency thread-routing puzzle: draw glowing threads between matching spools, fill every cell of the loom, and restore the tapestry across twenty-four chambers, with a fresh 7×7 daily weave. The whole game is static HTML, CSS and ES modules, so it runs from any static host — including the AegeanWorks Play page.
 
 ## ⚡ 30-Second Cold-Start Quick Reference
 
@@ -28,7 +28,7 @@ A zero-dependency thread-routing puzzle: draw glowing threads between matching s
   ```bash
   npm run dogfood
   ```
-- **Regenerate the eighteen chambers** (deterministic; rerun the tests after):
+- **Regenerate the twenty-four chambers** (deterministic; rerun the tests after):
   ```bash
   npm run levels:generate
   ```
@@ -49,7 +49,7 @@ A zero-dependency thread-routing puzzle: draw glowing threads between matching s
 
 Every chamber is a square loom with coloured spool pairs. Draw one orthogonal thread between each pair. Threads may not cross, may not share a cell and may not pass through another colour's spool. The chamber is woven only when every pair is connected **and every cell is covered** — so the last thread usually has to take the long way home.
 
-The campaign grows from a 5×5 loom with three threads to a 9×9 loom with nine; Act II takes it to 10×10–12×12 with eight or nine. Each chamber has a stored solution used by the hint ghost and checked by the test suite. Every colour also carries a unique dash pattern on its thread and spool ring, so the loom is readable without relying on hue. Progress, best times, star ratings, hint counts and sound preference are saved under `weft.progress.v1`; a missing or corrupt record resets safely.
+The campaign grows from a 5×5 loom with three threads to a 9×9 loom with nine; Act II takes it to 10×10–12×12 with eight or nine, and Act III holds the 12×12 finale line with six more chambers of eight or nine. Each chamber has a stored solution used by the hint ghost and checked by the test suite. Every colour also carries a unique dash pattern on its thread and spool ring, so the loom is readable without relying on hue. Progress, best times, star ratings, hint counts and sound preference are saved under `weft.progress.v1`; a missing or corrupt record resets safely.
 
 | # | Chamber | Loom | Threads |
 |---|---|---|---|
@@ -71,10 +71,16 @@ The campaign grows from a 5×5 loom with three threads to a 9×9 loom with nine;
 | 16 | Star Loom | 11×11 | 9 |
 | 17 | The Far Weave | 12×12 | 8 |
 | 18 | Aegean Crown | 12×12 | 9 |
+| 19 | Harbor Loom | 12×12 | 8 |
+| 20 | Salt Meridian | 12×12 | 9 |
+| 21 | Moon Loom | 12×12 | 8 |
+| 22 | Coral Deep | 12×12 | 9 |
+| 23 | Star Citadel | 12×12 | 8 |
+| 24 | The Eternal Weave | 12×12 | 9 |
 
 Chambers unlock in order. A finished chamber records its best time and star rating; the next one opens automatically.
 
-Every chamber awards up to three stars. A clean weave without hints earns three, one hint earns two, and more than one earns a single star. The best rating is kept even when a later, faster run uses more hints, and older saves derive their stars from the hint counts already stored. The title and chamber index show the campaign total out of 54.
+Every chamber awards up to three stars. A clean weave without hints earns three, one hint earns two, and more than one earns a single star. The best rating is kept even when a later, faster run uses more hints, and older saves derive their stars from the hint counts already stored. The title and chamber index show the campaign total out of 72.
 
 The daily weave is a fresh 7×7 chamber with six threads, generated from your local date and never fetched. It keeps its own save under `weft.daily.v1`, so a daily run does not change campaign stars or unlocks. A solved day extends the streak; the victory dialog shows a result line such as `Weft daily 2026-10-30 · ★★★ · 01:23 · 0 hints` and can copy it, so the line stays selectable when clipboard access is blocked. The chamber index lists the last seven days with each day’s stars; the history is a record only, so a missed day cannot be back-filled.
 
@@ -109,7 +115,7 @@ weft/
 │   │   ├── daily.js           <- date-seeded daily chamber
 │   │   ├── engine.js          <- pure path rules, overlap checks, win detection
 │   │   ├── generate.js        <- pure Hamiltonian chamber generator
-│   │   └── levels.js          <- eighteen frozen chambers and stored solutions
+│   │   └── levels.js          <- twenty-four frozen chambers and stored solutions
 │   ├── ui/
 │   │   ├── app.js             <- screens, SVG loom, pointer and keyboard input
 │   │   ├── audio.js           <- generated WebAudio cues, no audio files
@@ -122,7 +128,7 @@ weft/
     ├── daily.test.js          <- daily saves, corrupt records, streaks, history
     ├── engine.test.js         <- adjacency, crossings, coverage, immutability
     ├── generate.test.js       <- shared generator, daily determinism and validity
-    ├── levels.test.js         <- all eighteen chambers solve and stay total
+    ├── levels.test.js         <- all twenty-four chambers solve and stay total
     ├── progress.test.js       <- corrupt saves, best times, stars, sequential unlocks
     ├── server.test.js         <- path containment, MIME, 404s and traversal
     ├── threads.test.js        <- every colour has a unique dash pattern
@@ -132,7 +138,7 @@ weft/
 ## Design Decisions
 
 - **Pure engine first.** `src/game/engine.js` has no DOM, clock, random source or storage. The browser, the tests and the level validator share one set of rules.
-- **Generated, frozen chambers.** Each level starts as a randomized Hamiltonian path, then is cut into threads. That construction makes every stored solution total by definition; `tests/levels.test.js` proves it again on every run. Act II cuts its paths evenly, so no single thread swallows a third of the loom.
+- **Generated, frozen chambers.** Each level starts as a randomized Hamiltonian path, then is cut into threads. That construction makes every stored solution total by definition; `tests/levels.test.js` proves it again on every run. Act II cuts its paths evenly, so no single thread swallows a third of the loom; Act III holds six more 12×12 chambers on the same even cut.
 - **One generator for campaign and daily.** `src/game/generate.js` is pure and shared by the offline campaign script and the in-browser daily, so the two can never drift into different rules or a second level format.
 - **Static by construction.** There is no API, no build step and no external asset. `index.html`, `src/` and `assets/` are the complete deployment payload, which is why the AegeanWorks Play sync can copy the game by commit.
 - **Pointer and keyboard parity.** The loom is a group of real buttons. Pointer drags and arrow-key drafts use the same `beginDraft` / `extendDraft` / `commitDraft` path, and every commit goes through the pure engine.
@@ -177,7 +183,7 @@ The game is also covered by a real browser smoke pass during development: the ti
 
 ## Verification
 
-- `npm test` runs 74 unit and integration tests with no browser and no network beyond loopback.
+- `npm test` runs 76 unit and integration tests with no browser and no network beyond loopback.
 - `npm run dogfood` starts the real server, launches Edge/Chrome headless, solves the first chamber, checks the victory dialog, the three-star saved record and the chamber card, renders the 12×12 finale, solves today’s daily with its separate save, HUD best and visible share line, and checks the seven-day history.
 - `python aikit.py check weft` runs the test, mechanics, hygiene, guidelines and secret gates.
 - The test suite checks every stored solution, every cell total, path immutability, crossing refusal, corrupt saves, sequential unlocks, daily determinism, streaks, unique thread patterns, MIME types, path traversal and the UI inventory.

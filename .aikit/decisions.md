@@ -125,3 +125,10 @@ contract, a dependency, a data format or the architecture; IDs are consecutive a
 - **Decision**: Add a pure `coverage(game)` helper (`{covered, total}`) in `src/game/engine.js` with unit tests, and show `N of M threads woven · P% of the loom` in the game status line. No schema, rule, timer or layout change.
 - **Consequences**: Players see the second half of the win condition while weaving; win detection stays in `isSolved`. Verified by engine tests (empty/partial/full) plus a scripted frozen-level run (0/25, 5/25 unsolved, 25/25 solved) and a solved-board capture reading "100% of the loom".
 
+### ADR-017: Act III Holds the 12x12 Finale Line
+- **Date**: 2026-11-03
+- **Status**: Accepted
+- **Context**: A solved campaign ended at eighteen chambers with nothing left to unlock; the generator, engine and UI already accept 12x12 looms, and the finale deserved a longer summit than a single 12x12.
+- **Decision**: Append six chambers (19-24: Harbor Loom, Salt Meridian, Moon Loom, Coral Deep, Star Citadel, The Eternal Weave) at 12x12 with eight or nine threads from fixed `weft-19`…`weft-24` seeds via the existing Hamiltonian even cut. Keep the same rules, the same `weft.progress.v1` record and sequential unlock; only the SPECS, `TOTAL_CHAMBERS`, README table/copy and version change. Bump to 0.8.0.
+- **Consequences**: Old saves keep their stars and unlock Act III in place through append-only ids; `tests/levels.test.js` now pins twenty-four chambers and an Act III finale-line rule. The largest loom stays 12x12, so tap-target constraints do not regress. Dogfood renders 24 cards, solves chamber 1, renders the new finale and solves the daily.
+

@@ -4,9 +4,9 @@ import assert from "node:assert/strict";
 import { createGame, isSolved, setPath, validateLevel } from "../src/game/engine.js";
 import { LEVELS, LEVEL_BY_ID, TOTAL_CHAMBERS } from "../src/game/levels.js";
 
-test("the campaign publishes eighteen uniquely identified chambers", () => {
-  assert.equal(LEVELS.length, 18);
-  assert.equal(TOTAL_CHAMBERS, 18);
+test("the campaign publishes twenty-four uniquely identified chambers", () => {
+  assert.equal(LEVELS.length, 24);
+  assert.equal(TOTAL_CHAMBERS, 24);
   const ids = new Set(LEVELS.map((level) => level.id));
   const names = new Set(LEVELS.map((level) => level.name));
   assert.equal(ids.size, LEVELS.length);
@@ -29,9 +29,9 @@ test("chambers grow from five to twelve cells a side", () => {
   );
 });
 
-test("the second act starts at ten cells a side with at least eight threads", () => {
-  for (const level of LEVELS.slice(12)) {
-    assert.ok(level.size >= 10, `${level.id} is smaller than the second act`);
+test("the third act holds the 12-wide finale line", () => {
+  for (const level of LEVELS.slice(18)) {
+    assert.ok(level.size === 12, `${level.id} leaves the 12-wide finale line`);
     assert.ok(level.pairs.length >= 8, `${level.id} has fewer than eight threads`);
   }
   assert.equal(LEVELS.at(-1).size, 12);
