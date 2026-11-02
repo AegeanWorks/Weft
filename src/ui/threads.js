@@ -10,12 +10,12 @@
 export const THREAD_PATTERNS = Object.freeze({
   coral: "none",
   lapis: "0.42 0.16",
-  jade: "0.1 0.14",
+  jade: "0.12 0.16",
   amber: "0.3 0.1 0.06 0.1",
   violet: "0.55 0.1",
-  teal: "0.16 0.1",
+  teal: "0.2 0.12",
   rose: "0.24 0.08 0.04 0.08",
-  gold: "0.06 0.06",
+  gold: "0.09 0.09",
   pearl: "0.5 0.24",
 });
 

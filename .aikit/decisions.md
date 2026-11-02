@@ -97,3 +97,10 @@ contract, a dependency, a data format or the architecture; IDs are consecutive a
 - **Decision**: Lower `.cell::before` `--owner` opacity from 0.11 to 0.04; keep cell borders and thread rendering order unchanged (SVG already paints above cells).
 - **Consequences**: Territory hint survives at a glance while threads carry the contrast; no DOM, stacking, save or engine change. Verified by before/after solved-board screenshots at 5x5 and 12x12.
 
+### ADR-013: Slim the Glow, Strengthen the Core
+- **Date**: 2026-11-03
+- **Status**: Accepted
+- **Context**: Solved-board captures showed thick glow washing out fine dash textures, worst on gold/teal/jade at 12x12 where sub-0.1-unit dashes aliased.
+- **Decision**: Thread glow width 0.34 to 0.28, core and draft width 0.14 to 0.16; widen gold dashes to 0.09/0.09, teal to 0.2/0.12, jade to 0.12/0.16 while keeping all nine patterns unique and coral solid.
+- **Consequences**: Cores stay legible at small cells without reintroducing patchiness; dash vocabulary unchanged, so the existing uniqueness test still pins it. Verified by 12x12 solved before/after pair.
+

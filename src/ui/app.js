@@ -404,13 +404,13 @@ function appendThread(svg, cells, color) {
   glow.setAttribute("class", "thread-glow");
   glow.setAttribute("d", d);
   glow.setAttribute("stroke", colorVar(color));
-  glow.setAttribute("stroke-width", "0.34");
+  glow.setAttribute("stroke-width", "0.28");
 
   const core = document.createElementNS(SVG_NS, "path");
   core.setAttribute("class", "thread-core");
   core.setAttribute("d", d);
   core.setAttribute("stroke", colorVar(color));
-  core.setAttribute("stroke-width", "0.14");
+  core.setAttribute("stroke-width", "0.16");
   applyPattern(core, color);
 
   svg.append(glow, core);
@@ -424,7 +424,7 @@ function appendDraft(svg, cells, color) {
   path.setAttribute("class", "draft-thread");
   path.setAttribute("d", pathData(cells));
   path.setAttribute("stroke", colorVar(color));
-  path.setAttribute("stroke-width", "0.14");
+  path.setAttribute("stroke-width", "0.16");
   applyPattern(path, color);
   svg.append(path);
 }
