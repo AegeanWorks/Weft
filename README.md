@@ -104,6 +104,7 @@ weft/
 ├── assets/
 │   ├── favicon.svg            <- tab mark
 │   ├── logo.svg               <- square brand mark
+│   ├── screenshots/           <- commit-stamped full-viewport captures
 │   └── social-preview.svg     <- 1280×640 social card
 ├── scripts/
 │   ├── dogfood.mjs            <- real browser solve over the DevTools protocol
