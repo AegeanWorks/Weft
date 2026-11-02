@@ -447,14 +447,14 @@ function appendSpool(svg, [x, y], color) {
   glow.setAttribute("class", "spool-glow");
   glow.setAttribute("cx", String(cx));
   glow.setAttribute("cy", String(cy));
-  glow.setAttribute("r", "0.3");
+  glow.setAttribute("r", "0.32");
   glow.setAttribute("fill", colorVar(color));
 
   const ring = document.createElementNS(SVG_NS, "circle");
   ring.setAttribute("class", "spool-ring");
   ring.setAttribute("cx", String(cx));
   ring.setAttribute("cy", String(cy));
-  ring.setAttribute("r", "0.22");
+  ring.setAttribute("r", "0.24");
   ring.setAttribute("stroke", colorVar(color));
   applyPattern(ring, color);
 
@@ -462,7 +462,7 @@ function appendSpool(svg, [x, y], color) {
   core.setAttribute("class", "spool-core");
   core.setAttribute("cx", String(cx));
   core.setAttribute("cy", String(cy));
-  core.setAttribute("r", "0.1");
+  core.setAttribute("r", "0.12");
   core.setAttribute("fill", colorVar(color));
 
   svg.append(glow, ring, core);

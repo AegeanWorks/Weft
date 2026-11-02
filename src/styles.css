@@ -618,7 +618,7 @@ button {
 
 .spool-ring {
   fill: var(--ink);
-  stroke-width: 0.06;
+  stroke-width: 0.07;
 }
 
 .spool-core {
@@ -1003,7 +1003,7 @@ button {
 
 @media (max-width: 520px) {
   .shell {
-    padding: 16px;
+    padding: 12px;
   }
 
   .title-actions {

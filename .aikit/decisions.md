@@ -104,3 +104,10 @@ contract, a dependency, a data format or the architecture; IDs are consecutive a
 - **Decision**: Thread glow width 0.34 to 0.28, core and draft width 0.14 to 0.16; widen gold dashes to 0.09/0.09, teal to 0.2/0.12, jade to 0.12/0.16 while keeping all nine patterns unique and coral solid.
 - **Consequences**: Cores stay legible at small cells without reintroducing patchiness; dash vocabulary unchanged, so the existing uniqueness test still pins it. Verified by 12x12 solved before/after pair.
 
+### ADR-014: Give Spools More Presence on Large Looms
+- **Date**: 2026-11-03
+- **Status**: Accepted
+- **Context**: 10x10-12x12 captures showed spool rings dissolving at ~30px cells, and 390px portraits left 29px tap targets with cramped chrome.
+- **Decision**: Enlarge spool geometry in `appendSpool` (glow r 0.3 to 0.32, ring r 0.22 to 0.24, core r 0.1 to 0.12) and ring stroke to 0.07; trim ≤520px shell padding 16px to 12px so the loom gains a few pixels. No layout reorder, no new breakpoints.
+- **Consequences**: Spools and their dash textures read at 12x12 on desktop and 390px; cells remain ~30px on small phones, so the 44px target stays a documented constraint rather than a claimed fix. Verified by 390px empty-loom capture.
+
