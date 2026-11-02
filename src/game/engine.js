@@ -271,6 +271,19 @@ export function clearPath(game, color) {
 }
 
 /**
+ * Return how many loom cells are covered by exactly one thread.
+ *
+ * Win detection stays in `isSolved`; this helper exists so the shell can
+ * show weaving progress (threads alone hide partial coverage) without
+ * reimplementing occupancy. Pure: a deterministic function of the game.
+ */
+export function coverage(game) {
+  const total = game.level.size * game.level.size;
+  const covered = occupiedCells(game).size;
+  return { covered, total };
+}
+
+/**
  * True when every pair is connected and every cell is covered exactly once.
  */
 export function isSolved(game) {

@@ -1,4 +1,5 @@
 import {
+  coverage,
   createGame,
   isSolved,
   setPath,
@@ -577,10 +578,12 @@ function updateHud() {
     (pair) => state.game.paths[pair.color].length >= 2,
   ).length;
   if (!state.won) {
+    const woven = coverage(state.game);
+    const percent = Math.floor((woven.covered / woven.total) * 100);
     refs.status.textContent =
       complete === 0
         ? "Begin at any spool."
-        : `${complete} of ${state.level.pairs.length} threads woven.`;
+        : `${complete} of ${state.level.pairs.length} threads woven · ${percent}% of the loom.`;
   }
   refs.btnUndo.disabled = state.undoStack.length === 0 || state.won;
   refs.btnReset.disabled = state.won || (state.moves === 0 && complete === 0);

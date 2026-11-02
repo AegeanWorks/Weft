@@ -4,6 +4,7 @@ import assert from "node:assert/strict";
 import {
   cellKey,
   clearPath,
+  coverage,
   createGame,
   isSolved,
   occupiedCells,
@@ -221,5 +222,31 @@ test("isSolved rejects a complete but partial-coverage board", () => {
     [1, 0],
     [2, 0],
   ]);
+  assert.equal(isSolved(game), false);
+});
+
+test("coverage counts covered cells against the whole loom", () => {
+  let game = createGame(TWO_PAIR);
+  assert.deepEqual(coverage(game), { covered: 0, total: 4 });
+  game = setPath(game, "coral", [[0, 0], [0, 1]]);
+  assert.deepEqual(coverage(game), { covered: 2, total: 4 });
+  game = setPath(game, "jade", [[1, 0], [1, 1]]);
+  assert.deepEqual(coverage(game), { covered: 4, total: 4 });
+  assert.equal(isSolved(game), true);
+});
+
+test("coverage exposes the partial-coverage trap threads hide", () => {
+  const level = {
+    id: "open",
+    name: "Open",
+    size: 3,
+    pairs: [{ color: "coral", start: [0, 0], end: [2, 0] }],
+  };
+  const game = setPath(createGame(level), "coral", [
+    [0, 0],
+    [1, 0],
+    [2, 0],
+  ]);
+  assert.deepEqual(coverage(game), { covered: 3, total: 9 });
   assert.equal(isSolved(game), false);
 });

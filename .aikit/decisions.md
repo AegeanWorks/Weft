@@ -118,3 +118,10 @@ contract, a dependency, a data format or the architecture; IDs are consecutive a
 - **Decision**: Widen `.hint-thread` 0.075 to 0.09 and raise base opacity 0.62 to 0.72; keep the 1.6s pulse, dash rhythm and timer unchanged.
 - **Consequences**: Ghost stays clearly visible through a full pulse cycle without competing with committed threads; headless check (click Hint, `.hint-thread` present, status correct, pulse opacity mid-cycle) plus the pre-fix ghost capture verify behavior. No engine, save or timer change.
 
+### ADR-016: Surface Loom Coverage Beside Thread Count
+- **Date**: 2026-11-03
+- **Status**: Accepted
+- **Context**: Threads-woven count hides the partial-coverage trap: all pairs connected is not a win until every cell is covered, and nothing on screen said how much loom was left.
+- **Decision**: Add a pure `coverage(game)` helper (`{covered, total}`) in `src/game/engine.js` with unit tests, and show `N of M threads woven · P% of the loom` in the game status line. No schema, rule, timer or layout change.
+- **Consequences**: Players see the second half of the win condition while weaving; win detection stays in `isSolved`. Verified by engine tests (empty/partial/full) plus a scripted frozen-level run (0/25, 5/25 unsolved, 25/25 solved) and a solved-board capture reading "100% of the loom".
+
