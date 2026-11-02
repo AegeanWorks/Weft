@@ -557,7 +557,7 @@ button {
   z-index: -1;
   pointer-events: none;
   background: var(--owner);
-  opacity: 0.11;
+  opacity: 0.04;
 }
 
 .cell:hover {

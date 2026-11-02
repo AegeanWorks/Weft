@@ -90,3 +90,10 @@ contract, a dependency, a data format or the architecture; IDs are consecutive a
 - **Decision**: Derive the last seven calendar days from the existing `weft.daily.v1` days map with a pure `recentDays` helper and render them as a compact, display-only list under the daily card. Each chip carries the day number and up to three stars; today is outlined, solved days are gold and missed days stay dim. The list is not interactive.
 - **Consequences**: The streak becomes legible without changing the save format, adding a key or inventing a second streak counter. A missed day cannot be back-filled, so the number and the strip cannot disagree. The helper uses UTC midnights for the date walk, so month, year and daylight-saving boundaries are stable. A player who wants more history keeps it in the daily save; the UI deliberately shows a bounded week.
 
+### ADR-012: Calm the Owned-Cell Wash So Threads Read First
+- **Date**: 2026-11-03
+- **Status**: Accepted
+- **Context**: Solved looms photographed with pale per-cell tint blocks (11% `--owner` wash) that read as patchwork rectangles behind threads, worst on 5x5 and 12x12 solved boards.
+- **Decision**: Lower `.cell::before` `--owner` opacity from 0.11 to 0.04; keep cell borders and thread rendering order unchanged (SVG already paints above cells).
+- **Consequences**: Territory hint survives at a glance while threads carry the contrast; no DOM, stacking, save or engine change. Verified by before/after solved-board screenshots at 5x5 and 12x12.
+
