@@ -9,6 +9,7 @@ extracted, redistributed or included in a mod without a grant.
 | `assets/favicon.svg` | vector art | AegeanWorks | AGL-1.1 | 64px tab mark |
 | `assets/logo.svg` | vector art | AegeanWorks | AGL-1.1 | 512px square brand mark |
 | `assets/social-preview.svg` | vector art | AegeanWorks | AGL-1.1 | 1280×640 social card |
-| `src/game/levels.js` | level data | AegeanWorks | AGL-1.1 | twelve generated chambers and stored solutions |
+| `src/game/levels.js` | level data | AegeanWorks | AGL-1.1 | twenty-four generated chambers and stored solutions |
+| `assets/screenshots/**` | captured UI screenshots | AegeanWorks | AGL-1.1 | full-viewport captures of the real static build, commit-stamped in `.aikit/media.json` |
 | `src/theme.css` | colour tokens | AegeanWorks | AGL-1.1 | palette and typography tokens |
 | `src/ui/audio.js` | synthesized audio | AegeanWorks | AGL-1.1 | generated at runtime; no audio files |

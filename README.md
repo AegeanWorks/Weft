@@ -199,3 +199,13 @@ Brand imagery is all rights reserved and is not covered by AGL-1.1; see [ASSETS.
 ## 📜 License
 
 Free for personal play under the Aegean Game License 1.1 (AGL-1.1); see [LICENSE](LICENSE). It is DRM-free: Licensor ships no DRM and a distributor may not add it. Streaming, modding and free mods are allowed. Commercial use, paid mods and AI training need the Aegean Commercial License 1.0 (ACL-1.0); see [COMMERCIAL.md](COMMERCIAL.md).
+
+<!-- aegean:screenshots:start -->
+## Screenshots
+
+<a href="https://github.com/AegeanWorks/Weft/commit/06bdbb7"><img src="assets/screenshots/2026-11-03-title.png" alt="Weft title screen at 2026-11-03"></a>
+
+<a href="https://github.com/AegeanWorks/Weft/commit/06bdbb7"><img src="assets/screenshots/2026-11-03-chamber.png" alt="Weft first chamber at 2026-11-03"></a>
+
+*commit `06bdbb7` · 2026-11-03 · viewport 1440x900 · title plus deep-linked first chamber (`?level=first-thread`)*
+<!-- aegean:screenshots:end -->

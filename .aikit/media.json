@@ -2,8 +2,8 @@
   "schema": 1,
   "name": "weft",
   "repo": "Weft",
-  "has_ui": false,
-  "ui_kind": "library",
+  "has_ui": true,
+  "ui_kind": "web",
   "palette": [
     "#120712",
     "#301223",
@@ -42,5 +42,44 @@
       }
     }
   },
-  "screenshots": []
+  "screenshots": [
+    {
+      "path": "assets/screenshots/2026-11-03-title.png",
+      "alt": "Weft title screen at 2026-11-03",
+      "caption": "Title from npm start (http://127.0.0.1:4175): wordmark, Play/Daily/How-to, 24-chamber promise, loom art.",
+      "commit": "06bdbb725b25afa0045c47bdb29a92ff6d35c492",
+      "taken_at": "2026-11-03",
+      "viewport": "1440x900",
+      "width": 1440,
+      "height": 900,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:kilo",
+        "method": "vision",
+        "notes": "Real viewport capture of the served title: kicker, wordmark, tagline, three buttons, chamber-count line and spool art all legible. Fresh-user state.",
+        "score": 93,
+        "reviewed_at": "2026-11-03"
+      }
+    },
+    {
+      "path": "assets/screenshots/2026-11-03-chamber.png",
+      "alt": "Weft first chamber at 2026-11-03",
+      "caption": "Same build at ?level=first-thread: Chamber 01 5x5 with three spool pairs, zero threads, hint and sound controls.",
+      "commit": "06bdbb725b25afa0045c47bdb29a92ff6d35c492",
+      "taken_at": "2026-11-03",
+      "viewport": "1440x900",
+      "width": 1440,
+      "height": 900,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:kilo",
+        "method": "vision",
+        "notes": "Real headless-Edge capture of the deep-linked chamber: loom grid, dash-patterned spool rings, timer/thread/best HUD, rules footer. Zero-thread start, no staging.",
+        "score": 92,
+        "reviewed_at": "2026-11-03"
+      }
+    }
+  ]
 }
