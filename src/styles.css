@@ -604,11 +604,11 @@ button {
 .hint-thread {
   fill: none;
   stroke: var(--text);
-  stroke-width: 0.075;
+  stroke-width: 0.09;
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-dasharray: 0.055 0.15;
-  opacity: 0.62;
+  opacity: 0.72;
   animation: hint-pulse 1.6s ease-in-out infinite;
 }
 

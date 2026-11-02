@@ -111,3 +111,10 @@ contract, a dependency, a data format or the architecture; IDs are consecutive a
 - **Decision**: Enlarge spool geometry in `appendSpool` (glow r 0.3 to 0.32, ring r 0.22 to 0.24, core r 0.1 to 0.12) and ring stroke to 0.07; trim ≤520px shell padding 16px to 12px so the loom gains a few pixels. No layout reorder, no new breakpoints.
 - **Consequences**: Spools and their dash textures read at 12x12 on desktop and 390px; cells remain ~30px on small phones, so the 44px target stays a documented constraint rather than a claimed fix. Verified by 390px empty-loom capture.
 
+### ADR-015: Make the Hint Ghost Read at a Glance
+- **Date**: 2026-11-03
+- **Status**: Accepted
+- **Context**: Timed captures showed the coral ghost route renders (status "A ghost thread shows one route for coral", 4.2s timer) but reads pale against bright threads; the earlier "missing hint" capture was a post-timer screenshot, not a rendering bug.
+- **Decision**: Widen `.hint-thread` 0.075 to 0.09 and raise base opacity 0.62 to 0.72; keep the 1.6s pulse, dash rhythm and timer unchanged.
+- **Consequences**: Ghost stays clearly visible through a full pulse cycle without competing with committed threads; headless check (click Hint, `.hint-thread` present, status correct, pulse opacity mid-cycle) plus the pre-fix ghost capture verify behavior. No engine, save or timer change.
+
