@@ -91,8 +91,12 @@ export function recordDaily(daily, key, result) {
   if (!DAY_PATTERN.test(key)) {
     return current;
   }
+  const rawBest = result?.bestMs;
+  if (!Number.isFinite(rawBest) || rawBest < 0) {
+    return current;
+  }
   const entry = normalizeEntry({
-    bestMs: Number.isFinite(result?.bestMs) ? result.bestMs : 0,
+    bestMs: rawBest,
     hints: Number.isInteger(result?.hints) ? result.hints : 0,
     moves: Number.isInteger(result?.moves) ? result.moves : 0,
     at: typeof result?.at === "string" ? result.at : new Date().toISOString(),

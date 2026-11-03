@@ -121,8 +121,12 @@ export function recordSolve(progress, levelId, result) {
   if (typeof levelId !== "string" || levelId.length === 0) {
     return current;
   }
+  const rawBest = result?.bestMs;
+  if (!Number.isFinite(rawBest) || rawBest < 0) {
+    return current;
+  }
   const entry = normalizeEntry({
-    bestMs: Number.isFinite(result?.bestMs) ? result.bestMs : 0,
+    bestMs: rawBest,
     hints: Number.isInteger(result?.hints) ? result.hints : 0,
     moves: Number.isInteger(result?.moves) ? result.moves : 0,
     at: typeof result?.at === "string" ? result.at : new Date().toISOString(),
@@ -148,7 +152,10 @@ export function recordSolve(progress, levelId, result) {
 
 export function isUnlocked(progress, levels, levelId) {
   const index = levels.findIndex((level) => level.id === levelId);
-  if (index <= 0) {
+  if (index < 0) {
+    return false;
+  }
+  if (index === 0) {
     return true;
   }
   const previous = levels[index - 1];

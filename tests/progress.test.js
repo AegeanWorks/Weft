@@ -159,6 +159,18 @@ test("recordSolve never mutates its input", () => {
   assert.equal(next.solved.one.bestMs, 1000);
 });
 
+test("recordSolve rejects a missing or invalid time instead of a 0ms best", () => {
+  for (const bad of [{}, { bestMs: NaN }, { bestMs: -5 }, { bestMs: Infinity }]) {
+    const next = recordSolve(defaultProgress(), "one", bad);
+    assert.deepEqual(next.solved, {}, `accepted ${JSON.stringify(bad)}`);
+  }
+});
+
+test("unknown chambers stay locked", () => {
+  assert.equal(isUnlocked(defaultProgress(), LEVELS, "bogus"), false);
+  assert.equal(isUnlocked(defaultProgress(), [], "one"), false);
+});
+
 test("chambers unlock in order", () => {
   let progress = defaultProgress();
   assert.equal(isUnlocked(progress, LEVELS, "one"), true);

@@ -66,6 +66,13 @@ test("normalizeDaily keeps valid days and drops broken ones", () => {
   assert.equal(daily.days["not-a-day"], undefined);
 });
 
+test("recordDaily rejects a missing or invalid time instead of a 0ms best", () => {
+  for (const bad of [{}, { bestMs: NaN }, { bestMs: -5 }, { bestMs: Infinity }]) {
+    const next = recordDaily(defaultDaily(), "2026-10-30", bad);
+    assert.deepEqual(next.days, {}, `accepted ${JSON.stringify(bad)}`);
+  }
+});
+
 test("recordDaily keeps the fastest time and the best stars", () => {
   let daily = defaultDaily();
   daily = recordDaily(daily, "2026-10-30", {
