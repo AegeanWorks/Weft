@@ -21,7 +21,7 @@ function normalizeEntry(entry) {
     return null;
   }
   const bestMs =
-    Number.isFinite(entry.bestMs) && entry.bestMs >= 0
+    Number.isFinite(entry.bestMs) && Math.floor(entry.bestMs) > 0
       ? Math.floor(entry.bestMs)
       : null;
   if (bestMs === null) {
@@ -92,7 +92,7 @@ export function recordDaily(daily, key, result) {
     return current;
   }
   const rawBest = result?.bestMs;
-  if (!Number.isFinite(rawBest) || rawBest < 0) {
+  if (!Number.isFinite(rawBest) || rawBest <= 0) {
     return current;
   }
   const entry = normalizeEntry({

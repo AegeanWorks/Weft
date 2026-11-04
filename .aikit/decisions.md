@@ -146,3 +146,10 @@ contract, a dependency, a data format or the architecture; IDs are consecutive a
 - **Decision**: Return the current record unchanged when `bestMs` is not a finite number `>= 0`; return false from `isUnlocked` for an unknown id (first chamber stays open, empty levels lock); correct the `media.json` social-preview review note to the 24-chamber promise. Pin with `recordSolve rejects a missing or invalid time`, `recordDaily rejects a missing or invalid time` and `unknown chambers stay locked`.
 - **Consequences**: No invented `0`ms best can unlock the next chamber or inflate totals; the UI path already supplies a real elapsed time so play is unchanged. Cross-principle check: no principle section changed. Serves PRINCIPLE-003 (empirical save integrity), PRINCIPLE-011 (no surprise unlock) and PRINCIPLE-014 (failing-first regression).
 
+### ADR-020: A zero-millisecond best is never a record
+- **Date**: 2026-11-04
+- **Status**: Accepted
+- **Context**: ADR-019 stopped missing, NaN, negative and infinite `bestMs` values from becoming `0`ms three-star bests, but an explicit `0` still passed both recorders and `normalizeEntry` kept it on load, so legacy `0`ms rows survived every restart and a sub-millisecond time floored to `0` on write.
+- **Decision**: Treat `bestMs <= 0` as invalid in `recordSolve` and `recordDaily`, and require a floored value `> 0` in both `normalizeEntry` helpers so stored `0`ms rows drop back to an empty record on the next load. Pin with `normalizeProgress drops zero-millisecond records` and `normalizeDaily drops zero-millisecond records` plus the extended invalid-time cases (`0`, `0.4`).
+- **Consequences**: No human or synthetic run can store `00:00`; old `0`ms rows clean themselves without a migration. Cross-principle check: no principle section changed. Serves PRINCIPLE-003 (empirical save integrity) and PRINCIPLE-014 (failing-first regression).
+

@@ -160,10 +160,22 @@ test("recordSolve never mutates its input", () => {
 });
 
 test("recordSolve rejects a missing or invalid time instead of a 0ms best", () => {
-  for (const bad of [{}, { bestMs: NaN }, { bestMs: -5 }, { bestMs: Infinity }]) {
+  for (const bad of [{}, { bestMs: NaN }, { bestMs: -5 }, { bestMs: Infinity }, { bestMs: 0 }, { bestMs: 0.4 }]) {
     const next = recordSolve(defaultProgress(), "one", bad);
     assert.deepEqual(next.solved, {}, `accepted ${JSON.stringify(bad)}`);
   }
+});
+
+test("normalizeProgress drops zero-millisecond records left by the old default", () => {
+  const progress = normalizeProgress({
+    version: 1,
+    solved: {
+      one: { bestMs: 0 },
+      two: { bestMs: 1200 },
+    },
+  });
+  assert.equal(progress.solved.one, undefined);
+  assert.equal(progress.solved.two.bestMs, 1200);
 });
 
 test("unknown chambers stay locked", () => {
