@@ -184,7 +184,7 @@ The game is also covered by a real browser smoke pass during development: the ti
 
 ## Verification
 
-- `npm test` runs 83 unit and integration tests with no browser and no network beyond loopback.
+- `npm test` runs 89 unit and integration tests with no browser and no network beyond loopback.
 - `npm run dogfood` starts the real server, launches Edge/Chrome headless, solves the first chamber, checks the victory dialog, the three-star saved record and the chamber card, renders the 12×12 finale, solves today’s daily with its separate save, HUD best and visible share line, and checks the seven-day history.
 - `python aikit.py check weft` runs the test, mechanics, hygiene, guidelines and secret gates.
 - The test suite checks every stored solution, every cell total, path immutability, crossing refusal, corrupt saves, sequential unlocks, daily determinism, streaks, unique thread patterns, MIME types, path traversal and the UI inventory.
@@ -204,9 +204,9 @@ Free for personal play under the Aegean Game License 1.1 (AGL-1.1); see [LICENSE
 <!-- aegean:screenshots:start -->
 ## Screenshots
 
-<a href="https://github.com/AegeanWorks/Weft/commit/06bdbb7"><img src="assets/screenshots/2026-11-03-title.png" alt="Weft title screen at 2026-11-03"></a>
+<a href="https://github.com/AegeanWorks/Weft/commit/1310677"><img src="assets/screenshots/2026-11-04-title.png" alt="Weft title screen at 2026-11-04"></a>
 
-<a href="https://github.com/AegeanWorks/Weft/commit/06bdbb7"><img src="assets/screenshots/2026-11-03-chamber.png" alt="Weft first chamber at 2026-11-03"></a>
+<a href="https://github.com/AegeanWorks/Weft/commit/1310677"><img src="assets/screenshots/2026-11-04-chamber.png" alt="Weft first chamber at 2026-11-04"></a>
 
-*commit `06bdbb7` · 2026-11-03 · viewport 1440x900 · title plus deep-linked first chamber (`?level=first-thread`)*
+*commit `1310677` · 2026-11-04 · viewport 1440x900 · title plus deep-linked first chamber (`?level=first-thread`); 06bdbb7 captures kept in `assets/screenshots/`*
 <!-- aegean:screenshots:end -->
