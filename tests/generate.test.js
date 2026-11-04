@@ -61,3 +61,30 @@ test("daily generation is quick enough for a click", () => {
   createDailyLevel("2026-10-30");
   assert.ok(performance.now() - started < 500, "daily generation took over 500 ms");
 });
+
+test("previously slow dates stay interactive", () => {
+  for (const key of [
+    "2026-10-26",
+    "2026-10-27",
+    "2026-11-01",
+    "2026-11-03",
+    "2026-11-04",
+    "2024-02-28",
+  ]) {
+    const started = performance.now();
+    const level = createDailyLevel(key);
+    assert.ok(
+      performance.now() - started < 1500,
+      `daily ${key} took over 1500 ms`,
+    );
+    assertSolvable(level);
+  }
+});
+
+test("every month of a leap year yields a valid, solvable daily", () => {
+  for (let month = 1; month <= 12; month += 1) {
+    const key = `2024-${String(month).padStart(2, "0")}-15`;
+    assertSolvable(createDailyLevel(key));
+  }
+  assertSolvable(createDailyLevel("2024-02-29"));
+});

@@ -103,11 +103,19 @@ function remainingIsConnected(size, visited) {
 
 /**
  * A randomized depth-first Hamiltonian path with a Warnsdorff ordering and a
- * connectivity cut. Each attempt has a node budget; a trapped attempt is
- * abandoned and restarted from another cell, which is much safer than one
+ * connectivity cut. Each attempt has a small node budget and a trapped
+ * attempt is abandoned for another start cell, which is much safer than one
  * unbounded search.
+ *
+ * The budget is deliberately small: a successful attempt walks straight to a
+ * full path with almost no backtracking (one node per cell), while a doomed
+ * attempt burns the whole budget. Capping the burn keeps the worst case near
+ * the best case, so the in-browser daily never freezes on an unlucky date.
+ * Every output is still a total Hamiltonian path cut into valid threads, so a
+ * different budget can only change which valid puzzle a seed yields, never
+ * whether it is valid.
  */
-function hamiltonianPath(size, random, attemptBudget = 120000, attempts = 24) {
+function hamiltonianPath(size, random, attemptBudget = 1000, attempts = 24) {
   const total = size * size;
 
   for (let attempt = 0; attempt < attempts; attempt += 1) {
