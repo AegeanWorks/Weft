@@ -158,3 +158,25 @@ evidence and pushes.
   `npm run dogfood` OK with 0 page errors.
 - **Push**: `git push origin master` after the record commit; remote head
   confirmed with `git ls-remote origin`.
+
+## Push run 7 — return sweep 12→3
+
+- **Scope**: cycles 12-3 (help readability, save filtering, card previews, audio,
+  skip link, daily clamp, level balance, index return, static shell, help focus,
+  locked links, legacy replay).
+- **Finding**: the help dialog's keyboard **Ready** close path was not covered;
+  dogfood only closed it with Escape. A regression in the form-dialog close or
+  focus return would have shipped unseen.
+- **Fix**: `test(dogfood): cover the help Ready close path` (`b2091c6`,
+  test-only). The pass reopens help from the focused opener, Tabs to Ready,
+  presses Enter, and requires the dialog to close with focus back on the opener.
+  The keyboard probe confirmed `open=false, active=btn-how` before the test was
+  added. No game code changed.
+- **Visual proof**: not applicable; this run adds keyboard coverage and makes no
+  visual claim.
+- **Played run**: `npm run dogfood` reports the Ready close/focus sequence and
+  completes the full run with 0 page errors.
+- **Gates**: `npm test` 97/97 pass; `python aikit.py check weft` 5/5;
+  `npm run dogfood` OK with 0 page errors.
+- **Push**: `git push origin master` after the record commit; remote head
+  confirmed with `git ls-remote origin`.
