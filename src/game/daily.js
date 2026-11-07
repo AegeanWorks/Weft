@@ -27,6 +27,14 @@ export function dailyLabel(key) {
   });
 }
 
+/**
+ * A daily can only be opened for the local day. A remembered, shared or
+ * hand-written past key falls back to today so history cannot be back-filled.
+ */
+export function currentDailyKey(requested, today = dateKey()) {
+  return requested === today ? requested : today;
+}
+
 export function createDailyLevel(key = dateKey(), stats = null) {
   const index = hashSeed(`weft-daily-${key}`) % COLORS.length;
   return generateLevel(

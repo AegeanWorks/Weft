@@ -4,7 +4,12 @@ import {
   isSolved,
   setPath,
 } from "../game/engine.js";
-import { createDailyLevel, dailyLabel, dateKey } from "../game/daily.js";
+import {
+  createDailyLevel,
+  currentDailyKey,
+  dailyLabel,
+  dateKey,
+} from "../game/daily.js";
 import { LEVELS, TOTAL_CHAMBERS } from "../game/levels.js";
 import { createAudio } from "./audio.js";
 import {
@@ -1028,9 +1033,10 @@ function openLevel(id, options = {}) {
 }
 
 function openDaily(key = dateKey(), options = {}) {
-  openBoard(createDailyLevel(key), {
+  const dailyKey = currentDailyKey(key);
+  openBoard(createDailyLevel(dailyKey), {
     ...options,
-    daily: { key, label: dailyLabel(key) },
+    daily: { key: dailyKey, label: dailyLabel(dailyKey) },
   });
 }
 
