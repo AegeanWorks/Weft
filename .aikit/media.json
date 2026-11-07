@@ -156,6 +156,44 @@
         "score": 92,
         "reviewed_at": "2026-11-07"
       }
+    },
+    {
+      "path": "assets/screenshots/2026-11-07-reset-undo-before.png",
+      "alt": "Weft Reset then Undo restored two threads at a zeroed timer at 2026-11-07",
+      "caption": "Pre-fix build 7ca3abb: after a hint and two threads, Reset zeroes the clock but Undo restores both threads, leaving a free time rollback.",
+      "commit": "7ca3abb3b0d70475dca0a2c0e2490bca8985e010",
+      "taken_at": "2026-11-07",
+      "viewport": "1440x900",
+      "width": 1440,
+      "height": 900,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 1440x900 from a fresh profile: the two-thread board is back after Reset+Undo, the timer reads 00:00 and Undo is still enabled.",
+        "score": 90,
+        "reviewed_at": "2026-11-07"
+      }
+    },
+    {
+      "path": "assets/screenshots/2026-11-07-reset-undo-after.png",
+      "alt": "Weft Reset then Undo keeps the loom empty with Undo disabled at 2026-11-07",
+      "caption": "Fixed build 034da64: the same hint-plus-two-thread Reset+Undo leaves the loom empty, the ghost gone and Undo disabled at 00:00.",
+      "commit": "034da6488d263a3d026f65b23d8af75b33213fd5",
+      "taken_at": "2026-11-07",
+      "viewport": "1440x900",
+      "width": 1440,
+      "height": 900,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 1440x900 from a fresh profile with the identical hint, two-thread and Reset+Undo setup: no thread or ghost remains, the timer is 00:00 and Undo is disabled.",
+        "score": 92,
+        "reviewed_at": "2026-11-07"
+      }
     }
   ]
 }
