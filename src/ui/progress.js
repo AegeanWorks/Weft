@@ -158,8 +158,12 @@ export function isUnlocked(progress, levels, levelId) {
   if (index === 0) {
     return true;
   }
+  const solved = normalizeProgress(progress).solved;
+  if (solved[levelId]) {
+    return true;
+  }
   const previous = levels[index - 1];
-  return Boolean(normalizeProgress(progress).solved[previous.id]);
+  return Boolean(solved[previous.id]);
 }
 
 export function nextUnsolved(progress, levels) {
