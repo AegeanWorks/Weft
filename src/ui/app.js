@@ -315,6 +315,45 @@ function setSound(enabled) {
   }
 }
 
+function buildLevelPreview(level) {
+  const svg = document.createElementNS(SVG_NS, "svg");
+  svg.setAttribute("class", "level-mini");
+  svg.setAttribute("viewBox", `0 0 ${level.size} ${level.size}`);
+  svg.setAttribute("aria-hidden", "true");
+  svg.setAttribute("focusable", "false");
+
+  const frame = document.createElementNS(SVG_NS, "rect");
+  frame.setAttribute("class", "mini-frame");
+  frame.setAttribute("x", "0.04");
+  frame.setAttribute("y", "0.04");
+  frame.setAttribute("width", String(level.size - 0.08));
+  frame.setAttribute("height", String(level.size - 0.08));
+  frame.setAttribute("rx", "0.16");
+  svg.append(frame);
+
+  let gridPath = "";
+  for (let index = 1; index < level.size; index += 1) {
+    gridPath += `M ${index} 0 V ${level.size} M 0 ${index} H ${level.size} `;
+  }
+  const grid = document.createElementNS(SVG_NS, "path");
+  grid.setAttribute("class", "mini-grid");
+  grid.setAttribute("d", gridPath);
+  svg.append(grid);
+
+  for (const pair of level.pairs) {
+    for (const [x, y] of [pair.start, pair.end]) {
+      const spool = document.createElementNS(SVG_NS, "circle");
+      spool.setAttribute("class", "mini-spool");
+      spool.setAttribute("cx", String(x + 0.5));
+      spool.setAttribute("cy", String(y + 0.5));
+      spool.setAttribute("r", "0.3");
+      spool.setAttribute("fill", colorVar(pair.color));
+      svg.append(spool);
+    }
+  }
+  return svg;
+}
+
 function renderLevels() {
   refs.levelGrid.replaceChildren();
   const next = nextUnsolved(state.progress, LEVELS);
@@ -367,7 +406,7 @@ function renderLevels() {
       ),
     );
 
-    card.append(top, body);
+    card.append(top, body, buildLevelPreview(level));
     card.addEventListener("click", () => openLevel(level.id));
     refs.levelGrid.append(card);
   });

@@ -320,19 +320,6 @@ button {
   transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
 }
 
-.level-card::after {
-  content: "";
-  position: absolute;
-  right: -30px;
-  bottom: -42px;
-  width: 120px;
-  height: 120px;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  opacity: 0.6;
-  transition: border-color 180ms ease, transform 180ms ease;
-}
-
 .level-card:hover:not(:disabled),
 .level-card:focus-visible:not(:disabled) {
   transform: translateY(-3px);
@@ -340,9 +327,50 @@ button {
   background: linear-gradient(145deg, var(--panel-2), var(--ink-3));
 }
 
-.level-card:hover:not(:disabled)::after {
-  border-color: var(--bronze-dim);
-  transform: scale(1.12);
+.level-card-top,
+.level-card-body {
+  position: relative;
+  z-index: 1;
+}
+
+.level-mini {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  z-index: 0;
+  width: 100px;
+  height: 100px;
+  opacity: 0.32;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+.level-card:hover:not(:disabled) .level-mini,
+.level-card:focus-visible:not(:disabled) .level-mini {
+  opacity: 0.52;
+}
+
+.level-card[data-locked="true"] .level-mini {
+  opacity: 0.16;
+}
+
+.level-mini .mini-frame {
+  fill: var(--ink-2);
+  fill-opacity: 0.6;
+  stroke: var(--line-strong);
+  stroke-width: 0.06;
+}
+
+.level-mini .mini-grid {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 0.04;
+  opacity: 0.7;
+}
+
+.level-mini .mini-spool {
+  stroke: var(--ink);
+  stroke-width: 0.06;
 }
 
 .level-card[data-solved="true"] {
