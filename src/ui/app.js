@@ -799,11 +799,14 @@ function resetLevel() {
   if (state.moves === 0 && complete === 0) {
     return;
   }
-  pushUndo();
   state.game = createGame(state.level);
   state.moves = 0;
   state.draft = null;
   state.activePointer = null;
+  state.undoStack = [];
+  clearTimeout(state.hintTimer);
+  state.hintColor = null;
+  state.hintTimer = null;
   resetTimer();
   audio.play("tick");
   renderBoard();
