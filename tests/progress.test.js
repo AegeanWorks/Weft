@@ -152,6 +152,19 @@ test("totalStars adds every chamber's best rating", () => {
   assert.equal(solvedCount(progress), 3);
 });
 
+test("unknown chamber ids never inflate the campaign totals", () => {
+  const levels = [{ id: "one" }, { id: "two" }, { id: "three" }];
+  let progress = defaultProgress();
+  progress = recordSolve(progress, "ghost", { bestMs: 1000, hints: 0, moves: 2 });
+  progress = recordSolve(progress, "one", { bestMs: 2000, hints: 0, moves: 3 });
+  assert.equal(solvedCount(progress), 2);
+  assert.equal(totalStars(progress), 6);
+  assert.equal(solvedCount(progress, levels), 1);
+  assert.equal(totalStars(progress, levels), 3);
+  assert.equal(solvedCount(progress, []), 0);
+  assert.equal(totalStars(progress, []), 0);
+});
+
 test("recordSolve never mutates its input", () => {
   const progress = defaultProgress();
   const next = recordSolve(progress, "one", { bestMs: 1000, hints: 0, moves: 2 });
