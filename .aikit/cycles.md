@@ -516,3 +516,45 @@ repeat one that is already covered.
   - `python aikit.py check weft` -> 5/5 gates passed.
   - Before/after: `WEFT_WIDTH=390 WEFT_HEIGHT=844 node
     scratch/weft-play.mjs help-state` on `http://127.0.0.1:4175`.
+
+## Cycle 13 — Final audit: zero verified findings
+
+- **Area**: full rotation re-check after cycles 1-12 (levels, UI readability,
+  graphics/effects, audio, progression/saves, accessibility, performance).
+- **Methods**: 96-test suite, 5/5 AIKit gates, full dogfood play with 0 page
+  errors, seven-state renders at 1440x900 and 390x844 with no horizontal
+  overflow (`scrollWidth === clientWidth` in every state), DOM/computed-style
+  checks, stale-value scan, and a media-register path check (26 screenshots, 0
+  missing).
+- **Candidates reviewed and killed**:
+  - 12x12 cells are 30.3px wide at 390px (51.5px at 1440px), below the 44px touch
+    target. This is the documented ADR-014 constraint; a real fix needs a
+    zoom/pan or magnifier redesign, so it is out of scope rather than a new
+    finding.
+  - A win-state extra celebration is subjective polish with no reproduced defect;
+    the current gold border/glow and victory dialog already read clearly.
+  - The daily history at a month boundary is labelled with full locale dates in
+    each chip's accessible name, so the day-number strip is not ambiguous.
+  - Locked-card text was re-read at 390x844 and 1440x900; the 0.55 card opacity
+    still leaves "Finish the previous chamber" legible, with no reproducible
+    failure.
+  - Audio has no visual surface; its proof remains the cycle-6 browser audio graph
+    and frequency pins.
+- **Verified improvements this cycle**: none. No code or test change was made;
+  the final suite and dogfood are green on the cycle-12 tree.
+- **Final gates**: `npm test` 96/96 pass; `python aikit.py check weft` 5/5
+  (test, mechanics, hygiene, guidelines, secrets); `npm run dogfood` OK with
+  `0 page errors`.
+- **Commands run and results**:
+  - `npm test` -> 96 tests, 96 pass, 0 fail.
+  - `python aikit.py check weft` -> 5/5 gates passed.
+  - `npm run dogfood` -> `[OK] Weft dogfood: title, 24 chambers, a 3-thread
+    solve, the victory dialog, the 12x12 finale and the daily weave; 0 page
+    errors.`
+  - `node scratch/weft-play.mjs states` at 390x844 and 1440x900 -> all
+    `scrollWidth === clientWidth`; first-thread cell 72.8px / 123.6px;
+    12x12 cell 30.3px / 51.5px.
+  - Stale scan -> no remaining `0 of 18`, no TODO/FIXME; media register 26
+    entries, 0 missing.
+- **Stop reason**: the full audit cycle found zero verified improvements, the
+  run's stopping condition. The 12 delivered cycles remain documented above.
