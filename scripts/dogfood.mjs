@@ -330,6 +330,39 @@ async function main() {
       );
     }
 
+    const second = LEVELS[1];
+    await connection.evaluate("document.getElementById('btn-hint').click()");
+    await wait(160);
+    const hintThreads = await connection.evaluate(
+      "document.querySelectorAll('.hint-thread').length",
+    );
+    if (hintThreads !== 1) {
+      throw new Error(`Chamber 02 did not show its hint ghost: ${hintThreads}.`);
+    }
+    for (const pair of second.pairs.slice(0, 2)) {
+      await drawPair(connection, pair, second.solution[pair.color]);
+    }
+    await connection.evaluate("document.getElementById('btn-reset').click()");
+    await wait(250);
+    const reset = await connection.evaluate(`(() => ({
+      moves: document.getElementById('move-count').textContent,
+      threads: document.querySelectorAll('.thread-core').length,
+      undoDisabled: document.getElementById('btn-undo').disabled,
+      timer: document.getElementById('timer').textContent,
+      hintThreads: document.querySelectorAll('.hint-thread').length
+    }))()`);
+    if (
+      reset.moves !== "0" ||
+      reset.threads !== 0 ||
+      !reset.undoDisabled ||
+      reset.timer !== "00:00" ||
+      reset.hintThreads !== 0
+    ) {
+      throw new Error(
+        `Reset did not start a clean attempt: moves=${reset.moves}, threads=${reset.threads}, undoDisabled=${reset.undoDisabled}, timer=${reset.timer}, hintThreads=${reset.hintThreads}.`,
+      );
+    }
+
     await connection.send("Page.navigate", { url: `${url}?screen=levels` });
     await wait(900);
     const firstCard = await connection.evaluate(`(() => {
