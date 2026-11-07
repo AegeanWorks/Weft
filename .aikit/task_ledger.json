@@ -1,67 +1,17 @@
 {
   "version": 1,
   "active_task": {
-    "task_id": "weft-cycle-08",
+    "task_id": "weft-cycle-09",
     "last_phase": "in_progress",
     "active_phase": 5,
     "status": "completed",
-    "updated_at": 1794084382.9486024,
+    "updated_at": 1794085153.4655373,
     "owner": "opencode:weft-cycles",
     "started_by": "opencode:weft-cycles",
     "continuations": [],
-    "completed_at": 1794084383.2999153
+    "completed_at": 1794085153.777403
   },
   "checkpoints": [
-    {
-      "task_id": "weft-cycle-03",
-      "phase": "in_progress",
-      "phase_num": 4,
-      "description": "[3/4] Phase 4 green: 89/89 tests under 100% host load, 5/5 aikit gates, dogfood 3 consecutive runs with 0 page errors, help opens scrollTop=0 with active help-title at 390x844 and 1440x900, before/after pair committed; checklists: passed",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1794080467.3750117,
-      "timestamp_str": "2026-11-07 22:41:07",
-      "agent": "opencode:weft-cycles"
-    },
-    {
-      "task_id": "weft-cycle-03",
-      "phase": "completed",
-      "phase_num": 5,
-      "description": "Task 'weft-cycle-03' completed successfully.",
-      "status": "completed",
-      "timestamp": 1794080476.1060195,
-      "timestamp_str": "2026-11-07 22:41:16",
-      "agent": "opencode:weft-cycles"
-    },
-    {
-      "task_id": "weft-cycle-04",
-      "phase": "in_progress",
-      "phase_num": 2,
-      "description": "[1/4] Cycle 4: stop unknown chamber ids in a poisoned or legacy save from inflating the campaign totals; filter solvedCount/totalStars by the live level list, prove with a same-save 1440x900 title pair and a dogfood poisoned-save reload run",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1794080582.2064307,
-      "timestamp_str": "2026-11-07 22:43:02",
-      "agent": "opencode:weft-cycles",
-      "impact_assessment": {
-        "why": "A save with 24 unknown solved ids made the title read '24 of 24 woven \u00b7 72/72 stars \u00b7 next: First Thread' while the chamber index showed only one unlocked chamber and zero real stars; isUnlocked already rejects unknown ids but the totals still count them.",
-        "benefits": "Campaign counts, the completion message and the next-chamber line agree with the actual levels; a corrupt or legacy save cannot fake completion; no save migration, engine rule or layout change.",
-        "risks": "contract: solvedCount/totalStars optional levels argument and app call sites; dependency: none; concurrency: single writer on a clean weft tree; state: read-only filtering of the existing save",
-        "mitigation": "Failing-first dogfood injection and unit tests for unknown ids, same poisoned-save title screenshots at 1440x900, full npm test plus aikit check and dogfood, explicit staging, no push"
-      },
-      "plan_digest": "ca939100bde09679b5d21e4daf7a2cc89f129307d21c2cbc77207c145cd6e598"
-    },
-    {
-      "task_id": "weft-cycle-04",
-      "phase": "in_progress",
-      "phase_num": 4,
-      "description": "[3/4] Phase 4 green: 90/90 tests, 5/5 aikit gates, dogfood 0 page errors with the ghost-save reload, before/after title pair from the same 24-ghost save at 1440x900; checklists: passed",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1794081088.5940557,
-      "timestamp_str": "2026-11-07 22:51:28",
-      "agent": "opencode:weft-cycles"
-    },
     {
       "task_id": "weft-cycle-04",
       "phase": "in_progress",
@@ -259,6 +209,56 @@
       "status": "completed",
       "timestamp": 1794084383.2999172,
       "timestamp_str": "2026-11-07 23:46:23",
+      "agent": "opencode:weft-cycles"
+    },
+    {
+      "task_id": "weft-cycle-09",
+      "phase": "in_progress",
+      "phase_num": 2,
+      "description": "[1/4] Cycle 9: rebalance the two 8x8 Act I outliers (Warp Song 24/64 and Shuttle 31/64) with the existing even cut, so no thread on a large loom swallows a third of the board; pin the invariant in tests, prove with a solved-board before/after pair and real plays of Shuttle",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794084539.4804015,
+      "timestamp_str": "2026-11-07 23:48:59",
+      "agent": "opencode:weft-cycles",
+      "impact_assessment": {
+        "why": "Shuttle's longest solution thread is 31 of 64 cells (48%) and Warp Song's is 24 (38%), while every 8x8-or-larger chamber from Tapestry onward stays under a third; the giant thread makes most of the board one colour and the played route a long snake.",
+        "benefits": "Thread effort is distributed across the seven pairs, the board reads as a balanced weave, and the existing even-cut generator plus frozen-solution tests already support it; no rule, save or UI change.",
+        "risks": "contract: levels.js solutions for warp-song and shuttle; dependency: none; concurrency: single writer on a clean weft tree; state: ids and save schema unchanged, stored best times remain but refer to the refreshed puzzles",
+        "mitigation": "Failing-first balance test over every large chamber, regenerate only the two specs and diff the rest, validate all 24 solutions and totals, before/after solved-board pair plus real plays, full npm test plus aikit check and dogfood, explicit staging, no push"
+      },
+      "plan_digest": "6670bf9424b47886e6507363449a3b11cb38a47e4c730a7cd07915019665ad64"
+    },
+    {
+      "task_id": "weft-cycle-09",
+      "phase": "in_progress",
+      "phase_num": 3,
+      "description": "[2/4] Rebalanced Warp Song and Shuttle with the even cut, extended the quarter-loom test to the 8x8 closers, regenerated only the two solutions, and captured/played the solved Shuttle before and after",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794085113.6222744,
+      "timestamp_str": "2026-11-07 23:58:33",
+      "agent": "opencode:weft-cycles"
+    },
+    {
+      "task_id": "weft-cycle-09",
+      "phase": "in_progress",
+      "phase_num": 4,
+      "description": "[3/4] Phase 4 green: 95/95 tests, 5/5 aikit gates, dogfood 0 page errors, Shuttle longest thread 31->12 cells with solved-board before/after pair at 1440x900 and real plays both winning 7/7; checklists: passed",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794085153.4655373,
+      "timestamp_str": "2026-11-07 23:59:13",
+      "agent": "opencode:weft-cycles"
+    },
+    {
+      "task_id": "weft-cycle-09",
+      "phase": "completed",
+      "phase_num": 5,
+      "description": "Task 'weft-cycle-09' completed successfully.",
+      "status": "completed",
+      "timestamp": 1794085153.777406,
+      "timestamp_str": "2026-11-07 23:59:13",
       "agent": "opencode:weft-cycles"
     }
   ]
