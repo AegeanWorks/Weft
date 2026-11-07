@@ -382,6 +382,42 @@ async function main() {
     if (cells !== 25) {
       throw new Error(`The first loom rendered ${cells} cells, not 25.`);
     }
+    await connection.evaluate(`(() => {
+      const log = [];
+      window.__weftAudio = log;
+      class FakeParam {
+        constructor(name) { this.name = name; }
+        setValueAtTime(value, at) {
+          if (this.name === 'frequency') log.push({ kind: 'freq', value, at });
+        }
+        exponentialRampToValueAtTime() {}
+      }
+      class FakeOscillator {
+        constructor() {
+          this.frequency = new FakeParam('frequency');
+          this.type = 'sine';
+        }
+        connect() {}
+        start(at) { log.push({ kind: 'start', at, type: this.type }); }
+        stop(at) { log.push({ kind: 'stop', at }); }
+      }
+      class FakeGain {
+        constructor() { this.gain = new FakeParam('gain'); }
+        connect() {}
+      }
+      class FakeContext {
+        constructor() {
+          this.state = 'running';
+          this.currentTime = 0;
+          this.destination = {};
+        }
+        resume() { return Promise.resolve(); }
+        createOscillator() { return new FakeOscillator(); }
+        createGain() { return new FakeGain(); }
+      }
+      window.AudioContext = FakeContext;
+      window.webkitAudioContext = FakeContext;
+    })()`);
 
     const level = LEVELS[0];
     for (const pair of level.pairs) {
@@ -459,6 +495,13 @@ async function main() {
     if (hintThreads !== 1) {
       throw new Error(`Chamber 02 did not show its hint ghost: ${hintThreads}.`);
     }
+    await drawPair(
+      connection,
+      second.pairs[0],
+      second.solution[second.pairs[0].color],
+    );
+    await connection.evaluate("document.getElementById('btn-undo').click()");
+    await wait(200);
     for (const pair of second.pairs.slice(0, 2)) {
       await drawPair(connection, pair, second.solution[pair.color]);
     }
@@ -480,6 +523,23 @@ async function main() {
     ) {
       throw new Error(
         `Reset did not start a clean attempt: moves=${reset.moves}, threads=${reset.threads}, undoDisabled=${reset.undoDisabled}, timer=${reset.timer}, hintThreads=${reset.hintThreads}.`,
+      );
+    }
+    const audioLog = await connection.evaluate("window.__weftAudio || []");
+    const audioFrequencies = audioLog
+      .filter((entry) => entry.kind === "freq")
+      .map((entry) => entry.value);
+    const hasRun = (sequence) =>
+      audioFrequencies.some((_, start) =>
+        sequence.every((value, offset) => audioFrequencies[start + offset] === value),
+      );
+    if (
+      !hasRun([880, 1174.66]) ||
+      !hasRun([392, 293.66]) ||
+      !hasRun([196])
+    ) {
+      throw new Error(
+        `The action cues are not distinct in the browser: ${JSON.stringify(audioFrequencies)}.`,
       );
     }
 
