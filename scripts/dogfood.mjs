@@ -251,8 +251,10 @@ async function main() {
     [
       "--headless=new",
       "--disable-gpu",
+      "--hide-scrollbars",
       "--no-first-run",
       "--no-default-browser-check",
+      "--window-size=1440,900",
       `--user-data-dir=${profile}`,
       `--remote-debugging-port=${port}`,
       url,
