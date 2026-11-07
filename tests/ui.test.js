@@ -29,6 +29,7 @@ test("the shell has the required screens, dialogs and controls", () => {
   for (const id of [
     "title-heading",
     "levels-heading",
+    "levels-status",
     "level-grid",
     "board",
     "timer",
