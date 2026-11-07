@@ -149,16 +149,20 @@ async function cellCenter(connection, x, y) {
   return center;
 }
 
-async function pressEscape(connection) {
+async function pressKey(connection, key, code, windowsVirtualKeyCode) {
   for (const type of ["rawKeyDown", "keyUp"]) {
     await connection.send("Input.dispatchKeyEvent", {
       type,
-      key: "Escape",
-      code: "Escape",
-      windowsVirtualKeyCode: 27,
+      key,
+      code,
+      windowsVirtualKeyCode,
     });
   }
   await wait(160);
+}
+
+async function pressEscape(connection) {
+  await pressKey(connection, "Escape", "Escape", 27);
 }
 
 async function clickSelector(connection, selector) {
@@ -277,6 +281,34 @@ async function main() {
     });
     await connection.send("Page.navigate", { url: `${url}?screen=title` });
     await wait(900);
+    await pressKey(connection, "Tab", "Tab", 9);
+    const firstStop = await connection.evaluate(`(() => ({
+      className: document.activeElement?.className ?? "",
+      text: document.activeElement?.textContent?.trim() ?? ""
+    }))()`);
+    if (!firstStop.className.includes("skip-link") || firstStop.text !== "Skip to content") {
+      throw new Error(
+        `The first Tab stop is not the skip link: class=${firstStop.className}, text=${firstStop.text}.`,
+      );
+    }
+    await pressKey(connection, "Enter", "Enter", 13);
+    await wait(250);
+    const skipped = await connection.evaluate(`(() => ({
+      active: document.activeElement?.id || document.activeElement?.tagName || "",
+      hash: location.hash
+    }))()`);
+    if (skipped.active !== "main" || skipped.hash !== "#main") {
+      throw new Error(
+        `The skip link did not focus main: active=${skipped.active}, hash=${skipped.hash}.`,
+      );
+    }
+    await pressKey(connection, "Tab", "Tab", 9);
+    const nextStop = await connection.evaluate(
+      "document.activeElement?.textContent?.trim() ?? ''",
+    );
+    if (nextStop !== "Play") {
+      throw new Error(`Tab after the skip target reached '${nextStop}', not Play.`);
+    }
     await clickSelector(connection, "#btn-how");
     const help = await connection.evaluate(`(() => {
       const dialog = document.getElementById('help-dialog');
