@@ -610,6 +610,21 @@ async function main() {
     }
 
     const dailyKey = dateKey();
+    const pastDate = new Date();
+    pastDate.setDate(pastDate.getDate() - 1);
+    const pastKey = dateKey(pastDate);
+    await connection.send("Page.navigate", { url: `${url}?daily=${pastKey}` });
+    await wait(900);
+    const pastLink = await connection.evaluate(`(() => ({
+      boardLevel: document.getElementById('board').dataset.level,
+      kicker: document.getElementById('level-kicker').textContent,
+      saved: localStorage.getItem('weft.daily.v1')
+    }))()`);
+    if (pastLink.boardLevel !== `daily-${dailyKey}` || pastLink.saved !== null) {
+      throw new Error(
+        `A past daily link opened or saved a historical day: board=${pastLink.boardLevel}, saved=${pastLink.saved}.`,
+      );
+    }
     const daily = createDailyLevel(dailyKey);
     await connection.send("Page.navigate", { url: `${url}?daily=1` });
     await wait(900);
