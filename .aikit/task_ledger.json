@@ -1,71 +1,17 @@
 {
   "version": 1,
   "active_task": {
-    "task_id": "weft-cycle-03",
+    "task_id": "weft-cycle-04",
     "last_phase": "in_progress",
     "active_phase": 5,
     "status": "completed",
-    "updated_at": 1794080467.3750117,
+    "updated_at": 1794081088.7017374,
     "owner": "opencode:weft-cycles",
     "started_by": "opencode:weft-cycles",
     "continuations": [],
-    "completed_at": 1794080476.1060169
+    "completed_at": 1794081097.1065936
   },
   "checkpoints": [
-    {
-      "task_id": "weft-daily-history-v1",
-      "phase": "phase 4",
-      "phase_num": 4,
-      "description": "[3/4] Phase 4 green: 5/5 gates, 74 tests, dogfood checks the seven-day strip after a real daily solve, and desktop/mobile renders show the solved, partial and missed days; checklists: passed",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793362369.8937395,
-      "timestamp_str": "2026-10-30 15:12:49",
-      "agent": "opencode:weft-daily-history",
-      "handoff": {
-        "state": "74 tests, 5/5 gates, history is display-only over weft.daily.v1",
-        "next": "commit 0.7.0, record the post-commit UI blessing, push and sync the Play catalog",
-        "open": "none",
-        "evidence": "node --test tests, node scripts/dogfood.mjs, python aikit.py check weft"
-      }
-    },
-    {
-      "task_id": "weft-daily-history-v1",
-      "phase": "completed",
-      "phase_num": 5,
-      "description": "Task 'weft-daily-history-v1' completed successfully.",
-      "status": "completed",
-      "timestamp": 1793362370.1630394,
-      "timestamp_str": "2026-10-30 15:12:50",
-      "agent": "opencode:weft-daily-history"
-    },
-    {
-      "task_id": "weft-daily-history-v1",
-      "phase": "phase 5",
-      "phase_num": 5,
-      "description": "[4/4] Delivered Weft 0.7.0: seven-day daily history with solved/today/missed states; pushed at cc1c443 and the Play catalog now serves 0.7.0 from that commit; 74 tests and 5/5 gates green",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793362448.6098003,
-      "timestamp_str": "2026-10-30 15:14:08",
-      "agent": "opencode:weft-daily-history",
-      "handoff": {
-        "state": "clean weft tree and remote synced",
-        "next": "none, 0.7.0 is delivered",
-        "open": "none",
-        "evidence": "Weft commit cc1c443, AegeanWorks live.json weft 0.7.0"
-      }
-    },
-    {
-      "task_id": "weft-daily-history-v1",
-      "phase": "completed",
-      "phase_num": 5,
-      "description": "Task 'weft-daily-history-v1' completed successfully.",
-      "status": "completed",
-      "timestamp": 1793362448.8690586,
-      "timestamp_str": "2026-10-30 15:14:08",
-      "agent": "opencode:weft-daily-history"
-    },
     {
       "task_id": "weft-audit-waves",
       "phase": "phase 2",
@@ -265,6 +211,56 @@
       "status": "completed",
       "timestamp": 1794080476.1060195,
       "timestamp_str": "2026-11-07 22:41:16",
+      "agent": "opencode:weft-cycles"
+    },
+    {
+      "task_id": "weft-cycle-04",
+      "phase": "in_progress",
+      "phase_num": 2,
+      "description": "[1/4] Cycle 4: stop unknown chamber ids in a poisoned or legacy save from inflating the campaign totals; filter solvedCount/totalStars by the live level list, prove with a same-save 1440x900 title pair and a dogfood poisoned-save reload run",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794080582.2064307,
+      "timestamp_str": "2026-11-07 22:43:02",
+      "agent": "opencode:weft-cycles",
+      "impact_assessment": {
+        "why": "A save with 24 unknown solved ids made the title read '24 of 24 woven \u00b7 72/72 stars \u00b7 next: First Thread' while the chamber index showed only one unlocked chamber and zero real stars; isUnlocked already rejects unknown ids but the totals still count them.",
+        "benefits": "Campaign counts, the completion message and the next-chamber line agree with the actual levels; a corrupt or legacy save cannot fake completion; no save migration, engine rule or layout change.",
+        "risks": "contract: solvedCount/totalStars optional levels argument and app call sites; dependency: none; concurrency: single writer on a clean weft tree; state: read-only filtering of the existing save",
+        "mitigation": "Failing-first dogfood injection and unit tests for unknown ids, same poisoned-save title screenshots at 1440x900, full npm test plus aikit check and dogfood, explicit staging, no push"
+      },
+      "plan_digest": "ca939100bde09679b5d21e4daf7a2cc89f129307d21c2cbc77207c145cd6e598"
+    },
+    {
+      "task_id": "weft-cycle-04",
+      "phase": "in_progress",
+      "phase_num": 4,
+      "description": "[3/4] Phase 4 green: 90/90 tests, 5/5 aikit gates, dogfood 0 page errors with the ghost-save reload, before/after title pair from the same 24-ghost save at 1440x900; checklists: passed",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794081088.5940557,
+      "timestamp_str": "2026-11-07 22:51:28",
+      "agent": "opencode:weft-cycles"
+    },
+    {
+      "task_id": "weft-cycle-04",
+      "phase": "in_progress",
+      "phase_num": 3,
+      "description": "[2/4] Implemented the level-aware campaign totals with unit coverage, dogfood poisoned-save reload checks, the same-save 1440x900 title pair and the 90-test README count",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794081088.7017374,
+      "timestamp_str": "2026-11-07 22:51:28",
+      "agent": "opencode:weft-cycles"
+    },
+    {
+      "task_id": "weft-cycle-04",
+      "phase": "completed",
+      "phase_num": 5,
+      "description": "Task 'weft-cycle-04' completed successfully.",
+      "status": "completed",
+      "timestamp": 1794081097.106596,
+      "timestamp_str": "2026-11-07 22:51:37",
       "agent": "opencode:weft-cycles"
     }
   ]
