@@ -3,6 +3,8 @@ import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import { TOTAL_CHAMBERS } from "../src/game/levels.js";
+import { MAX_STARS } from "../src/ui/progress.js";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
@@ -57,6 +59,15 @@ test("the shell has the required screens, dialogs and controls", () => {
   ]) {
     assert.ok(found.has(id), `missing #${id}`);
   }
+});
+
+test("the static shell matches the fresh campaign totals", () => {
+  assert.match(html, new RegExp(`0 of ${TOTAL_CHAMBERS} woven`));
+  assert.match(
+    html,
+    new RegExp(`${TOTAL_CHAMBERS} chambers · ${MAX_STARS} stars each`),
+  );
+  assert.doesNotMatch(html, /0 of 18 woven/);
 });
 
 test("the UI inventory names every control, panel and cue", () => {
