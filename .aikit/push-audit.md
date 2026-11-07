@@ -180,3 +180,25 @@ evidence and pushes.
   `npm run dogfood` OK with 0 page errors.
 - **Push**: `git push origin master` after the record commit; remote head
   confirmed with `git ls-remote origin`.
+
+## Push run 8 — return sweep 12→1 (beginning reached)
+
+- **Scope**: the final reverse pass through all twelve cycles, ending at cycle 1.
+- **Finding**: the skip link was verified on the title and the deep-loaded game
+  screen, but not on a direct levels-index load. That was the last initial-screen
+  keyboard path without coverage.
+- **Fix**: `test(dogfood): cover the levels-screen skip link` (`329c60f`,
+  test-only). A direct `?screen=levels` load now Tabs to `Skip to content`,
+  Enters to focus `main`, and requires the next Tab to reach the Title button. The
+  keyboard probe confirmed the same sequence before the test was added. No game
+  code changed.
+- **Visual proof**: not applicable; this run adds keyboard coverage and makes no
+  visual claim.
+- **Played run**: `npm run dogfood` reports the levels skip sequence and completes
+  the full run with 0 page errors.
+- **Gates**: `npm test` 97/97 pass; `python aikit.py check weft` 5/5;
+  `npm run dogfood` OK with 0 page errors.
+- **Push**: `git push origin master` after the record commit; remote head
+  confirmed with `git ls-remote origin`.
+- **Sweep complete**: forward windows 1→3, 1→6, 1→9, 1→12 and reverse windows
+  12→9, 12→6, 12→3, 12→1 have all been audited, fixed where needed and pushed.
