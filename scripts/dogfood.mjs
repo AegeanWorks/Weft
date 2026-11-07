@@ -361,8 +361,22 @@ async function main() {
         `The chamber index rendered ${chamberCount} cards, not ${TOTAL_CHAMBERS}.`,
       );
     }
+    const previews = await connection.evaluate(`(() => ({
+      minis: document.querySelectorAll('.level-card .level-mini').length,
+      firstSpools: document.querySelectorAll('.level-card[data-level="first-thread"] .level-mini .mini-spool').length,
+      lastSpools: document.querySelectorAll('.level-card[data-level="${LEVELS.at(-1).id}"] .level-mini .mini-spool').length
+    }))()`);
+    if (
+      previews.minis !== TOTAL_CHAMBERS ||
+      previews.firstSpools !== LEVELS[0].pairs.length * 2 ||
+      previews.lastSpools !== LEVELS.at(-1).pairs.length * 2
+    ) {
+      throw new Error(
+        `The chamber previews are incomplete: minis=${previews.minis}, firstSpools=${previews.firstSpools}, lastSpools=${previews.lastSpools}.`,
+      );
+    }
 
-    await connection.send("Page.navigate", { url: `${url}?level=first-thread` });
+    await clickSelector(connection, '.level-card[data-level="first-thread"]');
     await wait(900);
     const cells = await connection.evaluate("document.querySelectorAll('.cell').length");
     if (cells !== 25) {
