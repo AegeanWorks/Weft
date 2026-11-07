@@ -817,6 +817,52 @@ async function main() {
       );
     }
     await connection.evaluate("localStorage.removeItem('weft.progress.v1')");
+    const replayTarget = LEVELS[8];
+    await connection.evaluate(`(() => {
+      localStorage.setItem('weft.progress.v1', JSON.stringify({
+        version: 1,
+        solved: {
+          '${replayTarget.id}': {
+            bestMs: 1234,
+            hints: 0,
+            moves: 7,
+            at: '2026-11-08T00:00:00.000Z',
+            stars: 3
+          }
+        },
+        settings: { sound: false },
+        lastLevel: '${replayTarget.id}'
+      }));
+    })()`);
+    await connection.send("Page.navigate", { url: `${url}?screen=levels` });
+    await wait(900);
+    const replayCard = await connection.evaluate(`(() => {
+      const card = document.querySelector('.level-card[data-level="${replayTarget.id}"]');
+      card.scrollIntoView({ block: 'center' });
+      return {
+        disabled: card.disabled,
+        solved: card.dataset.solved,
+        state: card.querySelector('.level-state').textContent
+      };
+    })()`);
+    if (replayCard.disabled || replayCard.solved !== "true" || replayCard.state !== "Woven") {
+      throw new Error(
+        `An out-of-order solved card was not replayable: disabled=${replayCard.disabled}, solved=${replayCard.solved}, state=${replayCard.state}.`,
+      );
+    }
+    await clickSelector(connection, `.level-card[data-level="${replayTarget.id}"]`);
+    await wait(500);
+    const replayOpened = await connection.evaluate(
+      "document.getElementById('level-name').textContent",
+    );
+    if (replayOpened !== replayTarget.name) {
+      throw new Error(
+        `The out-of-order solved card opened ${replayOpened}, not ${replayTarget.name}.`,
+      );
+    }
+    await connection.send("Page.navigate", { url: `${url}?screen=levels` });
+    await wait(900);
+    await connection.evaluate("localStorage.removeItem('weft.progress.v1')");
     if (connection.errors.length > 0) {
       throw new Error(
         `The played run logged ${connection.errors.length} page error(s): ${connection.errors.join(" | ")}`,
