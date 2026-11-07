@@ -57,3 +57,31 @@ evidence and pushes.
   `npm run dogfood` OK with 0 page errors; `python aikit.py ui verify weft` OK.
 - **Push**: `git push origin master` after the record commit; remote head
   confirmed with `git ls-remote origin`.
+
+## Push run 3 — cycles 1→9 (adds daily clamp, level balance, skip link)
+
+- **Scope**: cycles 1-9 and their interactions, especially level entry paths,
+  the daily clamp and the keyboard skip link.
+- **Finding**: a plain `?level=shuttle` link opened the locked ninth chamber on a
+  fresh profile; the index card was disabled but the URL bypassed the sequential
+  unlock and a solve would record a best time and stars for it. A preview URL was
+  the only documented way to render an arbitrary chamber.
+- **Fix**: `fix(progress): keep locked chambers locked on deep links` (`084e03b`,
+  ADR-038). `openLevel` checks `isUnlocked` and returns to the index unless an
+  explicit `preview` option is present; QA previews remain available. Dogfood now
+  checks both the blocked plain link and the still-working `preview=solved` path.
+- **Visual proof**: same URL/state/viewport (1440x900, fresh profile,
+  `?level=shuttle`):
+  - before: `assets/screenshots/2026-11-08-locked-deeplink-before.png` — the
+    locked Shuttle board opens as a playable game screen.
+  - after: `assets/screenshots/2026-11-08-locked-deeplink-after.png` — the same
+    URL returns to the index, where Shuttle is locked.
+- **Played run**: `node scratch/weft-play.mjs locked-deep-link` reports
+  `screen=game, level=Shuttle` before and `screen=levels` after, with the preview
+  URL still reporting `screen=game, won=true`. `npm run dogfood` performs the
+  locked-link and preview checks, then the full help/solve/victory/reset/12×12/
+  daily/late-index run with 0 page errors.
+- **Gates**: `npm test` 96/96 pass; `python aikit.py check weft` 5/5;
+  `npm run dogfood` OK with 0 page errors; `python aikit.py ui verify weft` OK.
+- **Push**: `git push origin master` after the record commit; remote head
+  confirmed with `git ls-remote origin`.

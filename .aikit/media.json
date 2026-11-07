@@ -612,6 +612,44 @@
         "score": 92,
         "reviewed_at": "2026-11-08"
       }
+    },
+    {
+      "path": "assets/screenshots/2026-11-08-locked-deeplink-before.png",
+      "alt": "Weft locked Shuttle chamber opened by a plain deep link at 2026-11-08",
+      "caption": "Pre-audit build e60bdf1: ?level=shuttle opens the locked ninth chamber on a fresh profile.",
+      "commit": "e60bdf17c6da0b3b5e156447c3cedb2067674940",
+      "taken_at": "2026-11-08",
+      "viewport": "1440x900",
+      "width": 1440,
+      "height": 900,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 1440x900 with an empty save: the Shuttle chamber is open and playable despite being locked in the campaign.",
+        "score": 87,
+        "reviewed_at": "2026-11-08"
+      }
+    },
+    {
+      "path": "assets/screenshots/2026-11-08-locked-deeplink-after.png",
+      "alt": "Weft locked deep link returning to the chamber index at 2026-11-08",
+      "caption": "Audit fix 084e03b: the same ?level=shuttle URL returns to the index, where Shuttle is locked and disabled.",
+      "commit": "084e03bbf612051e95d2421603755450d565d4ba",
+      "taken_at": "2026-11-08",
+      "viewport": "1440x900",
+      "width": 1440,
+      "height": 900,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 1440x900 with the same empty save: the index is shown, First Thread is the next chamber and Shuttle is locked; the preview URL still renders Shuttle separately.",
+        "score": 93,
+        "reviewed_at": "2026-11-08"
+      }
     }
   ]
 }
