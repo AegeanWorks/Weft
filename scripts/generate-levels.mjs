@@ -5,9 +5,9 @@
  * The Hamiltonian construction lives in `src/game/generate.js`, which the
  * in-browser daily also uses. This script only supplies the fixed specs and
  * serializes the result, so a regenerated file can be compared with the
- * committed one. Act II specs set `balanced: true`, which keeps every thread a
- * similar share of the loom instead of letting the final segment take whatever
- * remains.
+ * committed one. The two 8x8 closers, Act II and Act III specs set
+ * `balanced: true`, which keeps every thread a similar share of the loom
+ * instead of letting the final segment take whatever remains.
  *
  * Run from the project root:
  *   node scripts/generate-levels.mjs
@@ -29,8 +29,8 @@ const SPECS = Object.freeze([
   { id: "bronze-loom", name: "Bronze Loom", size: 7, pairs: 5, seed: "weft-05" },
   { id: "salt-weave", name: "Salt Weave", size: 7, pairs: 6, seed: "weft-06" },
   { id: "aegean-fold", name: "Aegean Fold", size: 7, pairs: 7, seed: "weft-07" },
-  { id: "warp-song", name: "Warp Song", size: 8, pairs: 6, seed: "weft-08" },
-  { id: "shuttle", name: "Shuttle", size: 8, pairs: 7, seed: "weft-09" },
+  { id: "warp-song", name: "Warp Song", size: 8, pairs: 6, seed: "weft-08", balanced: true },
+  { id: "shuttle", name: "Shuttle", size: 8, pairs: 7, seed: "weft-09", balanced: true },
   { id: "tapestry", name: "Tapestry", size: 8, pairs: 8, seed: "weft-10" },
   { id: "the-long-weave", name: "The Long Weave", size: 9, pairs: 8, seed: "weft-11" },
   { id: "meridian-weave", name: "Meridian Weave", size: 9, pairs: 9, seed: "weft-12" },
