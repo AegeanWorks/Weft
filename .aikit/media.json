@@ -460,6 +460,44 @@
         "score": 93,
         "reviewed_at": "2026-11-08"
       }
+    },
+    {
+      "path": "assets/screenshots/2026-11-08-static-shell-before.png",
+      "alt": "Weft static chamber index shell saying 0 of 18 woven at 2026-11-08",
+      "caption": "Pre-fix build 15aacd9 with app.js blocked: the static levels header still says 0 of 18 woven.",
+      "commit": "15aacd921b9ac040502a241a86d7492539a74288",
+      "taken_at": "2026-11-08",
+      "viewport": "1440x900",
+      "width": 1440,
+      "height": 900,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 1440x900 with the app module blocked and the levels section forced visible: the header reads 0 of 18 woven and no cards are hydrated.",
+        "score": 87,
+        "reviewed_at": "2026-11-08"
+      }
+    },
+    {
+      "path": "assets/screenshots/2026-11-08-static-shell-after.png",
+      "alt": "Weft static chamber index shell saying 0 of 24 woven at 2026-11-08",
+      "caption": "Fixed build f3002c6 with the same blocked module: the static header reads 0 of 24 woven · 0/72 stars.",
+      "commit": "f3002c6dfdf76aa28269345cd522d05fa5bb2c3d",
+      "taken_at": "2026-11-08",
+      "viewport": "1440x900",
+      "width": 1440,
+      "height": 900,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 1440x900 with the app module blocked and the levels section forced visible: the header reads 0 of 24 woven · 0/72 stars, matching the shipped campaign.",
+        "score": 92,
+        "reviewed_at": "2026-11-08"
+      }
     }
   ]
 }

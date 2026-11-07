@@ -441,3 +441,40 @@ repeat one that is already covered.
   - `python aikit.py check weft` -> 5/5 gates passed.
   - Before/after: `WEFT_WIDTH=390 WEFT_HEIGHT=844 node
     scratch/weft-play.mjs levels-scroll` on `http://127.0.0.1:4175`.
+
+## Cycle 11 — Cold-start shell: the static copy matches the campaign
+
+- **Area**: cold-start HTML shell and copy correctness, the last stale shipped
+  value found by the end-of-cycle scan.
+- **Baseline**: commit `15aacd9`; `npm test` 95/95 pass; `python aikit.py check weft`
+  5/5 gates pass; dogfood green.
+- **Finding**: with `src/ui/app.js` blocked, the static levels header still read
+  `0 of 18 woven` and the title default read `24 chambers · no account · no
+  network`, missing the `3 stars each` rule. Normal play overwrites both, so this
+  was a cold-start/degraded-load defect, and no test tied the static text to
+  `TOTAL_CHAMBERS`/`MAX_STARS`.
+- **Fix**: `fix(ui): match the static shell to the 24-chamber game` (`f3002c6`) +
+  `test(ui): pin the static shell to the live totals` (`a9f3d6d`). The two
+  defaults now match the fresh render, and the new test computes them from the
+  live constants. No JavaScript behavior change.
+- **Visual proof**: same blocked-module setup/viewport (1440x900, fresh profile,
+  `?screen=levels`, levels section forced visible, app.js blocked):
+  - before (`15aacd9`): `assets/screenshots/2026-11-08-static-shell-before.png`
+    — header `0 of 18 woven`.
+  - after (`f3002c6`): `assets/screenshots/2026-11-08-static-shell-after.png`
+    — header `0 of 24 woven · 0/72 stars`.
+- **Played run**: the hydrated game is unchanged; `npm run dogfood` completes the
+  full help, solve, victory recovery, Reset, 12x12, daily and late-index flow with
+  0 page errors. The static shell is covered by the new suite assertion (96 total).
+- **Gates after the fix**: `npm test` 96/96 pass; `npm run dogfood` OK with
+  `0 page errors`; `python aikit.py check weft` 5/5 (test, mechanics, hygiene,
+  guidelines, secrets); `python aikit.py ui verify weft` OK before closing the
+  bounded surface task.
+- **Commands run and results**:
+  - `npm test` -> 96 tests, 96 pass, 0 fail.
+  - `python aikit.py check weft` -> 5/5 gates passed.
+  - `npm run dogfood` -> `[OK] Weft dogfood: title, 24 chambers, a 3-thread
+    solve, the victory dialog, the 12x12 finale and the daily weave; 0 page
+    errors.`
+  - Before/after shell: `node scratch/weft-play.mjs static-shell` against a
+    `15aacd9` worktree on port 4190 and the fixed tree on 4175.
