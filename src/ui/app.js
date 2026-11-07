@@ -244,8 +244,8 @@ function setScreen(name, { focus = true } = {}) {
 }
 
 function renderTitleProgress() {
-  const count = solvedCount(state.progress);
-  const stars = totalStars(state.progress);
+  const count = solvedCount(state.progress, LEVELS);
+  const stars = totalStars(state.progress, LEVELS);
   const cap = TOTAL_CHAMBERS * MAX_STARS;
   const next = nextUnsolved(state.progress, LEVELS);
   if (count === 0) {
@@ -371,7 +371,7 @@ function renderLevels() {
     card.addEventListener("click", () => openLevel(level.id));
     refs.levelGrid.append(card);
   });
-  refs.levelsProgress.textContent = `${solvedCount(state.progress)} of ${TOTAL_CHAMBERS} woven · ${totalStars(state.progress)}/${TOTAL_CHAMBERS * MAX_STARS} stars`;
+  refs.levelsProgress.textContent = `${solvedCount(state.progress, LEVELS)} of ${TOTAL_CHAMBERS} woven · ${totalStars(state.progress, LEVELS)}/${TOTAL_CHAMBERS * MAX_STARS} stars`;
 }
 
 function showTitle() {

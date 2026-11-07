@@ -167,11 +167,19 @@ export function nextUnsolved(progress, levels) {
   return levels.find((level) => !current.solved[level.id]) ?? null;
 }
 
-export function solvedCount(progress) {
-  return Object.keys(normalizeProgress(progress).solved).length;
+function isKnownLevel(levelId, levels) {
+  return !Array.isArray(levels) || levels.some((level) => level.id === levelId);
 }
 
-export function totalStars(progress) {
+export function solvedCount(progress, levels = null) {
+  return Object.keys(normalizeProgress(progress).solved).filter((levelId) =>
+    isKnownLevel(levelId, levels),
+  ).length;
+}
+
+export function totalStars(progress, levels = null) {
   const solved = normalizeProgress(progress).solved;
-  return Object.values(solved).reduce((sum, entry) => sum + entry.stars, 0);
+  return Object.entries(solved)
+    .filter(([levelId]) => isKnownLevel(levelId, levels))
+    .reduce((sum, [, entry]) => sum + entry.stars, 0);
 }
