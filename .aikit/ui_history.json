@@ -180,5 +180,19 @@
     "final_snapshot_digest": "410ff09a8424a5cbc1b901fd745fdccca018fec9e193afc3b045e1b681422d3e",
     "final_snapshot_entries": 23,
     "surface_digest": "6f006646da29885bf076a1edfdefe23640155abcdf6348b0035cb2c9c477021b"
+  },
+  {
+    "schema": 1,
+    "surface": "app",
+    "baseline_commit": "fffe6b6cbd260952b001084fba5f9664bd4d92f8",
+    "contract_hash": "6b437c28104ade566ef850ac61b1cb8cf003a9181f3abdcbf0d1abc07287c794",
+    "started_at": 1794081779.6011753,
+    "finished_at": 1794082137.2279978,
+    "strikes": 0,
+    "reviewer": "opencode:weft-cycle-06 (browser audio graph + unit frequencies)",
+    "allowed_removals": [],
+    "final_snapshot_digest": "410ff09a8424a5cbc1b901fd745fdccca018fec9e193afc3b045e1b681422d3e",
+    "final_snapshot_entries": 23,
+    "surface_digest": "dc0eb4f7af2d6e2be50d8754697d3038a5b36e739a2464e442147ec579e6d1e8"
   }
 ]
