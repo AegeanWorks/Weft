@@ -161,6 +161,29 @@ async function pressEscape(connection) {
   await wait(160);
 }
 
+async function clickSelector(connection, selector) {
+  const center = await connection.evaluate(`(() => {
+    const node = document.querySelector(${JSON.stringify(selector)});
+    if (!node) return null;
+    const rect = node.getBoundingClientRect();
+    return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
+  })()`);
+  if (!center) {
+    throw new Error(`The page has no ${selector} to click.`);
+  }
+  for (const type of ["mousePressed", "mouseReleased"]) {
+    await connection.send("Input.dispatchMouseEvent", {
+      type,
+      x: center.x,
+      y: center.y,
+      button: "left",
+      buttons: type === "mousePressed" ? 1 : 0,
+      clickCount: 1,
+    });
+  }
+  await wait(200);
+}
+
 async function clickCell(connection, x, y) {
   const point = await cellCenter(connection, x, y);
   for (const type of ["mousePressed", "mouseReleased"]) {
@@ -244,6 +267,39 @@ async function main() {
     await connection.send("Page.enable");
     await connection.send("Runtime.enable");
     await connection.send("Log.enable");
+    await connection.send("Emulation.setDeviceMetricsOverride", {
+      width: 1440,
+      height: 900,
+      deviceScaleFactor: 1,
+      mobile: false,
+    });
+    await connection.send("Page.navigate", { url: `${url}?screen=title` });
+    await wait(900);
+    await clickSelector(connection, "#btn-how");
+    const help = await connection.evaluate(`(() => {
+      const dialog = document.getElementById('help-dialog');
+      return {
+        open: dialog.open,
+        scrollTop: dialog.scrollTop,
+        active: document.activeElement?.id ?? ""
+      };
+    })()`);
+    if (!help.open || help.scrollTop !== 0 || help.active !== "help-title") {
+      throw new Error(
+        `How to play did not open at its heading: open=${help.open}, scrollTop=${help.scrollTop}, active=${help.active}.`,
+      );
+    }
+    await pressEscape(connection);
+    const helpClosed = await connection.evaluate(`(() => ({
+      open: document.getElementById('help-dialog').open,
+      active: document.activeElement?.id ?? ""
+    }))()`);
+    if (helpClosed.open || helpClosed.active !== "btn-how") {
+      throw new Error(
+        `How to play did not close back to its opener: open=${helpClosed.open}, active=${helpClosed.active}.`,
+      );
+    }
+
     await connection.send("Page.navigate", { url: `${url}?screen=levels` });
     await wait(900);
 
