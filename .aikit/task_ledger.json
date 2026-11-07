@@ -1,67 +1,17 @@
 {
   "version": 1,
   "active_task": {
-    "task_id": "weft-cycle-05",
+    "task_id": "weft-cycle-06",
     "last_phase": "in_progress",
     "active_phase": 5,
     "status": "completed",
-    "updated_at": 1794081695.0542052,
+    "updated_at": 1794082347.1249669,
     "owner": "opencode:weft-cycles",
     "started_by": "opencode:weft-cycles",
     "continuations": [],
-    "completed_at": 1794081695.3693242
+    "completed_at": 1794082347.7622411
   },
   "checkpoints": [
-    {
-      "task_id": "weft-cycle-01",
-      "phase": "in_progress",
-      "phase_num": 2,
-      "description": "[1/4] Cycle 1: fix the post-victory dead end where Escape dismisses the win dialog, freezes the board and hides every next step; reopen the result from the won loom by pointer and keyboard, tell the player, and prove it with a before/after pair plus a played solve-dismiss-reopen-next run",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1794075599.7132728,
-      "timestamp_str": "2026-11-07 21:19:59",
-      "agent": "opencode:weft-cycles",
-      "impact_assessment": {
-        "why": "After a win, pressing Escape closes the victory dialog and leaves Undo/Reset/Hint disabled with no visible Next or Replay path; a real played run reproduced dialogOpen=false, frozen move count and no recovery affordance except Chambers.",
-        "benefits": "Keeps the finished tapestry inspectable while restoring a clear Next/Replay path, works for pointer and keyboard, adds no new control, no save change and no new dependency.",
-        "risks": "contract: win-dialog close handler and beginDraft won branch; dependency: none; concurrency: single writer on a clean weft tree; state: no save schema change",
-        "mitigation": "Failing-first browser dogfood assertion records the pre-fix dead end, before/after screenshots at 1440x900 from the same fresh-profile first chamber, full npm test plus aikit check and dogfood after the fix, explicit staging, no push"
-      },
-      "plan_digest": "54aa42966099888842198db506bc572bc36da646299b67a45e336a67fa6a5e94"
-    },
-    {
-      "task_id": "weft-cycle-01",
-      "phase": "in_progress",
-      "phase_num": 3,
-      "description": "[2/4] Implemented the won-loom recovery: beginDraft reopens the victory dialog, the close handler adds the recovery hint, dogfood pins Escape-reopen-Next to Chamber 02 and fails on page errors; captured a same-state 1440x900 before/after pair and wrote ADR-023 plus the cycle record",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1794076727.5624423,
-      "timestamp_str": "2026-11-07 21:38:47",
-      "agent": "opencode:weft-cycles"
-    },
-    {
-      "task_id": "weft-cycle-01",
-      "phase": "in_progress",
-      "phase_num": 4,
-      "description": "[3/4] Phase 4 green: 89/89 tests, 5/5 aikit gates, dogfood 0 page errors with the Escape-reopen-Next flow, before/after pair at 1440x900 on the same first-chamber solve; checklists: passed",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1794076737.899494,
-      "timestamp_str": "2026-11-07 21:38:57",
-      "agent": "opencode:weft-cycles"
-    },
-    {
-      "task_id": "weft-cycle-01",
-      "phase": "completed",
-      "phase_num": 5,
-      "description": "Task 'weft-cycle-01' completed successfully.",
-      "status": "completed",
-      "timestamp": 1794076747.369465,
-      "timestamp_str": "2026-11-07 21:39:07",
-      "agent": "opencode:weft-cycles"
-    },
     {
       "task_id": "weft-cycle-02",
       "phase": "in_progress",
@@ -260,6 +210,56 @@
       "status": "completed",
       "timestamp": 1794081695.3693266,
       "timestamp_str": "2026-11-07 23:01:35",
+      "agent": "opencode:weft-cycles"
+    },
+    {
+      "task_id": "weft-cycle-06",
+      "phase": "in_progress",
+      "phase_num": 2,
+      "description": "[1/4] Cycle 6: give Hint, Undo and Reset distinct audio cues instead of the shared 660Hz tick, so blind and glance-away players can tell what changed; prove with unit frequency pins and a real browser audio-graph run for each action",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794081775.5458736,
+      "timestamp_str": "2026-11-07 23:02:55",
+      "agent": "opencode:weft-cycles",
+      "impact_assessment": {
+        "why": "beginDraft, undo, resetLevel and showHint all call audio.play('tick'), so the four most common loom actions sound identical and the only feedback for a hint, an undo or a reset is the same 35ms 660Hz blip.",
+        "benefits": "Each action gains a recognizable short signature without files, dependencies or new settings, and the existing mute toggle still silences all of them.",
+        "risks": "contract: CUES gains three named cues and four app call sites change; dependency: none; concurrency: single writer on a clean weft tree; state: none",
+        "mitigation": "Frequency-pinned unit tests plus a browser probe that intercepts createOscillator for hint/undo/reset, full npm test plus aikit check and dogfood, explicit staging, no push"
+      },
+      "plan_digest": "7989b10379bed1609e3907edd0ad480eb44bdcf6903070801e16bc2090c467f9"
+    },
+    {
+      "task_id": "weft-cycle-06",
+      "phase": "in_progress",
+      "phase_num": 3,
+      "description": "[2/4] Added hint/undo/reset cues, pinned their frequencies and distinctness in unit tests, and made dogfood assert the real browser cue graph during the played run",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794082346.5551748,
+      "timestamp_str": "2026-11-07 23:12:26",
+      "agent": "opencode:weft-cycles"
+    },
+    {
+      "task_id": "weft-cycle-06",
+      "phase": "in_progress",
+      "phase_num": 4,
+      "description": "[3/4] Phase 4 green: 94/94 tests, 5/5 aikit gates, dogfood 0 page errors with distinct hint/undo/reset sequences; audio-only cycle, no visual claim or screenshot pair; checklists: passed",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794082347.1249669,
+      "timestamp_str": "2026-11-07 23:12:27",
+      "agent": "opencode:weft-cycles"
+    },
+    {
+      "task_id": "weft-cycle-06",
+      "phase": "completed",
+      "phase_num": 5,
+      "description": "Task 'weft-cycle-06' completed successfully.",
+      "status": "completed",
+      "timestamp": 1794082347.7622428,
+      "timestamp_str": "2026-11-07 23:12:27",
       "agent": "opencode:weft-cycles"
     }
   ]
