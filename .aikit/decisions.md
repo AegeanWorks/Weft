@@ -251,3 +251,10 @@ contract, a dependency, a data format or the architecture; IDs are consecutive a
 - **Decision**: Update the two static strings to `0 of 24 woven · 0/72 stars` and `24 chambers · 3 stars each · no account · no network`, and add a static test computed from `TOTAL_CHAMBERS` and `MAX_STARS` so a future content change fails rather than silently drifting. No JavaScript behavior changes.
 - **Consequences**: The first HTML paint tells the same story as the hydrated game, and the test suite now owns the shell copy. Verified by a 1440x900 blocked-app.js before/after pair with the levels section forced visible. Cross-principle check: no principle section changed. Serves PRINCIPLE-005 (living documentation and shell), PRINCIPLE-011 (cold-start truthfulness) and PRINCIPLE-014 (drift pin).
 
+### ADR-035: No focus rectangle on the help heading
+- **Date**: 2026-11-08
+- **Status**: Accepted
+- **Context**: ADR-025 focuses the help `h2` so the dialog opens at its title and screen readers announce it. Because the heading is not a control, the browser's keyboard/programmatic `:focus-visible` path draws a white `outline: auto` rectangle around `One loom, twenty-four chambers`. A 390x844 `?preview=help` capture and a keyboard-opened dogfood run both show it; the mouse-opened path did not, which is why the cycle-3 check missed it.
+- **Decision**: Suppress the outline for `.modal h2:focus` and `.modal h2:focus-visible` only. The heading keeps `tabindex="-1"` and remains the programmatic focus target; it is not tabbable, so no interactive focus indicator is lost.
+- **Consequences**: The help title is clean on every open path while focus and screen-reader context stay on the heading. Dogfood now opens help by keyboard and asserts `outlineStyle === "none"` before Escape returns focus to the opener. Verified by a 390x844 before/after pair. Cross-principle check: no principle section changed. Serves PRINCIPLE-011 (clean, usable dialog) and PRINCIPLE-014 (keyboard regression pin).
+

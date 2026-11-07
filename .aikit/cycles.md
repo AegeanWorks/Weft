@@ -478,3 +478,41 @@ repeat one that is already covered.
     errors.`
   - Before/after shell: `node scratch/weft-play.mjs static-shell` against a
     `15aacd9` worktree on port 4190 and the fixed tree on 4175.
+
+## Cycle 12 — Accessibility visuals: no focus rectangle on the help heading
+
+- **Area**: visual accessibility/focus styling, found by the cycle-12 mobile
+  audit after cycles 1-11 were green.
+- **Baseline**: commit `574e7a8`; `npm test` 96/96 pass; `python aikit.py check weft`
+  5/5 gates pass; dogfood green.
+- **Finding**: the help heading is focused for screen-reader context (ADR-025),
+  and the keyboard/programmatic `:focus-visible` path draws a white `outline:
+  auto` rectangle around the non-interactive title. The 390x844
+  `?preview=help` audit capture shows it; opening help with a real click did not,
+  so the cycle-3 check missed it. The keyboard dogfood path failed with
+  `The focused help heading still draws a auto outline.`
+- **Fix**: `fix(ui): remove the focus ring from the help heading` (`cbd604d`).
+  `.modal h2:focus` and `.modal h2:focus-visible` now suppress the outline only;
+  the heading stays focusable for screen readers and is still not tabbable.
+- **Visual proof**: same dialog/state/viewport (390x844, fresh profile,
+  `?preview=help`):
+  - before (`574e7a8`): `assets/screenshots/2026-11-08-help-focus-before.png`
+    — the heading carries a white focus rectangle.
+  - after (`cbd604d`): `assets/screenshots/2026-11-08-help-focus-after.png`
+    — the same heading is clean, with the dialog otherwise identical.
+- **Played run**: `npm run dogfood` now opens How to play by keyboard (Tab to
+  the button, Enter), verifies the heading is focused at `scrollTop=0`, checks the
+  computed outline is `none`, presses Escape and verifies focus returns to the
+  opener; it then completes the full run with 0 page errors.
+- **Gates after the fix**: `npm test` 96/96 pass; `npm run dogfood` OK with
+  `0 page errors`; `python aikit.py check weft` 5/5 (test, mechanics, hygiene,
+  guidelines, secrets); `python aikit.py ui verify weft` OK before closing the
+  bounded surface task.
+- **Commands run and results**:
+  - `npm test` -> 96 tests, 96 pass, 0 fail.
+  - `npm run dogfood` -> pre-fix FAIL (auto outline), post-fix
+    `[OK] Weft dogfood: title, 24 chambers, a 3-thread solve, the victory dialog,
+    the 12x12 finale and the daily weave; 0 page errors.`
+  - `python aikit.py check weft` -> 5/5 gates passed.
+  - Before/after: `WEFT_WIDTH=390 WEFT_HEIGHT=844 node
+    scratch/weft-play.mjs help-state` on `http://127.0.0.1:4175`.

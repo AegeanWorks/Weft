@@ -498,6 +498,44 @@
         "score": 92,
         "reviewed_at": "2026-11-08"
       }
+    },
+    {
+      "path": "assets/screenshots/2026-11-08-help-focus-before.png",
+      "alt": "Weft help heading with a white focus rectangle at 2026-11-08",
+      "caption": "Pre-fix build 574e7a8 at 390x844: the programmatically focused help title carries a white focus rectangle.",
+      "commit": "574e7a899341dbaeb9ee45f0c31b8a71c23a504f",
+      "taken_at": "2026-11-08",
+      "viewport": "390x844",
+      "width": 390,
+      "height": 844,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 390x844 of ?preview=help: the One loom heading is wrapped in a thin white focus rectangle while the rest of the dialog is unchanged.",
+        "score": 87,
+        "reviewed_at": "2026-11-08"
+      }
+    },
+    {
+      "path": "assets/screenshots/2026-11-08-help-focus-after.png",
+      "alt": "Weft help heading without a focus rectangle at 2026-11-08",
+      "caption": "Fixed build cbd604d at 390x844: the same focused help heading is clean, with no control-like outline.",
+      "commit": "cbd604d82d524a619e6bbdd0ed8d1187ad4bb1b5",
+      "taken_at": "2026-11-08",
+      "viewport": "390x844",
+      "width": 390,
+      "height": 844,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 390x844 of the same help dialog: the heading is clean, the rules and notes are unchanged, and the dialog still opens at the top.",
+        "score": 93,
+        "reviewed_at": "2026-11-08"
+      }
     }
   ]
 }
