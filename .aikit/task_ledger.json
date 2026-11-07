@@ -1,72 +1,17 @@
 {
   "version": 1,
   "active_task": {
-    "task_id": "weft-cycle-02",
+    "task_id": "weft-cycle-03",
     "last_phase": "in_progress",
     "active_phase": 5,
     "status": "completed",
-    "updated_at": 1794078134.9867778,
+    "updated_at": 1794080467.3750117,
     "owner": "opencode:weft-cycles",
     "started_by": "opencode:weft-cycles",
     "continuations": [],
-    "completed_at": 1794078141.6187859
+    "completed_at": 1794080476.1060169
   },
   "checkpoints": [
-    {
-      "task_id": "weft-patterns-v1",
-      "phase": "phase 5",
-      "phase_num": 5,
-      "description": "[4/4] Delivered Weft 0.6.0: unique dash patterns on every thread, draft and spool ring; pushed at 8e21fc1 and the Play catalog now serves 0.6.0 from that commit; 72 tests and 5/5 gates green",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793361054.9613311,
-      "timestamp_str": "2026-10-30 14:50:54",
-      "agent": "opencode:weft-patterns",
-      "handoff": {
-        "state": "clean weft tree and remote synced",
-        "next": "none, 0.6.0 is delivered",
-        "open": "none",
-        "evidence": "Weft commit 8e21fc1, AegeanWorks live.json weft 0.6.0"
-      }
-    },
-    {
-      "task_id": "weft-patterns-v1",
-      "phase": "completed",
-      "phase_num": 5,
-      "description": "Task 'weft-patterns-v1' completed successfully.",
-      "status": "completed",
-      "timestamp": 1793361055.241346,
-      "timestamp_str": "2026-10-30 14:50:55",
-      "agent": "opencode:weft-patterns"
-    },
-    {
-      "task_id": "weft-daily-history-v1",
-      "phase": "phase 2",
-      "phase_num": 2,
-      "description": "[1/4] Plan Weft 0.7.0 daily history: add a pure recent-days helper, render the last seven daily results as a compact strip under the daily card, test the rollover and states, and keep the history display-only so a streak cannot be back-filled",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793362106.8832831,
-      "timestamp_str": "2026-10-30 15:08:26",
-      "agent": "opencode:weft-daily-history",
-      "impact_assessment": {
-        "why": "The daily streak is a single number with no visible record, so a returning player cannot see which days were woven or how close the streak is to breaking.",
-        "benefits": "Seven days of results turn the streak into a legible habit, reuse the existing weft.daily.v1 data without a migration, and need no network or new asset.",
-        "risks": "contract: the levels daily strip gains a list of seven day chips and the daily save module gains one pure helper; dependency: none; concurrency: single writer on a clean weft tree; state: read-only over weft.daily.v1, no new storage key",
-        "mitigation": "Unit-test recentDays across month, year and count boundaries; keep today and past states distinct; dogfood the seven-chip strip after a real daily solve; review desktop and 390px renders"
-      }
-    },
-    {
-      "task_id": "weft-daily-history-v1",
-      "phase": "phase 3",
-      "phase_num": 3,
-      "description": "[2/4] Added the pure recentDays helper, the seven-chip history strip with solved/today/missed states, stars per day, tests across month and year boundaries, and README/ADR-011 documentation",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793362369.6266592,
-      "timestamp_str": "2026-10-30 15:12:49",
-      "agent": "opencode:weft-daily-history"
-    },
     {
       "task_id": "weft-daily-history-v1",
       "phase": "phase 4",
@@ -270,6 +215,56 @@
       "status": "completed",
       "timestamp": 1794078141.6187873,
       "timestamp_str": "2026-11-07 22:02:21",
+      "agent": "opencode:weft-cycles"
+    },
+    {
+      "task_id": "weft-cycle-03",
+      "phase": "in_progress",
+      "phase_num": 2,
+      "description": "[1/4] Cycle 3: fix the mobile How-to-play dialog opening scrolled 158px past its title because showModal focuses the bottom Ready button; focus the heading and reset the dialog scroll, prove with a 390x844 before/after pair and a dogfood open-focus-close played run",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794078561.307766,
+      "timestamp_str": "2026-11-07 22:09:21",
+      "agent": "opencode:weft-cycles",
+      "impact_assessment": {
+        "why": "At 390x844 the help dialog is 876px of content in a 718px frame; native showModal autofocuses the footer Ready button, setting scrollTop=158 and leaving the heading at -45.7px, so the title and first rules are hidden on open.",
+        "benefits": "The how-to-play dialog always opens at its title, keyboard and screen-reader users hear the heading first, and no layout, save or engine rule changes.",
+        "risks": "contract: help-dialog initial focus and scroll; dependency: none; concurrency: single writer on a clean weft tree; state: none",
+        "mitigation": "Failing-first dogfood assertion for scrollTop=0 and focused help-title, 390x844 before/after capture from ?preview=help, full npm test plus aikit check and dogfood, explicit staging, no push"
+      },
+      "plan_digest": "d9e5f480dd72e88deb1dcee66f3589c0b768ab43345b4eb27b328d0979d9c18c"
+    },
+    {
+      "task_id": "weft-cycle-03",
+      "phase": "in_progress",
+      "phase_num": 3,
+      "description": "[2/4] Implemented the help-heading focus and scroll reset, captured the 390x844 before/after pair, pinned real-click open/escape in dogfood, and repaired the flaky wall-clock daily test with deterministic search-work bounds plus a fixed dogfood viewport",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794080466.91466,
+      "timestamp_str": "2026-11-07 22:41:06",
+      "agent": "opencode:weft-cycles"
+    },
+    {
+      "task_id": "weft-cycle-03",
+      "phase": "in_progress",
+      "phase_num": 4,
+      "description": "[3/4] Phase 4 green: 89/89 tests under 100% host load, 5/5 aikit gates, dogfood 3 consecutive runs with 0 page errors, help opens scrollTop=0 with active help-title at 390x844 and 1440x900, before/after pair committed; checklists: passed",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794080467.3750117,
+      "timestamp_str": "2026-11-07 22:41:07",
+      "agent": "opencode:weft-cycles"
+    },
+    {
+      "task_id": "weft-cycle-03",
+      "phase": "completed",
+      "phase_num": 5,
+      "description": "Task 'weft-cycle-03' completed successfully.",
+      "status": "completed",
+      "timestamp": 1794080476.1060195,
+      "timestamp_str": "2026-11-07 22:41:16",
       "agent": "opencode:weft-cycles"
     }
   ]
