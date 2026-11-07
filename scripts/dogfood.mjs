@@ -284,6 +284,14 @@ async function main() {
     });
     await connection.send("Page.navigate", { url: `${url}?screen=title` });
     await wait(900);
+    const soundTargetHeight = await connection.evaluate(
+      "document.getElementById('btn-sound-title').getBoundingClientRect().height",
+    );
+    if (soundTargetHeight < 44) {
+      throw new Error(
+        `The title sound control is only ${soundTargetHeight}px tall, below the 44px target.`,
+      );
+    }
     await pressKey(connection, "Tab", "Tab", 9);
     const firstStop = await connection.evaluate(`(() => ({
       className: document.activeElement?.className ?? "",
