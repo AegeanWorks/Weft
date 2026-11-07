@@ -245,3 +245,41 @@ repeat one that is already covered.
     `node scratch/weft-play.mjs levels` with `WEFT_ROOT=http://127.0.0.1:4189`.
   - After capture: current build on `http://127.0.0.1:4175`, same scenario at
     1440x900 and 390x844.
+
+## Cycle 6 — Audio cues: hint, undo and reset stop sharing one tick
+
+- **Area**: audio feedback, the first non-visual cycle; the graphical surface is
+  unchanged from cycle 5.
+- **Baseline**: commit `fffe6b6`; `npm test` 90/90 pass; `python aikit.py check weft`
+  5/5 gates pass; dogfood green.
+- **Finding**: `beginDraft`, `undo`, `resetLevel` and `showHint` all played the
+  660Hz 35ms `tick`. A browser probe that recorded `createOscillator` calls on
+  the real UI returned `hint: [660]`, then undo `[660]`, then reset `[660]`; the
+  actions were audibly identical.
+- **Fix**: `feat(audio): give hint, undo and reset distinct cues` (`7385430`).
+  Hint is a rising triangle pair (880/1174.66), undo a falling sine pair
+  (392/293.66), reset one low sine (196). Begin/toggle keep the tick; connect,
+  error and win are unchanged. No file, setting or volume change.
+- **Visual proof**: not applicable — this cycle changes audio only. The UI is
+  pixel-identical to the cycle-5 captures; the evidence is the before/after audio
+  graph and the unit frequency pins.
+- **Played run**: a real browser probe (`node scratch/weft-play.mjs audio-cues`)
+  clicked Hint, drew a thread, clicked Undo, drew two threads and clicked Reset:
+  - before: hint `[660]`, undo appended `[660]`, reset appended `[660]`.
+  - after: hint `[880, 1174.66]`, undo `[392, 293.66]`, reset `[196]`, with
+    begin `[660]` and connect `[523.25, 783.99]` unchanged.
+  `npm run dogfood` injects a recording `AudioContext` before the first draw and
+  asserts the hint, undo and reset sequences inside the full played run; it also
+  keeps the 0-page-error check.
+- **Gates after the fix**: `npm test` 94/94 pass; `npm run dogfood` OK with
+  `0 page errors`; `python aikit.py check weft` 5/5 (test, mechanics, hygiene,
+  guidelines, secrets); `python aikit.py ui verify weft` OK before closing the
+  bounded surface task.
+- **Commands run and results**:
+  - `npm test` -> 94 tests, 94 pass, 0 fail.
+  - `npm run dogfood` -> `[OK] Weft dogfood: title, 24 chambers, a 3-thread
+    solve, the victory dialog, the 12x12 finale and the daily weave; 0 page
+    errors.`
+  - `python aikit.py check weft` -> 5/5 gates passed.
+  - Before/after audio graph: `node scratch/weft-play.mjs audio-cues` against the
+    pre-fix tree and the fixed tree on `http://127.0.0.1:4175`.
