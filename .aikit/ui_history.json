@@ -138,5 +138,19 @@
     "final_snapshot_digest": "410ff09a8424a5cbc1b901fd745fdccca018fec9e193afc3b045e1b681422d3e",
     "final_snapshot_entries": 23,
     "surface_digest": "2ccc7cbc9a68abdd57b611cf5d25c3de4d442f4a832744431a351e934e5d35df"
+  },
+  {
+    "schema": 1,
+    "surface": "app",
+    "baseline_commit": "45d324f18a85cf3b2d4995c2a7e8984f4565622e",
+    "contract_hash": "6b437c28104ade566ef850ac61b1cb8cf003a9181f3abdcbf0d1abc07287c794",
+    "started_at": 1794078550.5191672,
+    "finished_at": 1794079094.1470485,
+    "strikes": 2,
+    "reviewer": "opencode:weft-cycle-03 (390px vision pair + dogfood help run)",
+    "allowed_removals": [],
+    "final_snapshot_digest": "410ff09a8424a5cbc1b901fd745fdccca018fec9e193afc3b045e1b681422d3e",
+    "final_snapshot_entries": 23,
+    "surface_digest": "501407c06c7e6eda1a247ef59d9cd159b1d708fb0b8134aacae554ba441595ec"
   }
 ]
