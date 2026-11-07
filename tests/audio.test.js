@@ -50,6 +50,10 @@ function stubScope(state = "running") {
   return { scope: { AudioContext: FakeContext }, calls };
 }
 
+function frequencies(calls) {
+  return calls.filter(([kind]) => kind === "freq").map(([, value]) => value);
+}
+
 test("sound starts unmuted and plays nothing without an audio context", () => {
   const audio = createAudio({});
   assert.equal(audio.isMuted(), false);
@@ -82,6 +86,45 @@ test("the tick cue schedules one 660Hz sine tone", () => {
   assert.ok(calls.some(([kind, value]) => kind === "freq" && value === 660));
   assert.equal(calls.filter(([kind]) => kind === "start").length, 1);
   assert.equal(calls.filter(([kind]) => kind === "stop").length, 1);
+});
+
+test("the hint cue schedules two rising triangle tones", () => {
+  const { scope, calls } = stubScope();
+  const audio = createAudio(scope);
+  assert.equal(audio.play("hint"), true);
+  assert.deepEqual(frequencies(calls), [880, 1174.66]);
+});
+
+test("the undo cue schedules a descending pair", () => {
+  const { scope, calls } = stubScope();
+  const audio = createAudio(scope);
+  assert.equal(audio.play("undo"), true);
+  assert.deepEqual(frequencies(calls), [392, 293.66]);
+});
+
+test("the reset cue schedules one low tone", () => {
+  const { scope, calls } = stubScope();
+  const audio = createAudio(scope);
+  assert.equal(audio.play("reset"), true);
+  assert.deepEqual(frequencies(calls), [196]);
+  assert.equal(calls.filter(([kind]) => kind === "start").length, 1);
+});
+
+test("the action cues stay distinct from the shared tick", () => {
+  const first = {};
+  for (const name of ["tick", "connect", "hint", "undo", "reset", "error", "win"]) {
+    const { scope, calls } = stubScope();
+    createAudio(scope).play(name);
+    first[name] = frequencies(calls)[0];
+  }
+  assert.equal(first.tick, 660);
+  assert.equal(
+    new Set([first.tick, first.hint, first.undo, first.reset]).size,
+    4,
+  );
+  assert.notEqual(first.hint, first.tick);
+  assert.notEqual(first.undo, first.tick);
+  assert.notEqual(first.reset, first.tick);
 });
 
 test("the win cue schedules four ascending tones", () => {
