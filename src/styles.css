@@ -748,9 +748,11 @@ button {
 }
 
 .sound-toggle {
-  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   margin-top: 14px;
-  padding: 0;
+  padding: 0 2px;
   color: var(--muted-2);
   font-size: 0.76rem;
   letter-spacing: 0.04em;
