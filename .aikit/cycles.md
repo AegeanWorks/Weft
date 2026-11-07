@@ -157,3 +157,48 @@ repeat one that is already covered.
   help click also missed when the real window stayed 800x600 under a 1440x900
   emulation; `test(dogfood): match the browser window to the emulated viewport`
   (`1c2a8c5`) pinned both, and three consecutive dogfood runs passed.
+
+## Cycle 4 — Progression and saves: unknown ids cannot fake a finished campaign
+
+- **Area**: save-integrity truthfulness in the campaign totals (the victory flow
+  and Reset integrity were cycles 1 and 2; this is the read-side data path).
+- **Baseline**: commit `594effb`; `npm test` 89/89 pass; `python aikit.py check weft`
+  5/5 gates pass; dogfood green.
+- **Finding**: a save with 24 unknown solved ids (`ghost-01`..`ghost-24`, three
+  stars each) produced `24 of 24 woven · 72/72 stars · next: First Thread` on the
+  title while the chamber index showed `24 of 24 woven · 72/72 stars`, only one
+  unlocked chamber and zero real stars. The same save would come from renamed or
+  future level ids, not only from a deliberate edit. The new dogfood check failed
+  with `[FAIL] Weft dogfood: Unknown chamber ids inflated the title: saved=24,
+  title=24 of 24 woven · 72/72 stars · next: First Thread.`
+- **Dead end (one line)**: dropping unknown entries inside `normalizeProgress`
+  was rejected because it would erase a renamed or future chamber's record; the
+  read-side filter keeps the save intact and only stops it from lying.
+- **Fix**: `fix(progress): ignore unknown chamber ids in campaign totals`
+  (`33c76b6`). `solvedCount` and `totalStars` accept an optional `levels` list
+  and count only ids present in it; `app.js` passes `LEVELS` at both call sites.
+  No save format, engine rule or layout change.
+- **Visual proof**: same build/save/viewport (1440x900, fresh profile, injected
+  24-ghost save):
+  - before (`594effb`): `assets/screenshots/2026-11-07-poisoned-save-before.png`
+    — title claims `24 of 24 woven · 72/72 stars · next: First Thread`.
+  - after (`33c76b6`): `assets/screenshots/2026-11-07-poisoned-save-after.png`
+    — same save shows `24 chambers · 3 stars each · no account · no network`.
+- **Played run**: `npm run dogfood` injects the 24 ghost ids, reloads the title
+  and asserts the fresh line, reloads the index and asserts `0 of 24 woven` with
+  one unlocked chamber, removes the poison, then completes the help, chamber
+  index, 3-thread solve, victory recovery, Reset check, 12x12 finale and daily
+  flow with 0 page errors. A scratch replay reports `saved=24` in both runs, so
+  the before/after difference is the display, not the injected data.
+- **Gates after the fix**: `npm test` 90/90 pass; `npm run dogfood` OK with
+  `0 page errors`; `python aikit.py check weft` 5/5 (test, mechanics, hygiene,
+  guidelines, secrets); `python aikit.py ui verify weft` OK before closing the
+  bounded surface task.
+- **Commands run and results**:
+  - `npm test` -> 90 tests, 90 pass, 0 fail.
+  - `npm run dogfood` -> pre-fix FAIL (ghost ids inflated title), post-fix
+    `[OK] Weft dogfood: title, 24 chambers, a 3-thread solve, the victory dialog,
+    the 12x12 finale and the daily weave; 0 page errors.`
+  - `python aikit.py check weft` -> 5/5 gates passed.
+  - Before/after capture: `node scratch/weft-play.mjs poisoned-save` at
+    1440x900 against the pre-fix and fixed trees on `http://127.0.0.1:4175`.

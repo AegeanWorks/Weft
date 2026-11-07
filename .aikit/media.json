@@ -232,6 +232,44 @@
         "score": 93,
         "reviewed_at": "2026-11-07"
       }
+    },
+    {
+      "path": "assets/screenshots/2026-11-07-poisoned-save-before.png",
+      "alt": "Weft title with a poisoned save claiming a complete campaign at 2026-11-07",
+      "caption": "Pre-fix build 594effb with 24 unknown solved ids: the title claims 24 of 24 woven and 72/72 stars while only First Thread is open.",
+      "commit": "594effb37d964b65c635934e36a2a1c8d1306411",
+      "taken_at": "2026-11-07",
+      "viewport": "1440x900",
+      "width": 1440,
+      "height": 900,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 1440x900 from a fresh profile: the title meta reads 24 of 24 woven, 72/72 stars and next First Thread, contradicting the unsolved chamber index.",
+        "score": 89,
+        "reviewed_at": "2026-11-07"
+      }
+    },
+    {
+      "path": "assets/screenshots/2026-11-07-poisoned-save-after.png",
+      "alt": "Weft title ignoring unknown saved ids at 2026-11-07",
+      "caption": "Fixed build 33c76b6 with the same 24 unknown ids: the title shows the fresh 24-chamber line instead of a fake completion.",
+      "commit": "33c76b6176fc076b959007fd7aa34cb246314eff",
+      "taken_at": "2026-11-07",
+      "viewport": "1440x900",
+      "width": 1440,
+      "height": 900,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 1440x900 from a fresh profile with the identical poisoned save: the title meta reads 24 chambers, 3 stars each, no account, no network.",
+        "score": 93,
+        "reviewed_at": "2026-11-07"
+      }
     }
   ]
 }
