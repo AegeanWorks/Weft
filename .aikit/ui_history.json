@@ -194,5 +194,19 @@
     "final_snapshot_digest": "410ff09a8424a5cbc1b901fd745fdccca018fec9e193afc3b045e1b681422d3e",
     "final_snapshot_entries": 23,
     "surface_digest": "dc0eb4f7af2d6e2be50d8754697d3038a5b36e739a2464e442147ec579e6d1e8"
+  },
+  {
+    "schema": 1,
+    "surface": "app",
+    "baseline_commit": "a2a41c5fe048432781b1d01b94bbdc878bd38af4",
+    "contract_hash": "6b437c28104ade566ef850ac61b1cb8cf003a9181f3abdcbf0d1abc07287c794",
+    "started_at": 1794082763.3135014,
+    "finished_at": 1794083158.8155541,
+    "strikes": 0,
+    "reviewer": "opencode:weft-cycle-07 (Tab focus pair + dogfood keyboard run)",
+    "allowed_removals": [],
+    "final_snapshot_digest": "410ff09a8424a5cbc1b901fd745fdccca018fec9e193afc3b045e1b681422d3e",
+    "final_snapshot_entries": 23,
+    "surface_digest": "544637781efea8d40042a52a32f8241c161c5d49260ba5056ccde19143988219"
   }
 ]
