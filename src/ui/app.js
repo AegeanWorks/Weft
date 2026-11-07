@@ -710,6 +710,10 @@ function extendDraft(x, y) {
 
 function beginDraft(cell) {
   if (state.won) {
+    if (!refs.winDialog.open) {
+      refs.status.textContent = "Chamber woven.";
+      showWinDialog(state.timer.elapsed);
+    }
     return false;
   }
   const x = Number(cell.dataset.x);
@@ -1161,6 +1165,7 @@ function bindEvents() {
 
   refs.winDialog.addEventListener("close", () => {
     if (state.screen === "game" && state.won) {
+      refs.status.textContent = "Chamber woven. Click the loom to reopen the result.";
       const first = refs.board.querySelector("[data-spool]");
       first?.focus({ preventScroll: true });
     }
