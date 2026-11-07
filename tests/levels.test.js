@@ -38,8 +38,8 @@ test("the third act holds the 12-wide finale line", () => {
   assert.equal(LEVELS.at(-1).pairs.length, 9);
 });
 
-test("second-act threads share the loom evenly", () => {
-  for (const level of LEVELS.slice(12)) {
+test("the 8x8 closers and later chambers share the loom evenly", () => {
+  for (const level of LEVELS.slice(7)) {
     const longest = Math.max(
       ...level.pairs.map((pair) => level.solution[pair.color].length),
     );
