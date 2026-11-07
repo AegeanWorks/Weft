@@ -355,6 +355,35 @@ async function main() {
         `How to play did not close back to its opener: open=${helpClosed.open}, active=${helpClosed.active}.`,
       );
     }
+    await pressKey(connection, "Enter", "Enter", 13);
+    await wait(250);
+    const reopenedHelp = await connection.evaluate(`(() => ({
+      open: document.getElementById('help-dialog').open,
+      active: document.activeElement?.id ?? ""
+    }))()`);
+    if (!reopenedHelp.open || reopenedHelp.active !== "help-title") {
+      throw new Error(
+        `The help dialog did not reopen from its opener: open=${reopenedHelp.open}, active=${reopenedHelp.active}.`,
+      );
+    }
+    await pressKey(connection, "Tab", "Tab", 9);
+    const readyFocus = await connection.evaluate(
+      "document.activeElement?.textContent?.trim() ?? ''",
+    );
+    if (readyFocus !== "Ready") {
+      throw new Error(`Tab in the help dialog reached '${readyFocus}', not Ready.`);
+    }
+    await pressKey(connection, "Enter", "Enter", 13);
+    await wait(250);
+    const readyClosed = await connection.evaluate(`(() => ({
+      open: document.getElementById('help-dialog').open,
+      active: document.activeElement?.id ?? ""
+    }))()`);
+    if (readyClosed.open || readyClosed.active !== "btn-how") {
+      throw new Error(
+        `The Ready button did not close back to its opener: open=${readyClosed.open}, active=${readyClosed.active}.`,
+      );
+    }
 
     await connection.evaluate(`(() => {
       const solved = {};
