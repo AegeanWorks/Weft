@@ -422,6 +422,44 @@
         "score": 93,
         "reviewed_at": "2026-11-07"
       }
+    },
+    {
+      "path": "assets/screenshots/2026-11-08-levels-return-before.png",
+      "alt": "Weft chamber index returning to the top after a late chamber at 2026-11-08",
+      "caption": "Pre-fix build 78bcece at 390x844 with 12 solved: returning from Reef Weft lands at the header and chambers 1-3.",
+      "commit": "78bcecea25ae63612dd492270f40a7d31713e825",
+      "taken_at": "2026-11-08",
+      "viewport": "390x844",
+      "width": 390,
+      "height": 844,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 390x844 from a seeded 12-solved profile: the index is back at the top, with the header, daily strip and chambers 1-3 visible.",
+        "score": 88,
+        "reviewed_at": "2026-11-08"
+      }
+    },
+    {
+      "path": "assets/screenshots/2026-11-08-levels-return-after.png",
+      "alt": "Weft chamber index returning to Reef Weft at 2026-11-08",
+      "caption": "Fixed build 46a653e at the same 390x844 save: returning from Reef Weft restores the index to chamber 13 with its Next badge focused.",
+      "commit": "46a653ea1cbb4f91eb31a6c6219a88ca41b41789",
+      "taken_at": "2026-11-08",
+      "viewport": "390x844",
+      "width": 390,
+      "height": 844,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 390x844 from the identical seeded save: chambers 11-15 are visible, Reef Weft carries the Next badge and focus ring, and the daily strip is out of view.",
+        "score": 93,
+        "reviewed_at": "2026-11-08"
+      }
     }
   ]
 }

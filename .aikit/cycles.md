@@ -401,3 +401,43 @@ repeat one that is already covered.
     changed.
   - Before/after: `WEFT_LEVEL=shuttle node scratch/weft-play.mjs solved-level`
     and `play-level` on `http://127.0.0.1:4175`.
+
+## Cycle 10 — UI navigation: return to the same chamber card
+
+- **Area**: chamber-index navigation continuity, distinct from the mobile help
+  readability of cycle 3 and the card previews of cycle 5.
+- **Baseline**: commit `78bcece`; `npm test` 95/95 pass; `python aikit.py check weft`
+  5/5 gates pass; dogfood green.
+- **Finding**: with 12 real chambers solved, the 390x844 index scrolled to Reef
+  Weft at `scrollY=2378` (`cardTop=328`), opened the chamber, and returned to
+  `scrollY=0` with the next card at `2706` and focus on the index heading. A
+  returning player had to scroll past a dozen cards again; the new dogfood check
+  failed with `before=578, after=0, active=`.
+- **Fix**: `fix(ui): restore the chamber index position on return` (`46a653e`).
+  `openBoard` remembers the levels scroll and the opener's selector; the game and
+  win Chambers buttons call `showLevels({ restore: true })`, which restores the
+  scroll and focuses the same card or daily button. Entering from the title still
+  starts at the top. In-memory only.
+- **Visual proof**: same build/save/viewport (390x844, seeded 12-solved save,
+  scroll to Reef Weft, open it, return via Chambers):
+  - before (`78bcece`): `assets/screenshots/2026-11-08-levels-return-before.png`
+    — the index is back at the header and chambers 1-3.
+  - after (`46a653e`): `assets/screenshots/2026-11-08-levels-return-after.png`
+    — the index is back at Reef Weft with the card focused and the Next badge.
+- **Played run**: a real click-through (`node scratch/weft-play.mjs levels-scroll`)
+  reports `scrollY 2378 -> 2378` and `active=reef-weft` after the fix; before it
+  reported `0 -> 0` and the index heading. `npm run dogfood` seeds the same
+  12-chamber save at the end of its run, scrolls to Reef Weft, opens it, returns
+  and requires the scroll within 4px plus card focus, with 0 page errors.
+- **Gates after the fix**: `npm test` 95/95 pass; `npm run dogfood` OK with
+  `0 page errors`; `python aikit.py check weft` 5/5 (test, mechanics, hygiene,
+  guidelines, secrets); `python aikit.py ui verify weft` OK before closing the
+  bounded surface task.
+- **Commands run and results**:
+  - `npm test` -> 95 tests, 95 pass, 0 fail.
+  - `npm run dogfood` -> `[OK] Weft dogfood: title, 24 chambers, a 3-thread
+    solve, the victory dialog, the 12x12 finale and the daily weave; 0 page
+    errors.`
+  - `python aikit.py check weft` -> 5/5 gates passed.
+  - Before/after: `WEFT_WIDTH=390 WEFT_HEIGHT=844 node
+    scratch/weft-play.mjs levels-scroll` on `http://127.0.0.1:4175`.
