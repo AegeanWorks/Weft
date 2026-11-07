@@ -258,3 +258,10 @@ contract, a dependency, a data format or the architecture; IDs are consecutive a
 - **Decision**: Suppress the outline for `.modal h2:focus` and `.modal h2:focus-visible` only. The heading keeps `tabindex="-1"` and remains the programmatic focus target; it is not tabbable, so no interactive focus indicator is lost.
 - **Consequences**: The help title is clean on every open path while focus and screen-reader context stay on the heading. Dogfood now opens help by keyboard and asserts `outlineStyle === "none"` before Escape returns focus to the opener. Verified by a 390x844 before/after pair. Cross-principle check: no principle section changed. Serves PRINCIPLE-011 (clean, usable dialog) and PRINCIPLE-014 (keyboard regression pin).
 
+### ADR-036: Chambers returns to the current chamber card, even after Next
+- **Date**: 2026-11-08
+- **Status**: Accepted
+- **Context**: The index return logic remembered the card that first opened the board. After solving First Thread and advancing through the victory dialog's Next chamber button to Crossweave, the game's Chambers button still focused the First Thread card; a played run reported `active=first-thread` while the game title was Crossweave. The player had moved on, but the index did not.
+- **Decision**: `openBoard` now updates `levelsFocus` to the level being opened on every campaign or daily open, while `levelsScroll` is still captured only when the open starts from the levels screen. On restore, the index scrolls to the remembered position, brings the focused card into view if it is outside the viewport, then focuses it.
+- **Consequences**: Chambers after Next returns to the card for the chamber the player is actually in; a deep-linked late chamber also scrolls its card into view instead of focusing an off-screen card. The index scroll position is still preserved when it is meaningful. Dogfood solves First Thread, advances to Crossweave and asserts the return card is `crossweave`. Verified by a 1440x900 before/after pair. Cross-principle check: no principle section changed. Serves PRINCIPLE-011 (navigation matches the current context) and PRINCIPLE-014 (browser regression pin).
+

@@ -536,6 +536,44 @@
         "score": 93,
         "reviewed_at": "2026-11-08"
       }
+    },
+    {
+      "path": "assets/screenshots/2026-11-08-chambers-return-before.png",
+      "alt": "Weft chamber index after Next returns focus to First Thread at 2026-11-08",
+      "caption": "Pre-audit build 15a7141: after Next to Crossweave, Chambers focuses the First Thread card while Crossweave carries Next.",
+      "commit": "15a71411253a174c1624bc033f12212a3d1a1cde",
+      "taken_at": "2026-11-08",
+      "viewport": "1440x900",
+      "width": 1440,
+      "height": 900,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 1440x900: First Thread has the focus ring while Crossweave is the next chamber, showing the stale return target.",
+        "score": 88,
+        "reviewed_at": "2026-11-08"
+      }
+    },
+    {
+      "path": "assets/screenshots/2026-11-08-chambers-return-after.png",
+      "alt": "Weft chamber index after Next returns focus to Crossweave at 2026-11-08",
+      "caption": "Audit fix dc5d540: after Next to Crossweave, Chambers focuses the Crossweave card and keeps its Next badge.",
+      "commit": "dc5d540fe3872d6a016733aeeb7be1c983f87250",
+      "taken_at": "2026-11-08",
+      "viewport": "1440x900",
+      "width": 1440,
+      "height": 900,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 1440x900: Crossweave carries both the Next badge and the focus ring after returning from it; First Thread no longer has focus.",
+        "score": 93,
+        "reviewed_at": "2026-11-08"
+      }
     }
   ]
 }

@@ -278,5 +278,19 @@
     "final_snapshot_digest": "410ff09a8424a5cbc1b901fd745fdccca018fec9e193afc3b045e1b681422d3e",
     "final_snapshot_entries": 23,
     "surface_digest": "75f52d57b8069bc66690525e7d7f12b99f4cac12691b2543aaaa9e51c70fb8cc"
+  },
+  {
+    "schema": 1,
+    "surface": "app",
+    "baseline_commit": "15a71411253a174c1624bc033f12212a3d1a1cde",
+    "contract_hash": "6b437c28104ade566ef850ac61b1cb8cf003a9181f3abdcbf0d1abc07287c794",
+    "started_at": 1794089051.4382958,
+    "finished_at": 1794089078.3483963,
+    "strikes": 0,
+    "reviewer": "opencode:audit-run-1 (Next-to-Chambers focus pair + dogfood)",
+    "allowed_removals": [],
+    "final_snapshot_digest": "410ff09a8424a5cbc1b901fd745fdccca018fec9e193afc3b045e1b681422d3e",
+    "final_snapshot_entries": 23,
+    "surface_digest": "0e43c52a52f494e734934219d810d7f20ab52ff1b3771c209873002031855a62"
   }
 ]
