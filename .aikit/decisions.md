@@ -279,3 +279,10 @@ contract, a dependency, a data format or the architecture; IDs are consecutive a
 - **Decision**: `openLevel` checks `isUnlocked` and, unless an explicit `options.preview` is present, returns to the levels index for a locked chamber. Preview URLs (`solved`, `win`, `hint`, `help`) remain available for screenshot QA and rendering; the level ids, unlock chain and save schema are unchanged.
 - **Consequences**: A plain `?level=` link respects the same sequential unlock as the index, while the documented preview captures still work. Dogfood visits a locked plain link and requires the index with the card disabled, then visits the same id with `preview=solved` and requires the rendered won board; the last-chamber render now uses the preview URL. Verified by a 1440x900 before/after pair. Cross-principle check: no principle section changed. Serves PRINCIPLE-003 (the unlock rule holds on every entry path), PRINCIPLE-011 (a URL cannot silently bypass the campaign) and PRINCIPLE-014 (browser regression pin).
 
+### ADR-039: A blocked locked-chamber link says why it returned
+- **Date**: 2026-11-08
+- **Status**: Accepted
+- **Context**: ADR-038 stopped a plain `?level=` link from opening a locked chamber, but the redirect back to the index was silent; a player following a shared link saw the campaign map with no explanation and could reasonably read it as a broken link.
+- **Decision**: Add a polite `#levels-status` line under the daily strip. `showLevels` accepts a notice and writes it; a blocked `openLevel` writes `"<Chamber> is locked. Finish <previous> first."`. Normal navigation clears the line. The small text size is a `--text-sm` theme token so the UI style gate stays token-only.
+- **Consequences**: A blocked link now explains itself visually and through the live region, while a normal index visit keeps an empty reserved line. No engine, save or unlock rule change. Dogfood requires the notice to name both the blocked chamber and its predecessor. Verified by a 1440x900 before/after pair. Cross-principle check: no principle section changed. Serves PRINCIPLE-011 (no silent dead end) and PRINCIPLE-014 (browser regression pin).
+

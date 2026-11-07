@@ -85,3 +85,28 @@ evidence and pushes.
   `npm run dogfood` OK with 0 page errors; `python aikit.py ui verify weft` OK.
 - **Push**: `git push origin master` after the record commit; remote head
   confirmed with `git ls-remote origin`.
+
+## Push run 4 — cycles 1→12 (End; full window)
+
+- **Scope**: the complete 12-cycle tree and its interactions, including the new
+  locked-link guard, the static shell, the help focus and the index return.
+- **Finding**: the locked-link guard returned to the index silently. A player
+  following a shared `?level=shuttle` link saw the campaign map with no reason
+  and could read the redirect as a broken link.
+- **Fix**: `feat(ui): explain a blocked locked-chamber link` (`ddc2b60`,
+  ADR-039). A polite `#levels-status` line says `"Shuttle is locked. Finish Warp
+  Song first."`; normal index visits clear it. The small text size uses a
+  `--text-sm` theme token so the UI style gate stays token-only.
+- **Visual proof**: same URL/state/viewport (1440x900, fresh profile,
+  `?level=shuttle`):
+  - before: `assets/screenshots/2026-11-08-locked-notice-before.png` — the index
+    with no explanation.
+  - after: `assets/screenshots/2026-11-08-locked-notice-after.png` — the same
+    index with the locked-chamber notice under the daily strip.
+- **Played run**: `npm run dogfood` requires the notice to name both Shuttle and
+  Warp Song, then performs the full help/solve/victory/reset/12×12/daily/
+  late-index flow with 0 page errors.
+- **Gates**: `npm test` 96/96 pass; `python aikit.py check weft` 5/5;
+  `npm run dogfood` OK with 0 page errors; `python aikit.py ui verify weft` OK.
+- **Push**: `git push origin master` after the record commit; remote head
+  confirmed with `git ls-remote origin`.

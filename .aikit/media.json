@@ -650,6 +650,44 @@
         "score": 93,
         "reviewed_at": "2026-11-08"
       }
+    },
+    {
+      "path": "assets/screenshots/2026-11-08-locked-notice-before.png",
+      "alt": "Weft locked deep link returning to the index without a notice at 2026-11-08",
+      "caption": "Pre-audit build 111f587: the blocked ?level=shuttle link returns to the index with no explanation.",
+      "commit": "111f5874787a9852efcb219cacfb26a420e0d3ac",
+      "taken_at": "2026-11-08",
+      "viewport": "1440x900",
+      "width": 1440,
+      "height": 900,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 1440x900 with an empty save: the index shows First Thread as Next and Shuttle as Locked, but no line explains the redirect.",
+        "score": 88,
+        "reviewed_at": "2026-11-08"
+      }
+    },
+    {
+      "path": "assets/screenshots/2026-11-08-locked-notice-after.png",
+      "alt": "Weft locked deep link explaining the lock at 2026-11-08",
+      "caption": "Audit fix ddc2b60: the same blocked link shows 'Shuttle is locked. Finish Warp Song first.' under the daily strip.",
+      "commit": "ddc2b60b9b01863d4c87b84f6f5f56867c88d4c6",
+      "taken_at": "2026-11-08",
+      "viewport": "1440x900",
+      "width": 1440,
+      "height": 900,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 1440x900 with the same empty save: the notice reads Shuttle is locked. Finish Warp Song first. above the grid.",
+        "score": 94,
+        "reviewed_at": "2026-11-08"
+      }
     }
   ]
 }
