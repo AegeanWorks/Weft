@@ -1,7 +1,12 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { createDailyLevel, dailyLabel, dateKey } from "../src/game/daily.js";
+import {
+  createDailyLevel,
+  currentDailyKey,
+  dailyLabel,
+  dateKey,
+} from "../src/game/daily.js";
 import { createGame, isSolved, setPath, validateLevel } from "../src/game/engine.js";
 import { generateLevel } from "../src/game/generate.js";
 
@@ -43,6 +48,13 @@ test("the daily key follows the local calendar day", () => {
   assert.equal(dateKey(new Date(2026, 9, 30, 0, 0)), "2026-10-30");
   assert.equal(dateKey(new Date(2026, 0, 5, 23, 59)), "2026-01-05");
   assert.match(dailyLabel("2026-10-30"), /2026/);
+});
+
+test("a daily link can only open the local day", () => {
+  assert.equal(currentDailyKey("2026-11-06", "2026-11-07"), "2026-11-07");
+  assert.equal(currentDailyKey("2026-11-07", "2026-11-07"), "2026-11-07");
+  assert.equal(currentDailyKey("", "2026-11-07"), "2026-11-07");
+  assert.equal(currentDailyKey(undefined, "2026-11-07"), "2026-11-07");
 });
 
 test("the daily chamber is deterministic, valid and date-stamped", () => {
