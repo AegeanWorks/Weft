@@ -403,6 +403,33 @@ async function main() {
       );
     }
     await connection.evaluate("localStorage.removeItem('weft.progress.v1')");
+    const lockedLevel = LEVELS[8];
+    await connection.send("Page.navigate", { url: `${url}?level=${lockedLevel.id}` });
+    await wait(900);
+    const lockedLink = await connection.evaluate(`(() => ({
+      screen: document.body.dataset.screen,
+      boardLevel: document.getElementById('board').dataset.level,
+      lockedCardDisabled:
+        document.querySelector('.level-card[data-level="${lockedLevel.id}"]')?.disabled ?? false
+    }))()`);
+    if (lockedLink.screen !== "levels" || !lockedLink.lockedCardDisabled) {
+      throw new Error(
+        `A plain locked deep link did not return to the index: screen=${lockedLink.screen}, disabled=${lockedLink.lockedCardDisabled}.`,
+      );
+    }
+    await connection.send("Page.navigate", {
+      url: `${url}?level=${lockedLevel.id}&preview=solved`,
+    });
+    await wait(900);
+    const lockedPreview = await connection.evaluate(`(() => ({
+      screen: document.body.dataset.screen,
+      won: document.getElementById('board').classList.contains('is-won')
+    }))()`);
+    if (lockedPreview.screen !== "game" || !lockedPreview.won) {
+      throw new Error(
+        `The locked preview path stopped working: screen=${lockedPreview.screen}, won=${lockedPreview.won}.`,
+      );
+    }
 
     await connection.send("Page.navigate", { url: `${url}?screen=levels` });
     await wait(900);
@@ -626,20 +653,24 @@ async function main() {
     }
 
     const last = LEVELS.at(-1);
-    await connection.send("Page.navigate", { url: `${url}?level=${last.id}` });
+    await connection.send("Page.navigate", {
+      url: `${url}?level=${last.id}&preview=solved`,
+    });
     await wait(900);
     const lastBoard = await connection.evaluate(`(() => ({
       cells: document.querySelectorAll('.cell').length,
       spools: document.querySelectorAll('[data-spool]').length,
-      name: document.getElementById('level-name').textContent
+      name: document.getElementById('level-name').textContent,
+      won: document.getElementById('board').classList.contains('is-won')
     }))()`);
     if (
       lastBoard.cells !== last.size * last.size ||
       lastBoard.spools !== last.pairs.length * 2 ||
-      lastBoard.name !== last.name
+      lastBoard.name !== last.name ||
+      !lastBoard.won
     ) {
       throw new Error(
-        `The last chamber did not render: cells=${lastBoard.cells}, spools=${lastBoard.spools}, name=${lastBoard.name}.`,
+        `The last chamber did not render: cells=${lastBoard.cells}, spools=${lastBoard.spools}, name=${lastBoard.name}, won=${lastBoard.won}.`,
       );
     }
 
