@@ -140,7 +140,7 @@ weft/
 ## Design Decisions
 
 - **Pure engine first.** `src/game/engine.js` has no DOM, clock, random source or storage. The browser, the tests and the level validator share one set of rules.
-- **Generated, frozen chambers.** Each level starts as a randomized Hamiltonian path, then is cut into threads. That construction makes every stored solution total by definition; `tests/levels.test.js` proves it again on every run. Act II cuts its paths evenly, so no single thread swallows a third of the loom; Act III holds six more 12×12 chambers on the same even cut.
+- **Generated, frozen chambers.** Each level starts as a randomized Hamiltonian path, then is cut into threads. That construction makes every stored solution total by definition; `tests/levels.test.js` proves it again on every run. From Warp Song onward, the cut is even, so no thread on an 8×8 or larger loom takes more than a quarter of the cells; Act III holds six more 12×12 chambers on the same even cut.
 - **One generator for campaign and daily.** `src/game/generate.js` is pure and shared by the offline campaign script and the in-browser daily, so the two can never drift into different rules or a second level format.
 - **Static by construction.** There is no API, no build step and no external asset. `index.html`, `src/` and `assets/` are the complete deployment payload, which is why the AegeanWorks Play sync can copy the game by commit.
 - **Pointer and keyboard parity.** The loom is a group of real buttons. Pointer drags and arrow-key drafts use the same `beginDraft` / `extendDraft` / `commitDraft` path, and every commit goes through the pure engine.
