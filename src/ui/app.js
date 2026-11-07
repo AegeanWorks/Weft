@@ -1053,6 +1053,10 @@ function openLevel(id, options = {}) {
     showLevels();
     return;
   }
+  if (!options.preview && !isUnlocked(state.progress, LEVELS, level.id)) {
+    showLevels();
+    return;
+  }
   openBoard(level, options);
 }
 
