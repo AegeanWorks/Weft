@@ -410,11 +410,17 @@ async function main() {
       screen: document.body.dataset.screen,
       boardLevel: document.getElementById('board').dataset.level,
       lockedCardDisabled:
-        document.querySelector('.level-card[data-level="${lockedLevel.id}"]')?.disabled ?? false
+        document.querySelector('.level-card[data-level="${lockedLevel.id}"]')?.disabled ?? false,
+      notice: document.getElementById('levels-status').textContent
     }))()`);
-    if (lockedLink.screen !== "levels" || !lockedLink.lockedCardDisabled) {
+    if (
+      lockedLink.screen !== "levels" ||
+      !lockedLink.lockedCardDisabled ||
+      !lockedLink.notice.includes(`${lockedLevel.name} is locked`) ||
+      !lockedLink.notice.includes(LEVELS[7].name)
+    ) {
       throw new Error(
-        `A plain locked deep link did not return to the index: screen=${lockedLink.screen}, disabled=${lockedLink.lockedCardDisabled}.`,
+        `A plain locked deep link did not explain its return: screen=${lockedLink.screen}, disabled=${lockedLink.lockedCardDisabled}, notice=${lockedLink.notice}.`,
       );
     }
     await connection.send("Page.navigate", {
