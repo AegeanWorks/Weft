@@ -436,6 +436,36 @@ async function main() {
         `The locked preview path stopped working: screen=${lockedPreview.screen}, won=${lockedPreview.won}.`,
       );
     }
+    await connection.send("Page.navigate", { url: `${url}?level=${LEVELS[0].id}` });
+    await wait(900);
+    await pressKey(connection, "Tab", "Tab", 9);
+    const gameSkip = await connection.evaluate(`(() => ({
+      className: document.activeElement?.className ?? "",
+      text: document.activeElement?.textContent?.trim() ?? ""
+    }))()`);
+    if (!gameSkip.className.includes("skip-link")) {
+      throw new Error(
+        `The game-screen first Tab stop is not the skip link: class=${gameSkip.className}, text=${gameSkip.text}.`,
+      );
+    }
+    await pressKey(connection, "Enter", "Enter", 13);
+    await wait(250);
+    const gameMain = await connection.evaluate(`(() => ({
+      active: document.activeElement?.id || document.activeElement?.tagName || "",
+      hash: location.hash
+    }))()`);
+    if (gameMain.active !== "main" || gameMain.hash !== "#main") {
+      throw new Error(
+        `The game-screen skip link did not focus main: active=${gameMain.active}, hash=${gameMain.hash}.`,
+      );
+    }
+    await pressKey(connection, "Tab", "Tab", 9);
+    const gameNext = await connection.evaluate(
+      "document.activeElement?.textContent?.trim() ?? ''",
+    );
+    if (!gameNext.includes("Chambers")) {
+      throw new Error(`Tab after the game skip target reached '${gameNext}', not Chambers.`);
+    }
 
     await connection.send("Page.navigate", { url: `${url}?screen=levels` });
     await wait(900);
