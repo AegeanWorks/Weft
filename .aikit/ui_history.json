@@ -222,5 +222,19 @@
     "final_snapshot_digest": "410ff09a8424a5cbc1b901fd745fdccca018fec9e193afc3b045e1b681422d3e",
     "final_snapshot_entries": 23,
     "surface_digest": "8a9ee06410a6c447d8ee8cfbf31f282fc5f79c71516b4525a91d6a96005ee164"
+  },
+  {
+    "schema": 1,
+    "surface": "app",
+    "baseline_commit": "83dbe7a64f372e18757fdb88476db38082a5b1e8",
+    "contract_hash": "6b437c28104ade566ef850ac61b1cb8cf003a9181f3abdcbf0d1abc07287c794",
+    "started_at": 1794084542.9267569,
+    "finished_at": 1794084768.6126933,
+    "strikes": 0,
+    "reviewer": "opencode:weft-cycle-09 (solved-board pair + real Shuttle plays)",
+    "allowed_removals": [],
+    "final_snapshot_digest": "410ff09a8424a5cbc1b901fd745fdccca018fec9e193afc3b045e1b681422d3e",
+    "final_snapshot_entries": 23,
+    "surface_digest": "07fa2aefef11f3e19ac4f1b11c456b247ef1fabd530258b682ed2940b875df13"
   }
 ]
