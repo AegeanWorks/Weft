@@ -117,7 +117,8 @@ async function connect(webSocketUrl) {
         awaitPromise: true,
       });
       if (result.exceptionDetails) {
-        throw new Error(result.exceptionDetails.text);
+        const details = result.exceptionDetails;
+        throw new Error(details.exception?.description ?? details.text);
       }
       return result.result.value;
     },
@@ -135,6 +136,33 @@ async function cellCenter(connection, x, y) {
     throw new Error(`The loom has no cell at ${x},${y}.`);
   }
   return center;
+}
+
+async function pressEscape(connection) {
+  for (const type of ["rawKeyDown", "keyUp"]) {
+    await connection.send("Input.dispatchKeyEvent", {
+      type,
+      key: "Escape",
+      code: "Escape",
+      windowsVirtualKeyCode: 27,
+    });
+  }
+  await wait(160);
+}
+
+async function clickCell(connection, x, y) {
+  const point = await cellCenter(connection, x, y);
+  for (const type of ["mousePressed", "mouseReleased"]) {
+    await connection.send("Input.dispatchMouseEvent", {
+      type,
+      x: point.x,
+      y: point.y,
+      button: "left",
+      buttons: type === "mousePressed" ? 1 : 0,
+      clickCount: 1,
+    });
+  }
+  await wait(160);
 }
 
 async function drawPair(connection, pair, solution) {
@@ -251,6 +279,43 @@ async function main() {
     }
     if (!result.best.includes("3/3")) {
       throw new Error(`The HUD did not show the best rating: best=${result.best}.`);
+    }
+
+    await pressEscape(connection);
+    const dismissed = await connection.evaluate(`(() => ({
+      open: document.getElementById('win-dialog').open,
+      status: document.getElementById('status').textContent
+    }))()`);
+    if (dismissed.open || !dismissed.status.includes("reopen")) {
+      throw new Error(
+        `A dismissed victory left no recovery path: open=${dismissed.open}, status=${dismissed.status}.`,
+      );
+    }
+    await clickCell(connection, level.pairs[0].start[0], level.pairs[0].start[1]);
+    const reopened = await connection.evaluate(`(() => ({
+      open: document.getElementById('win-dialog').open,
+      status: document.getElementById('status').textContent
+    }))()`);
+    if (!reopened.open || reopened.status !== "Chamber woven.") {
+      throw new Error(
+        `The won loom did not reopen its result: open=${reopened.open}, status=${reopened.status}.`,
+      );
+    }
+    await connection.evaluate("document.getElementById('btn-next').click()");
+    await wait(500);
+    const advanced = await connection.evaluate(`(() => ({
+      screen: document.body.dataset.screen,
+      level: document.getElementById('level-name').textContent,
+      kicker: document.getElementById('level-kicker').textContent
+    }))()`);
+    if (
+      advanced.screen !== "game" ||
+      advanced.level !== LEVELS[1].name ||
+      !advanced.kicker.startsWith("Chamber 02")
+    ) {
+      throw new Error(
+        `The recovered victory did not advance: screen=${advanced.screen}, level=${advanced.level}, kicker=${advanced.kicker}.`,
+      );
     }
 
     await connection.send("Page.navigate", { url: `${url}?screen=levels` });
