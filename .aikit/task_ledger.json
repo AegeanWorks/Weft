@@ -1,67 +1,17 @@
 {
   "version": 1,
   "active_task": {
-    "task_id": "weft-cycle-10",
+    "task_id": "weft-cycle-11",
     "last_phase": "in_progress",
     "active_phase": 5,
     "status": "completed",
-    "updated_at": 1794086324.720346,
+    "updated_at": 1794086980.569289,
     "owner": "opencode:weft-cycles",
     "started_by": "opencode:weft-cycles",
     "continuations": [],
-    "completed_at": 1794086325.3870995
+    "completed_at": 1794086981.205229
   },
   "checkpoints": [
-    {
-      "task_id": "weft-cycle-05",
-      "phase": "in_progress",
-      "phase_num": 4,
-      "description": "[3/4] Phase 4 green: 90/90 tests, 5/5 aikit gates, dogfood 0 page errors with 24 previews and a card click, before/after index pair at 1440x900; checklists: passed",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1794081695.0542052,
-      "timestamp_str": "2026-11-07 23:01:35",
-      "agent": "opencode:weft-cycles"
-    },
-    {
-      "task_id": "weft-cycle-05",
-      "phase": "completed",
-      "phase_num": 5,
-      "description": "Task 'weft-cycle-05' completed successfully.",
-      "status": "completed",
-      "timestamp": 1794081695.3693266,
-      "timestamp_str": "2026-11-07 23:01:35",
-      "agent": "opencode:weft-cycles"
-    },
-    {
-      "task_id": "weft-cycle-06",
-      "phase": "in_progress",
-      "phase_num": 2,
-      "description": "[1/4] Cycle 6: give Hint, Undo and Reset distinct audio cues instead of the shared 660Hz tick, so blind and glance-away players can tell what changed; prove with unit frequency pins and a real browser audio-graph run for each action",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1794081775.5458736,
-      "timestamp_str": "2026-11-07 23:02:55",
-      "agent": "opencode:weft-cycles",
-      "impact_assessment": {
-        "why": "beginDraft, undo, resetLevel and showHint all call audio.play('tick'), so the four most common loom actions sound identical and the only feedback for a hint, an undo or a reset is the same 35ms 660Hz blip.",
-        "benefits": "Each action gains a recognizable short signature without files, dependencies or new settings, and the existing mute toggle still silences all of them.",
-        "risks": "contract: CUES gains three named cues and four app call sites change; dependency: none; concurrency: single writer on a clean weft tree; state: none",
-        "mitigation": "Frequency-pinned unit tests plus a browser probe that intercepts createOscillator for hint/undo/reset, full npm test plus aikit check and dogfood, explicit staging, no push"
-      },
-      "plan_digest": "7989b10379bed1609e3907edd0ad480eb44bdcf6903070801e16bc2090c467f9"
-    },
-    {
-      "task_id": "weft-cycle-06",
-      "phase": "in_progress",
-      "phase_num": 3,
-      "description": "[2/4] Added hint/undo/reset cues, pinned their frequencies and distinctness in unit tests, and made dogfood assert the real browser cue graph during the played run",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1794082346.5551748,
-      "timestamp_str": "2026-11-07 23:12:26",
-      "agent": "opencode:weft-cycles"
-    },
     {
       "task_id": "weft-cycle-06",
       "phase": "in_progress",
@@ -259,6 +209,56 @@
       "status": "completed",
       "timestamp": 1794086325.3871017,
       "timestamp_str": "2026-11-08 00:18:45",
+      "agent": "opencode:weft-cycles"
+    },
+    {
+      "task_id": "weft-cycle-11",
+      "phase": "in_progress",
+      "phase_num": 2,
+      "description": "[1/4] Cycle 11: correct the cold-start HTML shell so its static chamber count and star rule match the shipped 24-chamber game, and pin the defaults to TOTAL_CHAMBERS/MAX_STARS so future content cannot drift; prove with a blocked-JS before/after shell pair and a static test",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794086410.2757077,
+      "timestamp_str": "2026-11-08 00:20:10",
+      "agent": "opencode:weft-cycles",
+      "impact_assessment": {
+        "why": "index.html still ships '0 of 18 woven' and a title default without '3 stars each'; the live render overwrites both, but the shipped shell is wrong during the initial paint or when the module is blocked, and no test pins the static defaults to the live constants.",
+        "benefits": "The first HTML paint tells the truth, a changed campaign count/star rule cannot leave a stale shell behind, and no game, save or layout behavior changes.",
+        "risks": "contract: two static text defaults and one UI test; dependency: none; concurrency: single writer on a clean weft tree; state: none",
+        "mitigation": "Static test computed from TOTAL_CHAMBERS/MAX_STARS, blocked-app.js 1440x900 before/after shell pair at the same forced levels view, full npm test plus aikit check and dogfood, explicit staging, no push"
+      },
+      "plan_digest": "3fb105f653dafb591900e6b0f4ef2b5245355f53bf59049b4993ab885302dd25"
+    },
+    {
+      "task_id": "weft-cycle-11",
+      "phase": "in_progress",
+      "phase_num": 3,
+      "description": "[2/4] Corrected the static shell counts/star rule, added the live-constant shell test, and captured the blocked-JS 1440x900 before/after pair",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794086861.6569004,
+      "timestamp_str": "2026-11-08 00:27:41",
+      "agent": "opencode:weft-cycles"
+    },
+    {
+      "task_id": "weft-cycle-11",
+      "phase": "in_progress",
+      "phase_num": 4,
+      "description": "[3/4] Phase 4 green: 96/96 tests, 5/5 aikit gates, dogfood 0 page errors, blocked-JS shell pair shows 0 of 18 -> 0 of 24 woven / 0/72 stars; checklists: passed",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794086980.569289,
+      "timestamp_str": "2026-11-08 00:29:40",
+      "agent": "opencode:weft-cycles"
+    },
+    {
+      "task_id": "weft-cycle-11",
+      "phase": "completed",
+      "phase_num": 5,
+      "description": "Task 'weft-cycle-11' completed successfully.",
+      "status": "completed",
+      "timestamp": 1794086981.2052314,
+      "timestamp_str": "2026-11-08 00:29:41",
       "agent": "opencode:weft-cycles"
     }
   ]
