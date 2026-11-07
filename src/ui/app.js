@@ -58,6 +58,7 @@ const refs = {
   best: required("best"),
   titleProgress: required("title-progress"),
   levelsProgress: required("levels-progress"),
+  levelsStatus: required("levels-status"),
   levelGrid: required("level-grid"),
   helpDialog: required("help-dialog"),
   helpHeading: required("help-title"),
@@ -431,12 +432,13 @@ function showTitle() {
   setScreen("title");
 }
 
-function showLevels({ restore = false } = {}) {
+function showLevels({ restore = false, notice = "" } = {}) {
   if (state.timer.running) {
     stopTimer();
   }
   renderLevels();
   renderDaily();
+  refs.levelsStatus.textContent = notice;
   setScreen("levels", { focus: !restore });
   if (!restore) {
     return;
@@ -1054,7 +1056,13 @@ function openLevel(id, options = {}) {
     return;
   }
   if (!options.preview && !isUnlocked(state.progress, LEVELS, level.id)) {
-    showLevels();
+    const index = LEVELS.indexOf(level);
+    const previous = index > 0 ? LEVELS[index - 1] : null;
+    showLevels({
+      notice: previous
+        ? `${level.name} is locked. Finish ${previous.name} first.`
+        : "",
+    });
     return;
   }
   openBoard(level, options);

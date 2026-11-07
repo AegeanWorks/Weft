@@ -6,6 +6,7 @@
   color-scheme: dark;
   --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
   --font-ui: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --text-sm: 0.84rem;
 
   --ink: #071018;
   --ink-2: #0a1720;

@@ -296,6 +296,13 @@ button {
   color: var(--thread-gold);
 }
 
+.level-status {
+  min-height: 1.4em;
+  margin: 0 0 12px;
+  color: var(--bronze-bright);
+  font-size: var(--text-sm);
+}
+
 .level-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
