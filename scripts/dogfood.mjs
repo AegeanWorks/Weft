@@ -922,6 +922,34 @@ async function main() {
     await connection.send("Page.navigate", { url: `${url}?screen=levels` });
     await wait(900);
     await connection.evaluate("localStorage.removeItem('weft.progress.v1')");
+    await pressKey(connection, "Tab", "Tab", 9);
+    const levelsSkip = await connection.evaluate(`(() => ({
+      className: document.activeElement?.className ?? "",
+      text: document.activeElement?.textContent?.trim() ?? ""
+    }))()`);
+    if (!levelsSkip.className.includes("skip-link")) {
+      throw new Error(
+        `The levels-screen first Tab stop is not the skip link: class=${levelsSkip.className}, text=${levelsSkip.text}.`,
+      );
+    }
+    await pressKey(connection, "Enter", "Enter", 13);
+    await wait(250);
+    const levelsMain = await connection.evaluate(`(() => ({
+      active: document.activeElement?.id || document.activeElement?.tagName || "",
+      hash: location.hash
+    }))()`);
+    if (levelsMain.active !== "main" || levelsMain.hash !== "#main") {
+      throw new Error(
+        `The levels-screen skip link did not focus main: active=${levelsMain.active}, hash=${levelsMain.hash}.`,
+      );
+    }
+    await pressKey(connection, "Tab", "Tab", 9);
+    const levelsNext = await connection.evaluate(
+      "document.activeElement?.textContent?.trim() ?? ''",
+    );
+    if (!levelsNext.includes("Title")) {
+      throw new Error(`Tab after the levels skip target reached '${levelsNext}', not Title.`);
+    }
     if (connection.errors.length > 0) {
       throw new Error(
         `The played run logged ${connection.errors.length} page error(s): ${connection.errors.join(" | ")}`,
