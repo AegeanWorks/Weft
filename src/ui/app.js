@@ -84,6 +84,7 @@ const refs = {
 };
 
 const audio = createAudio();
+let firstScreen = true;
 
 const state = {
   screen: "title",
@@ -233,7 +234,9 @@ function setScreen(name, { focus = true } = {}) {
   state.screen = name;
   document.body.dataset.screen = name;
   window.scrollTo(0, 0);
-  if (!focus) {
+  const isFirst = firstScreen;
+  firstScreen = false;
+  if (!focus || isFirst) {
     return;
   }
   const heading = document.querySelector(`section[data-screen="${name}"] h1`);
