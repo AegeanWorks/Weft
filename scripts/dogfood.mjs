@@ -150,12 +150,15 @@ async function cellCenter(connection, x, y) {
 }
 
 async function pressKey(connection, key, code, windowsVirtualKeyCode) {
-  for (const type of ["rawKeyDown", "keyUp"]) {
+  for (const type of ["keyDown", "keyUp"]) {
     await connection.send("Input.dispatchKeyEvent", {
       type,
       key,
       code,
       windowsVirtualKeyCode,
+      ...(type === "keyDown" && key === "Enter"
+        ? { text: "\r", unmodifiedText: "\r" }
+        : {}),
     });
   }
   await wait(160);
@@ -309,7 +312,10 @@ async function main() {
     if (nextStop !== "Play") {
       throw new Error(`Tab after the skip target reached '${nextStop}', not Play.`);
     }
-    await clickSelector(connection, "#btn-how");
+    await pressKey(connection, "Tab", "Tab", 9);
+    await pressKey(connection, "Tab", "Tab", 9);
+    await pressKey(connection, "Enter", "Enter", 13);
+    await wait(250);
     const help = await connection.evaluate(`(() => {
       const dialog = document.getElementById('help-dialog');
       return {
@@ -321,6 +327,14 @@ async function main() {
     if (!help.open || help.scrollTop !== 0 || help.active !== "help-title") {
       throw new Error(
         `How to play did not open at its heading: open=${help.open}, scrollTop=${help.scrollTop}, active=${help.active}.`,
+      );
+    }
+    const helpOutline = await connection.evaluate(
+      "getComputedStyle(document.getElementById('help-title')).outlineStyle",
+    );
+    if (helpOutline !== "none") {
+      throw new Error(
+        `The focused help heading still draws a ${helpOutline} outline.`,
       );
     }
     await pressEscape(connection);
