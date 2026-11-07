@@ -152,5 +152,19 @@
     "final_snapshot_digest": "410ff09a8424a5cbc1b901fd745fdccca018fec9e193afc3b045e1b681422d3e",
     "final_snapshot_entries": 23,
     "surface_digest": "501407c06c7e6eda1a247ef59d9cd159b1d708fb0b8134aacae554ba441595ec"
+  },
+  {
+    "schema": 1,
+    "surface": "app",
+    "baseline_commit": "594effb37d964b65c635934e36a2a1c8d1306411",
+    "contract_hash": "6b437c28104ade566ef850ac61b1cb8cf003a9181f3abdcbf0d1abc07287c794",
+    "started_at": 1794080596.3507576,
+    "finished_at": 1794080787.5117233,
+    "strikes": 0,
+    "reviewer": "opencode:weft-cycle-04 (poisoned-save vision pair + dogfood reload)",
+    "allowed_removals": [],
+    "final_snapshot_digest": "410ff09a8424a5cbc1b901fd745fdccca018fec9e193afc3b045e1b681422d3e",
+    "final_snapshot_entries": 23,
+    "surface_digest": "4387cf209a78f93b177dbbedd40dcfdb1747c2d695faf0c8726b7cccb5993fc5"
   }
 ]
