@@ -90,6 +90,8 @@ const refs = {
 
 const audio = createAudio();
 let firstScreen = true;
+let levelsScroll = 0;
+let levelsFocus = null;
 
 const state = {
   screen: "title",
@@ -429,13 +431,22 @@ function showTitle() {
   setScreen("title");
 }
 
-function showLevels() {
+function showLevels({ restore = false } = {}) {
   if (state.timer.running) {
     stopTimer();
   }
   renderLevels();
   renderDaily();
-  setScreen("levels");
+  setScreen("levels", { focus: !restore });
+  if (!restore) {
+    return;
+  }
+  window.scrollTo(0, levelsScroll);
+  const target = levelsFocus ? document.querySelector(levelsFocus) : null;
+  const fallback =
+    refs.levelGrid.querySelector("[data-next=true]") ??
+    refs.levelGrid.querySelector(".level-card");
+  (target ?? fallback)?.focus({ preventScroll: true });
 }
 
 function pathData(cells) {
@@ -991,6 +1002,12 @@ function applySolution() {
 }
 
 function openBoard(level, { preview = null, daily = null } = {}) {
+  if (state.screen === "levels") {
+    levelsScroll = window.scrollY;
+    levelsFocus = daily
+      ? "#btn-daily-levels"
+      : `.level-card[data-level="${level.id}"]`;
+  }
   clearTimeout(state.hintTimer);
   state.level = level;
   state.daily = daily;
@@ -1066,7 +1083,7 @@ function bindEvents() {
   refs.btnDailyLevels.addEventListener("click", () => openDaily());
   refs.btnHow.addEventListener("click", openHelp);
   refs.btnBackTitle.addEventListener("click", showTitle);
-  refs.btnLevels.addEventListener("click", showLevels);
+  refs.btnLevels.addEventListener("click", () => showLevels({ restore: true }));
   refs.btnUndo.addEventListener("click", undo);
   refs.btnReset.addEventListener("click", resetLevel);
   refs.btnHint.addEventListener("click", showHint);
@@ -1092,7 +1109,7 @@ function bindEvents() {
   refs.btnShare.addEventListener("click", shareDailyResult);
   refs.btnWinLevels.addEventListener("click", () => {
     refs.winDialog.close();
-    showLevels();
+    showLevels({ restore: true });
   });
 
   refs.board.addEventListener("pointerdown", (event) => {
