@@ -250,5 +250,19 @@
     "final_snapshot_digest": "410ff09a8424a5cbc1b901fd745fdccca018fec9e193afc3b045e1b681422d3e",
     "final_snapshot_entries": 23,
     "surface_digest": "d8d945bc67f120d4779667c0d11bf018fb9f04ce26699fd341b2cd50473c3d4c"
+  },
+  {
+    "schema": 1,
+    "surface": "app",
+    "baseline_commit": "15aacd921b9ac040502a241a86d7492539a74288",
+    "contract_hash": "6b437c28104ade566ef850ac61b1cb8cf003a9181f3abdcbf0d1abc07287c794",
+    "started_at": 1794086420.3954017,
+    "finished_at": 1794086692.7899816,
+    "strikes": 0,
+    "reviewer": "opencode:weft-cycle-11 (blocked-JS shell pair + static test)",
+    "allowed_removals": [],
+    "final_snapshot_digest": "410ff09a8424a5cbc1b901fd745fdccca018fec9e193afc3b045e1b681422d3e",
+    "final_snapshot_entries": 23,
+    "surface_digest": "a9618a0f3bdc5ee202d39f75b8c29938c1c894a1f1604295e90a343c8cd0f9a4"
   }
 ]
