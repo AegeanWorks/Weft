@@ -205,6 +205,14 @@ test("chambers unlock in order", () => {
   assert.equal(isUnlocked(progress, LEVELS, "three"), false);
 });
 
+test("a solved chamber stays replayable when its predecessor is missing", () => {
+  let progress = defaultProgress();
+  progress = recordSolve(progress, "two", { bestMs: 1000, hints: 0, moves: 2 });
+  assert.equal(isUnlocked(progress, LEVELS, "one"), true);
+  assert.equal(isUnlocked(progress, LEVELS, "two"), true);
+  assert.equal(isUnlocked(progress, LEVELS, "three"), true);
+});
+
 test("nextUnsolved follows the campaign order", () => {
   let progress = defaultProgress();
   assert.equal(nextUnsolved(progress, LEVELS).id, "one");
