@@ -824,7 +824,7 @@ function undo() {
   state.moves = previous.moves;
   state.draft = null;
   state.activePointer = null;
-  audio.play("tick");
+  audio.play("undo");
   renderBoard();
   updateHud();
 }
@@ -848,7 +848,7 @@ function resetLevel() {
   state.hintColor = null;
   state.hintTimer = null;
   resetTimer();
-  audio.play("tick");
+  audio.play("reset");
   renderBoard();
   updateHud();
 }
@@ -873,7 +873,7 @@ function showHint() {
   startTimer();
   state.hintColor = candidate.color;
   state.hints += 1;
-  audio.play("tick");
+  audio.play("hint");
   renderBoard();
   updateHud();
   refs.status.textContent = `A ghost thread shows one route for ${candidate.color}.`;
