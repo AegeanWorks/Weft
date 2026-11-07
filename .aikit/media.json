@@ -118,6 +118,44 @@
         "score": 92,
         "reviewed_at": "2026-11-04"
       }
+    },
+    {
+      "path": "assets/screenshots/2026-11-07-victory-reopen-before.png",
+      "alt": "Weft solved first chamber with the victory dialog dismissed at 2026-11-07",
+      "caption": "Pre-fix build 58ae9a5: after solving First Thread and pressing Escape, the win dialog is gone and the frozen board offers no Next or Replay path.",
+      "commit": "58ae9a588ff502b42b1340f909279cba04208b4e",
+      "taken_at": "2026-11-07",
+      "viewport": "1440x900",
+      "width": 1440,
+      "height": 900,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 1440x900 from a fresh profile: the same three-route First Thread solve is covered, the victory dialog is closed, Undo/Reset/Hint are disabled and no Next control is visible.",
+        "score": 90,
+        "reviewed_at": "2026-11-07"
+      }
+    },
+    {
+      "path": "assets/screenshots/2026-11-07-victory-reopen-after.png",
+      "alt": "Weft solved first chamber with the victory dialog reopened at 2026-11-07",
+      "caption": "Fixed build b69af90: the same solved First Thread, Escape and spool click now reopen the victory dialog with Next chamber, Replay and Chambers.",
+      "commit": "b69af90d5cb16727a457d9a2d7e2aebd19618cac",
+      "taken_at": "2026-11-07",
+      "viewport": "1440x900",
+      "width": 1440,
+      "height": 900,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 1440x900 from a fresh profile with the identical solve and viewport: the victory dialog is open again and shows three stars, time, threads, hints and the Next/Replay/Chambers actions.",
+        "score": 92,
+        "reviewed_at": "2026-11-07"
+      }
     }
   ]
 }
