@@ -283,3 +283,41 @@ repeat one that is already covered.
   - `python aikit.py check weft` -> 5/5 gates passed.
   - Before/after audio graph: `node scratch/weft-play.mjs audio-cues` against the
     pre-fix tree and the fixed tree on `http://127.0.0.1:4175`.
+
+## Cycle 7 — Accessibility: the skip link becomes the first keyboard stop
+
+- **Area**: keyboard accessibility and focus order, distinct from the visual
+  readability of cycle 3 and the audio cues of cycle 6.
+- **Baseline**: commit `a2a41c5`; `npm test` 94/94 pass; `python aikit.py check weft`
+  5/5 gates pass; dogfood green.
+- **Finding**: the skip link is first in the document, but boot focused the title
+  `h1`, so the first Tab landed on Play (`btn btn-primary`), Enter did nothing
+  (`hash=""`), and the next Tab reached Daily weave. `<main id="main">` had no
+  `tabindex`, so even activating the link could not move focus into the content.
+  The new dogfood keyboard check would fail on the first assertion.
+- **Fix**: `fix(a11y): make the skip link the first keyboard stop` (`ce47f12`).
+  `<main>` gets `tabindex="-1"`, and `setScreen` skips heading focus on the
+  initial screen load only; later SPA screen changes still focus their heading.
+  No layout, copy, game or save change.
+- **Visual proof**: same viewport/state (1440x900, fresh profile, title, one Tab):
+  - before (`a2a41c5`): `assets/screenshots/2026-11-07-skip-link-before.png`
+    — Play carries the focus ring and no skip link is visible.
+  - after (`ce47f12`): `assets/screenshots/2026-11-07-skip-link-after.png`
+    — “Skip to content” is revealed at the top-left and Play is unfocused.
+- **Played run**: a keyboard probe (`node scratch/weft-play.mjs skip-link`) now
+  reports Tab -> `skip-link` (“Skip to content”), Enter -> `main` with hash
+  `#main`, next Tab -> Play. `npm run dogfood` performs the same Tab/Enter/Tab
+  sequence before clicking How to play and completing the full run with 0 page
+  errors.
+- **Gates after the fix**: `npm test` 94/94 pass; `npm run dogfood` OK with
+  `0 page errors`; `python aikit.py check weft` 5/5 (test, mechanics, hygiene,
+  guidelines, secrets); `python aikit.py ui verify weft` OK before closing the
+  bounded surface task.
+- **Commands run and results**:
+  - `npm test` -> 94 tests, 94 pass, 0 fail.
+  - `npm run dogfood` -> `[OK] Weft dogfood: title, 24 chambers, a 3-thread
+    solve, the victory dialog, the 12x12 finale and the daily weave; 0 page
+    errors.`
+  - `python aikit.py check weft` -> 5/5 gates passed.
+  - Before/after keyboard state: `node scratch/weft-play.mjs skip-link` against
+    the pre-fix and fixed trees on `http://127.0.0.1:4175`.

@@ -308,6 +308,44 @@
         "score": 93,
         "reviewed_at": "2026-11-07"
       }
+    },
+    {
+      "path": "assets/screenshots/2026-11-07-skip-link-before.png",
+      "alt": "Weft title after one Tab with Play focused at 2026-11-07",
+      "caption": "Pre-fix build a2a41c5 at 1440x900: the first Tab lands on Play and the skip link never appears.",
+      "commit": "a2a41c5fe048432781b1d01b94bbdc878bd38af4",
+      "taken_at": "2026-11-07",
+      "viewport": "1440x900",
+      "width": 1440,
+      "height": 900,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 1440x900 from a fresh profile after one Tab: the Play button carries the focus ring and the skip link is still off-screen.",
+        "score": 88,
+        "reviewed_at": "2026-11-07"
+      }
+    },
+    {
+      "path": "assets/screenshots/2026-11-07-skip-link-after.png",
+      "alt": "Weft title after one Tab with the skip link visible at 2026-11-07",
+      "caption": "Fixed build ce47f12 at 1440x900: the first Tab reveals Skip to content; Enter then focuses main and the next Tab reaches Play.",
+      "commit": "ce47f12434dceec49a86435f79b3cfc7a0509a30",
+      "taken_at": "2026-11-07",
+      "viewport": "1440x900",
+      "width": 1440,
+      "height": 900,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 1440x900 from a fresh profile after one Tab: the bronze Skip to content control is visible at the top-left and Play is unfocused.",
+        "score": 93,
+        "reviewed_at": "2026-11-07"
+      }
     }
   ]
 }
