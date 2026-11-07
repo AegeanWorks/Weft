@@ -362,3 +362,42 @@ repeat one that is already covered.
   - `python aikit.py check weft` -> 5/5 gates passed.
   - Before/after daily: `node scratch/weft-play.mjs daily-backfill` against the
     pre-fix and fixed trees on `http://127.0.0.1:4175`.
+
+## Cycle 9 — Levels: the two 8x8 Act I closers share the loom evenly
+
+- **Area**: level content and thread balance, the first cycle to change a frozen
+  chamber solution.
+- **Baseline**: commit `83dbe7a`; `npm test` 95/95 pass; `python aikit.py check weft`
+  5/5 gates pass; dogfood green.
+- **Finding**: Shuttle's longest thread covered 31 of 64 cells (48%) and its
+  shortest 3; Warp Song reached 24 cells (38%). Every 8x8-or-larger chamber from
+  Tapestry onward stayed under a quarter, and the existing evenness test started
+  at chamber 13, so the two Act I closers escaped it. The played Shuttle board
+  showed one violet snake over half the loom. The extended balance test failed
+  first with `warp-song gives one thread more than a quarter of the loom`.
+- **Fix**: `fix(levels): balance the two 8x8 Act I closers` (`004dd80`), with the
+  generator spec change (`7ee1a95`) and the extended test (`658c593`). Warp Song
+  and Shuttle now use the existing even cut; ids, names, sizes and pair counts
+  are unchanged and the other 22 chambers are bit-identical.
+- **Visual proof**: same viewport/state (1440x900, `?level=shuttle&preview=solved`):
+  - before (`83dbe7a`): `assets/screenshots/2026-11-07-shuttle-balance-before.png`
+    — one violet thread covers nearly half the board.
+  - after (`004dd80`): `assets/screenshots/2026-11-07-shuttle-balance-after.png`
+    — seven threads of similar length share the loom.
+- **Played run**: real drag solves of the stored Shuttle route win with 7/7
+  threads and 3 stars in both builds; the longest thread falls 31 -> 12 cells and
+  the scripted solve best falls 4109ms -> 2941ms (the timing is reported, not
+  claimed as a quality metric). The suite replays every stored solution and
+  covers every cell exactly once. `npm run dogfood` remains green with 0 page
+  errors.
+- **Gates after the fix**: `npm test` 95/95 pass; `npm run dogfood` OK with
+  `0 page errors`; `python aikit.py check weft` 5/5 (test, mechanics, hygiene,
+  guidelines, secrets); `python aikit.py ui verify weft` OK before closing the
+  bounded surface task.
+- **Commands run and results**:
+  - `npm test` -> 95 tests, 95 pass, 0 fail.
+  - `python aikit.py check weft` -> 5/5 gates passed.
+  - `npm run levels:generate` -> 24 chambers, only warp-song and shuttle hunks
+    changed.
+  - Before/after: `WEFT_LEVEL=shuttle node scratch/weft-play.mjs solved-level`
+    and `play-level` on `http://127.0.0.1:4175`.

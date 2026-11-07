@@ -384,6 +384,44 @@
         "score": 93,
         "reviewed_at": "2026-11-07"
       }
+    },
+    {
+      "path": "assets/screenshots/2026-11-07-shuttle-balance-before.png",
+      "alt": "Weft Shuttle solved board with one dominant violet thread at 2026-11-07",
+      "caption": "Pre-fix build 83dbe7a: Shuttle's violet thread covers 31 of 64 cells (48%), a single snake over half the loom.",
+      "commit": "83dbe7a64f372e18757fdb88476db38082a5b1e8",
+      "taken_at": "2026-11-07",
+      "viewport": "1440x900",
+      "width": 1440,
+      "height": 900,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 1440x900 of ?level=shuttle&preview=solved: the violet route dominates the board while several threads are only three cells.",
+        "score": 88,
+        "reviewed_at": "2026-11-07"
+      }
+    },
+    {
+      "path": "assets/screenshots/2026-11-07-shuttle-balance-after.png",
+      "alt": "Weft Shuttle solved board with evenly sized threads at 2026-11-07",
+      "caption": "Fixed build 004dd80: the same solved Shuttle now shares the 8x8 loom across seven similar threads (longest 12 of 64).",
+      "commit": "004dd80c05a9f8ea2f1e3683d728131b4c45b132",
+      "taken_at": "2026-11-07",
+      "viewport": "1440x900",
+      "width": 1440,
+      "height": 900,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 1440x900 of the same solved Shuttle URL: seven threads of similar length tile the loom, with no single colour dominating.",
+        "score": 93,
+        "reviewed_at": "2026-11-07"
+      }
     }
   ]
 }
