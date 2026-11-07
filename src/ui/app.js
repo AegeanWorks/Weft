@@ -446,7 +446,14 @@ function showLevels({ restore = false } = {}) {
   const fallback =
     refs.levelGrid.querySelector("[data-next=true]") ??
     refs.levelGrid.querySelector(".level-card");
-  (target ?? fallback)?.focus({ preventScroll: true });
+  const focusTarget = target ?? fallback;
+  if (focusTarget) {
+    const rect = focusTarget.getBoundingClientRect();
+    if (rect.top < 0 || rect.bottom > window.innerHeight) {
+      focusTarget.scrollIntoView({ block: "center" });
+    }
+    focusTarget.focus({ preventScroll: true });
+  }
 }
 
 function pathData(cells) {
@@ -1004,10 +1011,10 @@ function applySolution() {
 function openBoard(level, { preview = null, daily = null } = {}) {
   if (state.screen === "levels") {
     levelsScroll = window.scrollY;
-    levelsFocus = daily
-      ? "#btn-daily-levels"
-      : `.level-card[data-level="${level.id}"]`;
   }
+  levelsFocus = daily
+    ? "#btn-daily-levels"
+    : `.level-card[data-level="${level.id}"]`;
   clearTimeout(state.hintTimer);
   state.level = level;
   state.daily = daily;
