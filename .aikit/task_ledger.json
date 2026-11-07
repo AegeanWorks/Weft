@@ -1,74 +1,17 @@
 {
   "version": 1,
   "active_task": {
-    "task_id": "weft-cycle-11",
+    "task_id": "weft-cycle-12",
     "last_phase": "in_progress",
     "active_phase": 5,
     "status": "completed",
-    "updated_at": 1794086980.569289,
+    "updated_at": 1794088005.9545536,
     "owner": "opencode:weft-cycles",
     "started_by": "opencode:weft-cycles",
     "continuations": [],
-    "completed_at": 1794086981.205229
+    "completed_at": 1794088006.2945092
   },
   "checkpoints": [
-    {
-      "task_id": "weft-cycle-06",
-      "phase": "in_progress",
-      "phase_num": 4,
-      "description": "[3/4] Phase 4 green: 94/94 tests, 5/5 aikit gates, dogfood 0 page errors with distinct hint/undo/reset sequences; audio-only cycle, no visual claim or screenshot pair; checklists: passed",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1794082347.1249669,
-      "timestamp_str": "2026-11-07 23:12:27",
-      "agent": "opencode:weft-cycles"
-    },
-    {
-      "task_id": "weft-cycle-06",
-      "phase": "completed",
-      "phase_num": 5,
-      "description": "Task 'weft-cycle-06' completed successfully.",
-      "status": "completed",
-      "timestamp": 1794082347.7622428,
-      "timestamp_str": "2026-11-07 23:12:27",
-      "agent": "opencode:weft-cycles"
-    },
-    {
-      "task_id": "weft-cycle-07",
-      "phase": "in_progress",
-      "phase_num": 2,
-      "description": "[1/4] Cycle 7: make the skip link the first Tab stop on initial load and make <main> focusable, so keyboard users can jump past the title art; prove with a 1440x900 Tab-focus before/after pair and a dogfood Tab-Enter-Tab keyboard run",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1794082752.0284376,
-      "timestamp_str": "2026-11-07 23:19:12",
-      "agent": "opencode:weft-cycles",
-      "impact_assessment": {
-        "why": "Boot calls setScreen('title'), which focuses the h1, so the first Tab lands on Play and never reaches the Skip to content link; the skip target <main id='main'> also has no tabindex, so even activating the link cannot move focus into the content.",
-        "benefits": "Keyboard users get a working first-stop skip link on every initial screen, later SPA screen changes still focus their headings, and no layout or game rule changes.",
-        "risks": "contract: setScreen initial-focus guard and main focus target; dependency: none; concurrency: single writer on a clean weft tree; state: none",
-        "mitigation": "Failing-first dogfood keyboard sequence (Tab reveals skip link, Enter focuses main, next Tab reaches Play), 1440x900 before/after focused-state pair, full npm test plus aikit check and dogfood, explicit staging, no push"
-      },
-      "plan_digest": "f7ea11a70948e24c68757b4f86423ad7bdb3342e7634511c277f0989b28247e4"
-    },
-    {
-      "task_id": "weft-cycle-08",
-      "phase": "in_progress",
-      "phase_num": 2,
-      "description": "[1/4] Cycle 8: stop a ?daily=<past-date> deep link from opening and recording a historical daily, which back-fills a missed day and contradicts ADR-011; clamp every daily open to the local today, prove with a same-URL date before/after pair and a dogfood past-link run plus a solved-save key check",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1794083754.2747924,
-      "timestamp_str": "2026-11-07 23:35:54",
-      "agent": "opencode:weft-cycles",
-      "impact_assessment": {
-        "why": "A played ?daily=2026-11-06 run loaded 6 Kas 2026, solved it, saved days['2026-11-06'], and the levels history showed yesterday solved with a 1-day streak while today was missed; ADR-011 and README say a missed daily cannot be back-filled.",
-        "benefits": "The daily history and streak stay an honest record of days actually played, a shared past link cannot rewrite them, and today's daily remains the only writable daily.",
-        "risks": "contract: daily boot parameter and openDaily key; dependency: none; concurrency: single writer on a clean weft tree; state: no save-schema change, but no past day can be recorded from the UI",
-        "mitigation": "Pure currentDailyKey helper with unit cases, failing-first dogfood past-link check, same-URL 1440x900 date pair, scratch before/after solves with saved-key report, full npm test plus aikit check and dogfood, explicit staging, no push"
-      },
-      "plan_digest": "b53e0fb4148e8fa09631adafe69df42da3b4d6998b5e921446d8c5337b806e0b"
-    },
     {
       "task_id": "weft-cycle-07",
       "phase": "superseded",
@@ -259,6 +202,56 @@
       "status": "completed",
       "timestamp": 1794086981.2052314,
       "timestamp_str": "2026-11-08 00:29:41",
+      "agent": "opencode:weft-cycles"
+    },
+    {
+      "task_id": "weft-cycle-12",
+      "phase": "in_progress",
+      "phase_num": 2,
+      "description": "[1/4] Cycle 12: remove the browser focus rectangle from the programmatically focused help heading, a non-interactive title that is not tabbable; prove with a 390x844 help before/after pair and a dogfood computed-outline check",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794087126.4345334,
+      "timestamp_str": "2026-11-08 00:32:06",
+      "agent": "opencode:weft-cycles",
+      "impact_assessment": {
+        "why": "The cycle-12 mobile audit of ?preview=help shows a white focus rectangle around the One loom, twenty-four chambers heading; the heading is focused for screen-reader context but has tabindex=-1, so the ring is pure visual noise.",
+        "benefits": "The help dialog keeps its heading focus and screen-reader announcement without a control-like outline; no layout, copy, game or save change.",
+        "risks": "contract: modal h2 focus styling; dependency: none; concurrency: single writer on a clean weft tree; state: none",
+        "mitigation": "Failing-first dogfood computed outlineStyle check, 390x844 before/after pair from ?preview=help, full npm test plus aikit check and dogfood, explicit staging, no push"
+      },
+      "plan_digest": "85b1784c8e616736898347462a50492b2e71b60010607b79b8ca28a6b20e24bd"
+    },
+    {
+      "task_id": "weft-cycle-12",
+      "phase": "in_progress",
+      "phase_num": 3,
+      "description": "[2/4] Suppressed the modal heading outline, switched dogfood to open help by keyboard and assert the computed outline, and captured the 390x844 before/after pair",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794087801.3259895,
+      "timestamp_str": "2026-11-08 00:43:21",
+      "agent": "opencode:weft-cycles"
+    },
+    {
+      "task_id": "weft-cycle-12",
+      "phase": "in_progress",
+      "phase_num": 4,
+      "description": "[3/4] Phase 4 green: 96/96 tests, 5/5 aikit gates, dogfood 0 page errors with keyboard help and outline none, 390x844 before/after pair; checklists: passed",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794088005.9545536,
+      "timestamp_str": "2026-11-08 00:46:45",
+      "agent": "opencode:weft-cycles"
+    },
+    {
+      "task_id": "weft-cycle-12",
+      "phase": "completed",
+      "phase_num": 5,
+      "description": "Task 'weft-cycle-12' completed successfully.",
+      "status": "completed",
+      "timestamp": 1794088006.2945116,
+      "timestamp_str": "2026-11-08 00:46:46",
       "agent": "opencode:weft-cycles"
     }
   ]
