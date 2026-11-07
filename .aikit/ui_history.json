@@ -334,5 +334,19 @@
     "final_snapshot_digest": "410ff09a8424a5cbc1b901fd745fdccca018fec9e193afc3b045e1b681422d3e",
     "final_snapshot_entries": 23,
     "surface_digest": "9ca8156cbed46b55f5e7b7cb57ed27bc34851ea11d84e7fbe08326f1768a0c6e"
+  },
+  {
+    "schema": 1,
+    "surface": "app",
+    "baseline_commit": "115de601a10f0769a9c4528e93c819a574f70581",
+    "contract_hash": "6b437c28104ade566ef850ac61b1cb8cf003a9181f3abdcbf0d1abc07287c794",
+    "started_at": 1794091748.7335982,
+    "finished_at": 1794092073.5324144,
+    "strikes": 0,
+    "reviewer": "opencode:audit-run-5 (out-of-order replay pair + dogfood)",
+    "allowed_removals": [],
+    "final_snapshot_digest": "410ff09a8424a5cbc1b901fd745fdccca018fec9e193afc3b045e1b681422d3e",
+    "final_snapshot_entries": 23,
+    "surface_digest": "366329adbbdfe95acaa772d7daa96931cd4c1ebb962d3239544452e50b2e3556"
   }
 ]

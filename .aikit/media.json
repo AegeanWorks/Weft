@@ -688,6 +688,44 @@
         "score": 94,
         "reviewed_at": "2026-11-08"
       }
+    },
+    {
+      "path": "assets/screenshots/2026-11-08-legacy-replay-before.png",
+      "alt": "Weft out-of-order solved Shuttle card faded and disabled at 2026-11-08",
+      "caption": "Pre-audit build 115de60 with only Shuttle solved: the card shows Woven and Best 00:01 but is faded, locked and disabled.",
+      "commit": "115de601a10f0769a9c4528e93c819a574f70581",
+      "taken_at": "2026-11-08",
+      "viewport": "1440x900",
+      "width": 1440,
+      "height": 900,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 1440x900 from an out-of-order save: Shuttle carries the Woven badge, three stars and Best 00:01 but is dimmed with a Locked state, while Tapestry is Open.",
+        "score": 86,
+        "reviewed_at": "2026-11-08"
+      }
+    },
+    {
+      "path": "assets/screenshots/2026-11-08-legacy-replay-after.png",
+      "alt": "Weft out-of-order solved Shuttle card fully visible and replayable at 2026-11-08",
+      "caption": "Audit fix 569912e with the same save: Shuttle is fully visible, Woven with three stars and Best 00:01, and can be opened again.",
+      "commit": "569912e657906f8ac0e9b805d2738eb56ba889fd",
+      "taken_at": "2026-11-08",
+      "viewport": "1440x900",
+      "width": 1440,
+      "height": 900,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 1440x900 from the identical save: Shuttle is at full opacity with Woven, three stars and Best 00:01; it is no longer disabled.",
+        "score": 93,
+        "reviewed_at": "2026-11-08"
+      }
     }
   ]
 }

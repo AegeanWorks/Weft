@@ -110,3 +110,30 @@ evidence and pushes.
   `npm run dogfood` OK with 0 page errors; `python aikit.py ui verify weft` OK.
 - **Push**: `git push origin master` after the record commit; remote head
   confirmed with `git ls-remote origin`.
+
+## Push run 5 — return sweep 12→9
+
+- **Scope**: cycles 12-9 (help focus, static shell, index return, level balance)
+  plus the run-3/4 locked-link fixes, re-read from the end back.
+- **Finding**: a legacy save with Shuttle solved out of order showed a faded,
+  disabled "Woven" card with a best time, while Tapestry was already open because
+  Shuttle was its immediate predecessor. The player could not replay the solved
+  chamber; the card contradicted its own record.
+- **Fix**: `fix(progress): let solved chambers replay through legacy gaps`
+  (`569912e`, ADR-040). `isUnlocked` now accepts a solved chamber itself in
+  addition to the normal previous-chamber rule; unsolved and unknown chambers are
+  unchanged.
+- **Visual proof**: same save/viewport (1440x900, Shuttle solved but 1-8 not):
+  - before: `assets/screenshots/2026-11-08-legacy-replay-before.png` — Shuttle is
+    faded, locked and disabled while showing Woven and Best.
+  - after: `assets/screenshots/2026-11-08-legacy-replay-after.png` — Shuttle is
+    fully visible, Woven and clickable; Tapestry remains open.
+- **Played run**: `node scratch/weft-play.mjs out-of-order-save` reports
+  `disabled=true, layout locked=true, opacity=0.55` before and
+  `disabled=false, locked=false, opacity=1` after. `npm run dogfood` injects the
+  same save, opens Shuttle from its card and returns, then completes the full run
+  with 0 page errors.
+- **Gates**: `npm test` 97/97 pass; `python aikit.py check weft` 5/5;
+  `npm run dogfood` OK with 0 page errors; `python aikit.py ui verify weft` OK.
+- **Push**: `git push origin master` after the record commit; remote head
+  confirmed with `git ls-remote origin`.
