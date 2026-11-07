@@ -1,72 +1,17 @@
 {
   "version": 1,
   "active_task": {
-    "task_id": "weft-cycle-01",
+    "task_id": "weft-cycle-02",
     "last_phase": "in_progress",
     "active_phase": 5,
     "status": "completed",
-    "updated_at": 1794076737.899494,
+    "updated_at": 1794078134.9867778,
     "owner": "opencode:weft-cycles",
     "started_by": "opencode:weft-cycles",
     "continuations": [],
-    "completed_at": 1794076747.3694632
+    "completed_at": 1794078141.6187859
   },
   "checkpoints": [
-    {
-      "task_id": "weft-patterns-v1",
-      "phase": "phase 2",
-      "phase_num": 2,
-      "description": "[1/4] Plan Weft 0.6.0 colour-independent threads: give all nine colours a unique SVG dash pattern on the thread and spool ring, keep solid coral as the control, document the accessibility choice and verify the loom at desktop and mobile sizes",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793360835.5225663,
-      "timestamp_str": "2026-10-30 14:47:15",
-      "agent": "opencode:weft-patterns",
-      "impact_assessment": {
-        "why": "Every thread and spool is identified by hue alone; a player with red-green or blue-purple colour vision deficiency cannot reliably match the nine pairs or follow a drawn path.",
-        "benefits": "A dash texture on each thread and its spool ring makes pairs and routes readable without colour, adds no asset, no setting and no storage, and keeps the existing glow aesthetic.",
-        "risks": "contract: SVG stroke-dasharray values on thread cores, drafts and spool rings; dependency: none; concurrency: single writer on a clean weft tree; state: no save or schema change",
-        "mitigation": "Keep a unique pattern map with a unit test, leave coral solid as the baseline, choose patterns distinct from the existing draft and hint dashes, and review desktop and 390px screenshots before delivery"
-      }
-    },
-    {
-      "task_id": "weft-patterns-v1",
-      "phase": "phase 3",
-      "phase_num": 3,
-      "description": "[2/4] Added the unique dash-pattern map, applied it to threads, drafts and spool rings, tested all nine colours and documented the accessibility choice in README and ADR-010",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793360973.947196,
-      "timestamp_str": "2026-10-30 14:49:33",
-      "agent": "opencode:weft-patterns"
-    },
-    {
-      "task_id": "weft-patterns-v1",
-      "phase": "phase 4",
-      "phase_num": 4,
-      "description": "[3/4] Phase 4 green: 5/5 gates, 72 tests, dogfood unchanged and green, and desktop renders show nine distinguishable thread and spool patterns; checklists: passed",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793360981.9053504,
-      "timestamp_str": "2026-10-30 14:49:41",
-      "agent": "opencode:weft-patterns",
-      "handoff": {
-        "state": "72 tests, 5/5 gates, no schema change",
-        "next": "commit the a11y patterns, record the post-commit UI blessing, push and sync the Play catalog",
-        "open": "none",
-        "evidence": "node --test tests, node scripts/dogfood.mjs, python aikit.py check weft"
-      }
-    },
-    {
-      "task_id": "weft-patterns-v1",
-      "phase": "completed",
-      "phase_num": 5,
-      "description": "Task 'weft-patterns-v1' completed successfully.",
-      "status": "completed",
-      "timestamp": 1793360982.1975915,
-      "timestamp_str": "2026-10-30 14:49:42",
-      "agent": "opencode:weft-patterns"
-    },
     {
       "task_id": "weft-patterns-v1",
       "phase": "phase 5",
@@ -275,6 +220,56 @@
       "status": "completed",
       "timestamp": 1794076747.369465,
       "timestamp_str": "2026-11-07 21:39:07",
+      "agent": "opencode:weft-cycles"
+    },
+    {
+      "task_id": "weft-cycle-02",
+      "phase": "in_progress",
+      "phase_num": 2,
+      "description": "[1/4] Cycle 2: stop the reset/undo time rollback where Reset zeroes the timer but Undo restores the worked board, producing a fake 1.7s best from an 8.8s played run; make Reset a clean attempt (no undo, no stale hint ghost, fresh timer) while hints still count, and prove it with a before/after reset-state pair plus a dogfood reset run",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794077106.4571548,
+      "timestamp_str": "2026-11-07 21:45:06",
+      "agent": "opencode:weft-cycles",
+      "impact_assessment": {
+        "why": "A played First Thread run drew two threads for 3.7s, reset the timer to 00:00, undid the reset to restore both threads, and won at 00:01 with saved bestMs 1662ms instead of the 8.8s real attempt; the Undo button after Reset is the exploit affordance.",
+        "benefits": "Best times and wins reflect the real attempt, Reset has one unambiguous meaning, a stale hint ghost cannot survive onto a cleared loom, and no save format or engine rule changes.",
+        "risks": "contract: resetLevel outcome (undo stack, timer, hint ghost); dependency: none; concurrency: single writer on a clean weft tree; state: timer and UI state only, no save schema change",
+        "mitigation": "Failing-first dogfood assertion for undoDisabled/hintThread/empty board after Reset, before/after screenshots at 1440x900 with the same two-thread reset state, full npm test plus aikit check and dogfood, explicit staging, no push"
+      },
+      "plan_digest": "053b278c770d71dfc067d87131e603b66671275b28a3e6fe0f248b693048fcf7"
+    },
+    {
+      "task_id": "weft-cycle-02",
+      "phase": "in_progress",
+      "phase_num": 3,
+      "description": "[2/4] Implemented the clean Reset: resetLevel clears the undo stack and active hint ghost while keeping hints counted, dogfood pins the reset state on Chamber 02, and the before/after pair shows the pre-fix 00:00 board restore vs the cleared post-fix board",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794078134.9674444,
+      "timestamp_str": "2026-11-07 22:02:14",
+      "agent": "opencode:weft-cycles"
+    },
+    {
+      "task_id": "weft-cycle-02",
+      "phase": "in_progress",
+      "phase_num": 4,
+      "description": "[3/4] Phase 4 green: 89/89 tests, 5/5 aikit gates, dogfood 0 page errors with the Reset-hygiene flow, played exploit run before 00:01/1662ms vs after 00:02/2887ms honest post-reset attempt, before/after pair at 1440x900; checklists: passed",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794078134.9867778,
+      "timestamp_str": "2026-11-07 22:02:14",
+      "agent": "opencode:weft-cycles"
+    },
+    {
+      "task_id": "weft-cycle-02",
+      "phase": "completed",
+      "phase_num": 5,
+      "description": "Task 'weft-cycle-02' completed successfully.",
+      "status": "completed",
+      "timestamp": 1794078141.6187873,
+      "timestamp_str": "2026-11-07 22:02:21",
       "agent": "opencode:weft-cycles"
     }
   ]
