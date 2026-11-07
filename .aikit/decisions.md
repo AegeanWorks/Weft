@@ -265,3 +265,10 @@ contract, a dependency, a data format or the architecture; IDs are consecutive a
 - **Decision**: `openBoard` now updates `levelsFocus` to the level being opened on every campaign or daily open, while `levelsScroll` is still captured only when the open starts from the levels screen. On restore, the index scrolls to the remembered position, brings the focused card into view if it is outside the viewport, then focuses it.
 - **Consequences**: Chambers after Next returns to the card for the chamber the player is actually in; a deep-linked late chamber also scrolls its card into view instead of focusing an off-screen card. The index scroll position is still preserved when it is meaningful. Dogfood solves First Thread, advances to Crossweave and asserts the return card is `crossweave`. Verified by a 1440x900 before/after pair. Cross-principle check: no principle section changed. Serves PRINCIPLE-011 (navigation matches the current context) and PRINCIPLE-014 (browser regression pin).
 
+### ADR-037: The title sound control shares the 44px target
+- **Date**: 2026-11-08
+- **Status**: Accepted
+- **Context**: The title screen's Sound on/off control was a 32px-high text link, while every other button and the game's own sound button use a 44px target. At 390x844 it was the only interactive control below that standard, and the focused outline wrapped a visibly shorter box.
+- **Decision**: Make `.sound-toggle` an inline-flex box with `align-items:center`, `min-height:44px` and 2px horizontal padding. The text, underline and focus outline are unchanged; only the hit area and vertical centering grow.
+- **Consequences**: The title sound control now matches the game's other targets on touch and keyboard, and its focus box is the same height. The title flow grows by 12px but still fits 390x844. Dogfood asserts the measured height is at least 44 before the keyboard run. Verified by a 390x844 focused before/after pair. Cross-principle check: no principle section changed. Serves PRINCIPLE-011 (usable touch targets) and PRINCIPLE-014 (regression pin).
+

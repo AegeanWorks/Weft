@@ -574,6 +574,44 @@
         "score": 93,
         "reviewed_at": "2026-11-08"
       }
+    },
+    {
+      "path": "assets/screenshots/2026-11-08-sound-target-before.png",
+      "alt": "Weft title sound control with a 32px focus box at 2026-11-08",
+      "caption": "Pre-audit build afc5a67 at 390x844: the focused Sound on link has a 32px-high target while Play and the other controls use 44px.",
+      "commit": "afc5a674a503b2451aa422867ecdfc2f7d495130",
+      "taken_at": "2026-11-08",
+      "viewport": "390x844",
+      "width": 390,
+      "height": 844,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 390x844 after five Tabs: the Sound on link has a small 32px focus outline below the 44px Play/Daily/How controls.",
+        "score": 87,
+        "reviewed_at": "2026-11-08"
+      }
+    },
+    {
+      "path": "assets/screenshots/2026-11-08-sound-target-after.png",
+      "alt": "Weft title sound control with a 44px focus box at 2026-11-08",
+      "caption": "Audit fix cf37967 at 390x844: the same Sound on control now has a 44px target with centered text.",
+      "commit": "cf379679123e6c4f4679255721acdb2fa02afdd0",
+      "taken_at": "2026-11-08",
+      "viewport": "390x844",
+      "width": 390,
+      "height": 844,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 390x844 after five Tabs: the Sound on link now has a 44px focus outline matching the other controls, with the text vertically centered.",
+        "score": 92,
+        "reviewed_at": "2026-11-08"
+      }
     }
   ]
 }

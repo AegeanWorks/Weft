@@ -33,3 +33,27 @@ evidence and pushes.
   `npm run dogfood` OK with 0 page errors; `python aikit.py ui verify weft` OK.
 - **Push**: `git push origin master` after the record commit; remote head
   confirmed with `git ls-remote origin`.
+
+## Push run 2 — cycles 1→6 (adds saves, card previews, audio cues)
+
+- **Scope**: cycles 1-6 and their interactions: victory/reset/help, campaign
+  total filtering, mini-loom previews and the three new audio cues.
+- **Finding**: the title screen's Sound on/off control was 32px high, the only
+  interactive target below the game's 44px standard; the focused outline wrapped
+  a visibly shorter box than Play/Daily/How and the in-game sound button.
+- **Fix**: `fix(a11y): raise the title sound control to 44px` (`cf37967`,
+  ADR-037). It is now an inline-flex 44px box with the text vertically centered;
+  the focus outline and copy are unchanged.
+- **Visual proof**: same 390x844 title, keyboard focus on Sound on:
+  - before: `assets/screenshots/2026-11-08-sound-target-before.png` — 32px focus
+    box around the link.
+  - after: `assets/screenshots/2026-11-08-sound-target-after.png` — 44px focus
+    box, text centered.
+- **Played run**: `node scratch/weft-play.mjs sound-target` reports
+  `height=32` before and `height=44, display=inline-flex` after;
+  `npm run dogfood` measures the control before the keyboard sequence and requires
+  at least 44px, then completes the full run with 0 page errors.
+- **Gates**: `npm test` 96/96 pass; `python aikit.py check weft` 5/5;
+  `npm run dogfood` OK with 0 page errors; `python aikit.py ui verify weft` OK.
+- **Push**: `git push origin master` after the record commit; remote head
+  confirmed with `git ls-remote origin`.

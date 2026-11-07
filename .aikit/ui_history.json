@@ -292,5 +292,19 @@
     "final_snapshot_digest": "410ff09a8424a5cbc1b901fd745fdccca018fec9e193afc3b045e1b681422d3e",
     "final_snapshot_entries": 23,
     "surface_digest": "0e43c52a52f494e734934219d810d7f20ab52ff1b3771c209873002031855a62"
+  },
+  {
+    "schema": 1,
+    "surface": "app",
+    "baseline_commit": "afc5a674a503b2451aa422867ecdfc2f7d495130",
+    "contract_hash": "6b437c28104ade566ef850ac61b1cb8cf003a9181f3abdcbf0d1abc07287c794",
+    "started_at": 1794089637.0058162,
+    "finished_at": 1794089829.2005358,
+    "strikes": 0,
+    "reviewer": "opencode:audit-run-2 (390px sound target pair + dogfood height)",
+    "allowed_removals": [],
+    "final_snapshot_digest": "410ff09a8424a5cbc1b901fd745fdccca018fec9e193afc3b045e1b681422d3e",
+    "final_snapshot_entries": 23,
+    "surface_digest": "783d4a972a5628e9ef88f109d15e735f5c8978c109c7c162c34f45e49d1dbba2"
   }
 ]
