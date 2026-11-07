@@ -55,6 +55,7 @@ const refs = {
   levelsProgress: required("levels-progress"),
   levelGrid: required("level-grid"),
   helpDialog: required("help-dialog"),
+  helpHeading: required("help-title"),
   winDialog: required("win-dialog"),
   winKicker: required("win-kicker"),
   winSummary: required("win-summary"),
@@ -994,6 +995,8 @@ function openDaily(key = dateKey(), options = {}) {
 function openHelp() {
   if (!refs.helpDialog.open) {
     refs.helpDialog.showModal();
+    refs.helpHeading.focus();
+    refs.helpDialog.scrollTop = 0;
   }
 }
 
