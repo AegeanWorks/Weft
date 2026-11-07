@@ -1,83 +1,17 @@
 {
   "version": 1,
   "active_task": {
-    "task_id": "weft-cycle-07",
+    "task_id": "weft-cycle-08",
     "last_phase": "in_progress",
-    "active_phase": 2,
-    "status": "in_progress",
-    "updated_at": 1794082752.0284376,
+    "active_phase": 5,
+    "status": "completed",
+    "updated_at": 1794084382.9486024,
     "owner": "opencode:weft-cycles",
     "started_by": "opencode:weft-cycles",
     "continuations": [],
-    "impact_assessment": {
-      "why": "Boot calls setScreen('title'), which focuses the h1, so the first Tab lands on Play and never reaches the Skip to content link; the skip target <main id='main'> also has no tabindex, so even activating the link cannot move focus into the content.",
-      "benefits": "Keyboard users get a working first-stop skip link on every initial screen, later SPA screen changes still focus their headings, and no layout or game rule changes.",
-      "risks": "contract: setScreen initial-focus guard and main focus target; dependency: none; concurrency: single writer on a clean weft tree; state: none",
-      "mitigation": "Failing-first dogfood keyboard sequence (Tab reveals skip link, Enter focuses main, next Tab reaches Play), 1440x900 before/after focused-state pair, full npm test plus aikit check and dogfood, explicit staging, no push"
-    }
+    "completed_at": 1794084383.2999153
   },
   "checkpoints": [
-    {
-      "task_id": "weft-cycle-02",
-      "phase": "in_progress",
-      "phase_num": 3,
-      "description": "[2/4] Implemented the clean Reset: resetLevel clears the undo stack and active hint ghost while keeping hints counted, dogfood pins the reset state on Chamber 02, and the before/after pair shows the pre-fix 00:00 board restore vs the cleared post-fix board",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1794078134.9674444,
-      "timestamp_str": "2026-11-07 22:02:14",
-      "agent": "opencode:weft-cycles"
-    },
-    {
-      "task_id": "weft-cycle-02",
-      "phase": "in_progress",
-      "phase_num": 4,
-      "description": "[3/4] Phase 4 green: 89/89 tests, 5/5 aikit gates, dogfood 0 page errors with the Reset-hygiene flow, played exploit run before 00:01/1662ms vs after 00:02/2887ms honest post-reset attempt, before/after pair at 1440x900; checklists: passed",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1794078134.9867778,
-      "timestamp_str": "2026-11-07 22:02:14",
-      "agent": "opencode:weft-cycles"
-    },
-    {
-      "task_id": "weft-cycle-02",
-      "phase": "completed",
-      "phase_num": 5,
-      "description": "Task 'weft-cycle-02' completed successfully.",
-      "status": "completed",
-      "timestamp": 1794078141.6187873,
-      "timestamp_str": "2026-11-07 22:02:21",
-      "agent": "opencode:weft-cycles"
-    },
-    {
-      "task_id": "weft-cycle-03",
-      "phase": "in_progress",
-      "phase_num": 2,
-      "description": "[1/4] Cycle 3: fix the mobile How-to-play dialog opening scrolled 158px past its title because showModal focuses the bottom Ready button; focus the heading and reset the dialog scroll, prove with a 390x844 before/after pair and a dogfood open-focus-close played run",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1794078561.307766,
-      "timestamp_str": "2026-11-07 22:09:21",
-      "agent": "opencode:weft-cycles",
-      "impact_assessment": {
-        "why": "At 390x844 the help dialog is 876px of content in a 718px frame; native showModal autofocuses the footer Ready button, setting scrollTop=158 and leaving the heading at -45.7px, so the title and first rules are hidden on open.",
-        "benefits": "The how-to-play dialog always opens at its title, keyboard and screen-reader users hear the heading first, and no layout, save or engine rule changes.",
-        "risks": "contract: help-dialog initial focus and scroll; dependency: none; concurrency: single writer on a clean weft tree; state: none",
-        "mitigation": "Failing-first dogfood assertion for scrollTop=0 and focused help-title, 390x844 before/after capture from ?preview=help, full npm test plus aikit check and dogfood, explicit staging, no push"
-      },
-      "plan_digest": "d9e5f480dd72e88deb1dcee66f3589c0b768ab43345b4eb27b328d0979d9c18c"
-    },
-    {
-      "task_id": "weft-cycle-03",
-      "phase": "in_progress",
-      "phase_num": 3,
-      "description": "[2/4] Implemented the help-heading focus and scroll reset, captured the 390x844 before/after pair, pinned real-click open/escape in dogfood, and repaired the flaky wall-clock daily test with deterministic search-work bounds plus a fixed dogfood viewport",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1794080466.91466,
-      "timestamp_str": "2026-11-07 22:41:06",
-      "agent": "opencode:weft-cycles"
-    },
     {
       "task_id": "weft-cycle-03",
       "phase": "in_progress",
@@ -266,6 +200,66 @@
         "mitigation": "Failing-first dogfood keyboard sequence (Tab reveals skip link, Enter focuses main, next Tab reaches Play), 1440x900 before/after focused-state pair, full npm test plus aikit check and dogfood, explicit staging, no push"
       },
       "plan_digest": "f7ea11a70948e24c68757b4f86423ad7bdb3342e7634511c277f0989b28247e4"
+    },
+    {
+      "task_id": "weft-cycle-08",
+      "phase": "in_progress",
+      "phase_num": 2,
+      "description": "[1/4] Cycle 8: stop a ?daily=<past-date> deep link from opening and recording a historical daily, which back-fills a missed day and contradicts ADR-011; clamp every daily open to the local today, prove with a same-URL date before/after pair and a dogfood past-link run plus a solved-save key check",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794083754.2747924,
+      "timestamp_str": "2026-11-07 23:35:54",
+      "agent": "opencode:weft-cycles",
+      "impact_assessment": {
+        "why": "A played ?daily=2026-11-06 run loaded 6 Kas 2026, solved it, saved days['2026-11-06'], and the levels history showed yesterday solved with a 1-day streak while today was missed; ADR-011 and README say a missed daily cannot be back-filled.",
+        "benefits": "The daily history and streak stay an honest record of days actually played, a shared past link cannot rewrite them, and today's daily remains the only writable daily.",
+        "risks": "contract: daily boot parameter and openDaily key; dependency: none; concurrency: single writer on a clean weft tree; state: no save-schema change, but no past day can be recorded from the UI",
+        "mitigation": "Pure currentDailyKey helper with unit cases, failing-first dogfood past-link check, same-URL 1440x900 date pair, scratch before/after solves with saved-key report, full npm test plus aikit check and dogfood, explicit staging, no push"
+      },
+      "plan_digest": "b53e0fb4148e8fa09631adafe69df42da3b4d6998b5e921446d8c5337b806e0b"
+    },
+    {
+      "task_id": "weft-cycle-07",
+      "phase": "superseded",
+      "phase_num": 2,
+      "description": "Superseded by 'weft-cycle-08' without --complete or --reset",
+      "status": "superseded",
+      "timestamp": 1794083754.2747924,
+      "timestamp_str": "2026-11-07 23:35:54",
+      "agent": "opencode:weft-cycles"
+    },
+    {
+      "task_id": "weft-cycle-08",
+      "phase": "in_progress",
+      "phase_num": 3,
+      "description": "[2/4] Added the currentDailyKey clamp, pinned past/today/empty keys, made dogfood open yesterday's link and require today's board, and captured the same-URL 1440x900 date pair",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794084321.413617,
+      "timestamp_str": "2026-11-07 23:45:21",
+      "agent": "opencode:weft-cycles"
+    },
+    {
+      "task_id": "weft-cycle-08",
+      "phase": "in_progress",
+      "phase_num": 4,
+      "description": "[3/4] Phase 4 green: 95/95 tests, 5/5 aikit gates, dogfood 0 page errors with the past-link clamp, before/after same-URL date pair at 1440x900, saved-key report 2026-11-06 vs 2026-11-07; checklists: passed",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794084382.9486024,
+      "timestamp_str": "2026-11-07 23:46:22",
+      "agent": "opencode:weft-cycles"
+    },
+    {
+      "task_id": "weft-cycle-08",
+      "phase": "completed",
+      "phase_num": 5,
+      "description": "Task 'weft-cycle-08' completed successfully.",
+      "status": "completed",
+      "timestamp": 1794084383.2999172,
+      "timestamp_str": "2026-11-07 23:46:23",
+      "agent": "opencode:weft-cycles"
     }
   ]
 }
