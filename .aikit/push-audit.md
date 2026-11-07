@@ -137,3 +137,24 @@ evidence and pushes.
   `npm run dogfood` OK with 0 page errors; `python aikit.py ui verify weft` OK.
 - **Push**: `git push origin master` after the record commit; remote head
   confirmed with `git ls-remote origin`.
+
+## Push run 6 — return sweep 12→6
+
+- **Scope**: cycles 12-6 (help focus, static shell, index return, level balance,
+  daily clamp, skip link) plus the run-4/5 fixes.
+- **Finding**: the skip-link keyboard sequence was verified only on the title
+  screen. A direct `?level=first-thread` load starts on the game screen, where the
+  first Tab stop, `main` focus and the next control were not covered; a regression
+  there would have shipped unseen.
+- **Fix**: `test(dogfood): cover the skip link on a deep-loaded game` (`3fad174`,
+  test-only). The pass now loads a chamber directly, Tabs to `Skip to content`,
+  Enters to focus `main`, and requires the next Tab to reach the Chambers button.
+  No game code changed.
+- **Visual proof**: not applicable; this run adds keyboard coverage and makes no
+  visual claim. The existing skip-link screenshot pair remains the visual record.
+- **Played run**: `npm run dogfood` reports the deep-loaded game skip sequence and
+  completes the full run with 0 page errors.
+- **Gates**: `npm test` 97/97 pass; `python aikit.py check weft` 5/5;
+  `npm run dogfood` OK with 0 page errors.
+- **Push**: `git push origin master` after the record commit; remote head
+  confirmed with `git ls-remote origin`.
