@@ -82,7 +82,7 @@ Chambers unlock in order. A finished chamber records its best time and star rati
 
 Every chamber awards up to three stars. A clean weave without hints earns three, one hint earns two, and more than one earns a single star. The best rating is kept even when a later, faster run uses more hints, and older saves derive their stars from the hint counts already stored. The title and chamber index show the campaign total out of 72.
 
-The daily weave is a fresh 7×7 chamber with six threads, generated from your local date and never fetched. It keeps its own save under `weft.daily.v1`, so a daily run does not change campaign stars or unlocks. A solved day extends the streak; the victory dialog shows a result line such as `Weft daily 2026-10-30 · ★★★ · 01:23 · 0 hints` and can copy it, so the line stays selectable when clipboard access is blocked. The chamber index lists the last seven days with each day’s stars; the history is a record only, so a missed day cannot be back-filled.
+The daily weave is a fresh 7×7 chamber with six threads, generated from your local date and never fetched. It keeps its own save under `weft.daily.v1`, so a daily run does not change campaign stars or unlocks. A solved day extends the streak; the victory dialog shows a result line such as `Weft daily 2026-10-30 · ★★★ · 01:23 · 0 hints` and can copy it, so the line stays selectable when clipboard access is blocked. The chamber index lists the last seven days with each day's stars; the history is a record only, so a missed day cannot be back-filled. Any stored or shared daily link is clamped to the current local day for the same reason.
 
 ## What's Inside
 
@@ -185,7 +185,7 @@ The game is also covered by a real browser smoke pass during development: the ti
 
 ## Verification
 
-- `npm test` runs 94 unit and integration tests with no browser and no network beyond loopback.
+- `npm test` runs 95 unit and integration tests with no browser and no network beyond loopback.
 - `npm run dogfood` starts the real server, launches Edge/Chrome headless, solves the first chamber, checks the victory dialog, the three-star saved record and the chamber card, renders the 12×12 finale, solves today’s daily with its separate save, HUD best and visible share line, and checks the seven-day history.
 - `python aikit.py check weft` runs the test, mechanics, hygiene, guidelines and secret gates.
 - The test suite checks every stored solution, every cell total, path immutability, crossing refusal, corrupt saves, sequential unlocks, daily determinism, streaks, unique thread patterns, MIME types, path traversal and the UI inventory.
