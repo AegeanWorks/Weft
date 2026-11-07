@@ -692,6 +692,60 @@ async function main() {
         `The daily history did not show seven solved days: count=${history.count}, last=${history.lastState}, label=${history.lastLabel}.`,
       );
     }
+    const lateTarget = LEVELS[12];
+    await connection.evaluate(`(() => {
+      const levels = ${JSON.stringify(LEVELS.slice(0, 12).map((level) => level.id))};
+      const solved = {};
+      levels.forEach((id, index) => {
+        solved[id] = {
+          bestMs: 1000 + index,
+          hints: 0,
+          moves: 3,
+          at: '2026-11-08T00:00:00.000Z',
+          stars: 3
+        };
+      });
+      localStorage.setItem('weft.progress.v1', JSON.stringify({
+        version: 1,
+        solved,
+        settings: { sound: false },
+        lastLevel: levels.at(-1)
+      }));
+    })()`);
+    await connection.send("Page.navigate", { url: `${url}?screen=levels` });
+    await wait(900);
+    const scrolled = await connection.evaluate(`(() => {
+      const card = document.querySelector('.level-card[data-level="${lateTarget.id}"]');
+      card.scrollIntoView({ block: 'center' });
+      return { scrollY: window.scrollY, top: card.getBoundingClientRect().top };
+    })()`);
+    await clickSelector(connection, `.level-card[data-level="${lateTarget.id}"]`);
+    await wait(500);
+    const lateOpened = await connection.evaluate(
+      "document.getElementById('level-name').textContent",
+    );
+    if (lateOpened !== lateTarget.name) {
+      throw new Error(`The late card opened ${lateOpened}, not ${lateTarget.name}.`);
+    }
+    await clickSelector(connection, "#btn-levels");
+    await wait(500);
+    const restored = await connection.evaluate(`(() => {
+      const card = document.querySelector('.level-card[data-level="${lateTarget.id}"]');
+      return {
+        scrollY: window.scrollY,
+        top: card.getBoundingClientRect().top,
+        active: document.activeElement?.dataset?.level ?? ""
+      };
+    })()`);
+    if (
+      Math.abs(restored.scrollY - scrolled.scrollY) > 4 ||
+      restored.active !== lateTarget.id
+    ) {
+      throw new Error(
+        `The index did not restore its scroll and focus: before=${scrolled.scrollY}, after=${restored.scrollY}, active=${restored.active}.`,
+      );
+    }
+    await connection.evaluate("localStorage.removeItem('weft.progress.v1')");
     if (connection.errors.length > 0) {
       throw new Error(
         `The played run logged ${connection.errors.length} page error(s): ${connection.errors.join(" | ")}`,
