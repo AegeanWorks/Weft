@@ -126,6 +126,7 @@ weft/
 │   ├── styles.css             <- layout and motion using theme tokens
 │   └── theme.css              <- the only file with raw colour and font values
 └── tests/
+    ├── audio.test.js          <- generated cues, mute and unlock behaviour
     ├── daily.test.js          <- daily saves, corrupt records, streaks, history
     ├── engine.test.js         <- adjacency, crossings, coverage, immutability
     ├── generate.test.js       <- shared generator, daily determinism and validity
