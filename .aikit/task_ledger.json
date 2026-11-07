@@ -1,68 +1,17 @@
 {
   "version": 1,
   "active_task": {
-    "task_id": "weft-cycle-04",
+    "task_id": "weft-cycle-05",
     "last_phase": "in_progress",
     "active_phase": 5,
     "status": "completed",
-    "updated_at": 1794081088.7017374,
+    "updated_at": 1794081695.0542052,
     "owner": "opencode:weft-cycles",
     "started_by": "opencode:weft-cycles",
     "continuations": [],
-    "completed_at": 1794081097.1065936
+    "completed_at": 1794081695.3693242
   },
   "checkpoints": [
-    {
-      "task_id": "weft-audit-waves",
-      "phase": "phase 2",
-      "phase_num": 2,
-      "description": "[1/3] Plan wave audit 0,10,20: survey 27 commits, verify claims, fix save-integrity (reject invalid bestMs, lock unknown ids) plus stale media note",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793723616.1423583,
-      "timestamp_str": "2026-11-03 19:33:36",
-      "agent": "kilo:weft-audit",
-      "impact_assessment": {
-        "why": "recordSolve/recordDaily accept missing/NaN bestMs as 0ms perfect record and isUnlocked returns true for unknown ids; media.json still promises 12 chambers after Act III moved to 24",
-        "benefits": "No invented 0ms bests, unknown chambers stay locked, docs match 24-chamber build; pure fixes with pinned regression tests",
-        "risks": "contract: recordSolve/recordDaily reject invalid timing, isUnlocked false for unknown; dependency: none; concurrency: single writer on clean weft tree; state: read-only over existing saves, no migration",
-        "mitigation": "Failing-first unit tests for invalid timing and unknown ids, full npm test plus aikit check, README gate, explicit staging, no push"
-      },
-      "plan_digest": "b25954818bb3a07ae6c1a6570fa598203f82362752b4b4a1c055ec9a8f94a422"
-    },
-    {
-      "task_id": "weft-audit-waves",
-      "phase": "phase 3",
-      "phase_num": 3,
-      "description": "[2/3] Implemented save-integrity fix with failing-first tests: reject invalid bestMs in recordSolve/recordDaily, lock unknown chambers, correct media.json 12->24 note",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793723680.6873863,
-      "timestamp_str": "2026-11-03 19:34:40",
-      "agent": "kilo:weft-audit"
-    },
-    {
-      "task_id": "weft-audit-waves",
-      "phase": "phase 4",
-      "phase_num": 4,
-      "description": "[3/3] Phase 4 green: 79 tests, 5/5 gates, README 14594 chars and tree accurate; checklists: passed",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793723720.550464,
-      "timestamp_str": "2026-11-03 19:35:20",
-      "agent": "kilo:weft-audit"
-    },
-    {
-      "task_id": "weft-audit-waves",
-      "phase": "abandoned",
-      "phase_num": 4,
-      "description": "Task 'weft-audit-waves' abandoned: Stale weft-audit-waves task from 2026-11-03; its fixes were delivered in commits c0b4c53..ab7d877, no work remains",
-      "status": "abandoned",
-      "timestamp": 1794075494.0747218,
-      "timestamp_str": "2026-11-07 21:18:14",
-      "agent": "opencode:weft-cycles",
-      "continued_from": "kilo:weft-audit"
-    },
     {
       "task_id": "weft-cycle-01",
       "phase": "in_progress",
@@ -261,6 +210,56 @@
       "status": "completed",
       "timestamp": 1794081097.106596,
       "timestamp_str": "2026-11-07 22:51:37",
+      "agent": "opencode:weft-cycles"
+    },
+    {
+      "task_id": "weft-cycle-05",
+      "phase": "in_progress",
+      "phase_num": 2,
+      "description": "[1/4] Cycle 5: replace the generic circle on each chamber card with a generated mini-loom preview of its spool layout, so players can read chamber size and spool positions before opening it; prove with a 1440x900 levels before/after pair and a dogfood preview count plus card-click run",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794081172.3372946,
+      "timestamp_str": "2026-11-07 22:52:52",
+      "agent": "opencode:weft-cycles",
+      "impact_assessment": {
+        "why": "Every chamber card shows the same decorative circle; the only per-chamber visual is text (size and thread count), so the index cannot convey the shape or spool distribution of 24 different looms at a glance.",
+        "benefits": "The index becomes a visual campaign map, locked and solved cards stay comparable, and the preview is generated from the existing level data with no asset, save or engine change.",
+        "risks": "contract: generated .level-mini SVG inside each card plus card decoration CSS; dependency: none; concurrency: single writer on a clean weft tree; state: none",
+        "mitigation": "Failing-first dogfood assertions for one preview per card and the right spool counts on the 5x5 and 12x12 ends, 1440x900 before/after pair from a fresh index, full npm test plus aikit check and dogfood, explicit staging, no push"
+      },
+      "plan_digest": "c2a0199113bf64ac804ca0e5cd21a5bdd46b717352664c52979c5c921ad98e22"
+    },
+    {
+      "task_id": "weft-cycle-05",
+      "phase": "in_progress",
+      "phase_num": 3,
+      "description": "[2/4] Implemented generated mini-loom previews on all 24 chamber cards, pinned preview counts and card-click entry in dogfood, captured the 1440x900 pair and checked the 390x844 render",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794081694.7162418,
+      "timestamp_str": "2026-11-07 23:01:34",
+      "agent": "opencode:weft-cycles"
+    },
+    {
+      "task_id": "weft-cycle-05",
+      "phase": "in_progress",
+      "phase_num": 4,
+      "description": "[3/4] Phase 4 green: 90/90 tests, 5/5 aikit gates, dogfood 0 page errors with 24 previews and a card click, before/after index pair at 1440x900; checklists: passed",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794081695.0542052,
+      "timestamp_str": "2026-11-07 23:01:35",
+      "agent": "opencode:weft-cycles"
+    },
+    {
+      "task_id": "weft-cycle-05",
+      "phase": "completed",
+      "phase_num": 5,
+      "description": "Task 'weft-cycle-05' completed successfully.",
+      "status": "completed",
+      "timestamp": 1794081695.3693266,
+      "timestamp_str": "2026-11-07 23:01:35",
       "agent": "opencode:weft-cycles"
     }
   ]
