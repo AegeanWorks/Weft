@@ -84,9 +84,19 @@ async function waitForTarget(port, url, timeoutMs = 12000) {
 async function connect(webSocketUrl) {
   const ws = new WebSocket(webSocketUrl);
   const pending = new Map();
+  const errors = [];
   let nextId = 0;
   ws.onmessage = (event) => {
     const message = JSON.parse(event.data);
+    if (message.method === "Runtime.exceptionThrown") {
+      const details = message.params?.exceptionDetails;
+      errors.push(details?.exception?.description ?? details?.text ?? "uncaught exception");
+    } else if (
+      message.method === "Log.entryAdded" &&
+      message.params?.entry?.level === "error"
+    ) {
+      errors.push(message.params.entry.text);
+    }
     if (message.id && pending.has(message.id)) {
       const { resolve, reject } = pending.get(message.id);
       pending.delete(message.id);
@@ -103,6 +113,7 @@ async function connect(webSocketUrl) {
   });
   return {
     ws,
+    errors,
     send(method, params = {}) {
       const id = ++nextId;
       return new Promise((resolve, reject) => {
@@ -232,6 +243,7 @@ async function main() {
     connection = await connect(target.webSocketDebuggerUrl);
     await connection.send("Page.enable");
     await connection.send("Runtime.enable");
+    await connection.send("Log.enable");
     await connection.send("Page.navigate", { url: `${url}?screen=levels` });
     await wait(900);
 
@@ -420,8 +432,13 @@ async function main() {
         `The daily history did not show seven solved days: count=${history.count}, last=${history.lastState}, label=${history.lastLabel}.`,
       );
     }
+    if (connection.errors.length > 0) {
+      throw new Error(
+        `The played run logged ${connection.errors.length} page error(s): ${connection.errors.join(" | ")}`,
+      );
+    }
     console.log(
-      `[OK] Weft dogfood: title, ${TOTAL_CHAMBERS} chambers, a 3-thread solve, the victory dialog, the ${last.size}x${last.size} finale and the daily weave.`,
+      `[OK] Weft dogfood: title, ${TOTAL_CHAMBERS} chambers, a 3-thread solve, the victory dialog, the ${last.size}x${last.size} finale and the daily weave; 0 page errors.`,
     );
     return 0;
   } catch (error) {
