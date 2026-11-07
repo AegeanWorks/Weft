@@ -1,81 +1,17 @@
 {
   "version": 1,
   "active_task": {
-    "task_id": "weft-audit-waves",
-    "last_phase": "phase 4",
-    "active_phase": 4,
-    "status": "in_progress",
-    "updated_at": 1793723720.550464,
-    "owner": "kilo:weft-audit",
-    "started_by": "kilo:weft-audit",
-    "continuations": []
+    "task_id": "weft-cycle-01",
+    "last_phase": "in_progress",
+    "active_phase": 5,
+    "status": "completed",
+    "updated_at": 1794076737.899494,
+    "owner": "opencode:weft-cycles",
+    "started_by": "opencode:weft-cycles",
+    "continuations": [],
+    "completed_at": 1794076747.3694632
   },
   "checkpoints": [
-    {
-      "task_id": "weft-playability-v1",
-      "phase": "phase 3",
-      "phase_num": 3,
-      "description": "[2/4] Implemented the Best HUD stat, visible daily share line, Ctrl/Cmd+Z undo, locked-card contrast and mobile stat review; README and ADR-009 cover the decisions",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793358305.3363771,
-      "timestamp_str": "2026-10-30 14:05:05",
-      "agent": "opencode:weft-playability"
-    },
-    {
-      "task_id": "weft-playability-v1",
-      "phase": "phase 4",
-      "phase_num": 4,
-      "description": "[3/4] Phase 4 green: 5/5 gates, 70 tests, dogfood checks the HUD best and visible daily share line, headless renders verify the campaign/daily HUD and a true 390px mobile layout; checklists: passed",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793358317.1089683,
-      "timestamp_str": "2026-10-30 14:05:17",
-      "agent": "opencode:weft-playability",
-      "handoff": {
-        "state": "70 tests, 5/5 gates, no schema change",
-        "next": "commit 0.5.0, record the post-commit UI blessing, push and sync the Play catalog",
-        "open": "none",
-        "evidence": "node --test tests, node scripts/dogfood.mjs, python aikit.py check weft"
-      }
-    },
-    {
-      "task_id": "weft-playability-v1",
-      "phase": "completed",
-      "phase_num": 5,
-      "description": "Task 'weft-playability-v1' completed successfully.",
-      "status": "completed",
-      "timestamp": 1793358318.2475162,
-      "timestamp_str": "2026-10-30 14:05:18",
-      "agent": "opencode:weft-playability"
-    },
-    {
-      "task_id": "weft-playability-v1",
-      "phase": "phase 5",
-      "phase_num": 5,
-      "description": "[4/4] Delivered Weft 0.5.0: Best HUD, visible daily share line, Ctrl/Cmd+Z undo and contrast polish; pushed at fdc0028 and the Play catalog now serves 0.5.0 from that commit; 70 tests and 5/5 gates green",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793358410.9153588,
-      "timestamp_str": "2026-10-30 14:06:50",
-      "agent": "opencode:weft-playability",
-      "handoff": {
-        "state": "clean weft tree and remote synced",
-        "next": "none, 0.5.0 is delivered",
-        "open": "none",
-        "evidence": "Weft commit fdc0028, AegeanWorks live.json weft 0.5.0"
-      }
-    },
-    {
-      "task_id": "weft-playability-v1",
-      "phase": "completed",
-      "phase_num": 5,
-      "description": "Task 'weft-playability-v1' completed successfully.",
-      "status": "completed",
-      "timestamp": 1793358411.9927375,
-      "timestamp_str": "2026-10-30 14:06:51",
-      "agent": "opencode:weft-playability"
-    },
     {
       "task_id": "weft-patterns-v1",
       "phase": "phase 2",
@@ -279,6 +215,67 @@
       "timestamp": 1793723720.550464,
       "timestamp_str": "2026-11-03 19:35:20",
       "agent": "kilo:weft-audit"
+    },
+    {
+      "task_id": "weft-audit-waves",
+      "phase": "abandoned",
+      "phase_num": 4,
+      "description": "Task 'weft-audit-waves' abandoned: Stale weft-audit-waves task from 2026-11-03; its fixes were delivered in commits c0b4c53..ab7d877, no work remains",
+      "status": "abandoned",
+      "timestamp": 1794075494.0747218,
+      "timestamp_str": "2026-11-07 21:18:14",
+      "agent": "opencode:weft-cycles",
+      "continued_from": "kilo:weft-audit"
+    },
+    {
+      "task_id": "weft-cycle-01",
+      "phase": "in_progress",
+      "phase_num": 2,
+      "description": "[1/4] Cycle 1: fix the post-victory dead end where Escape dismisses the win dialog, freezes the board and hides every next step; reopen the result from the won loom by pointer and keyboard, tell the player, and prove it with a before/after pair plus a played solve-dismiss-reopen-next run",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794075599.7132728,
+      "timestamp_str": "2026-11-07 21:19:59",
+      "agent": "opencode:weft-cycles",
+      "impact_assessment": {
+        "why": "After a win, pressing Escape closes the victory dialog and leaves Undo/Reset/Hint disabled with no visible Next or Replay path; a real played run reproduced dialogOpen=false, frozen move count and no recovery affordance except Chambers.",
+        "benefits": "Keeps the finished tapestry inspectable while restoring a clear Next/Replay path, works for pointer and keyboard, adds no new control, no save change and no new dependency.",
+        "risks": "contract: win-dialog close handler and beginDraft won branch; dependency: none; concurrency: single writer on a clean weft tree; state: no save schema change",
+        "mitigation": "Failing-first browser dogfood assertion records the pre-fix dead end, before/after screenshots at 1440x900 from the same fresh-profile first chamber, full npm test plus aikit check and dogfood after the fix, explicit staging, no push"
+      },
+      "plan_digest": "54aa42966099888842198db506bc572bc36da646299b67a45e336a67fa6a5e94"
+    },
+    {
+      "task_id": "weft-cycle-01",
+      "phase": "in_progress",
+      "phase_num": 3,
+      "description": "[2/4] Implemented the won-loom recovery: beginDraft reopens the victory dialog, the close handler adds the recovery hint, dogfood pins Escape-reopen-Next to Chamber 02 and fails on page errors; captured a same-state 1440x900 before/after pair and wrote ADR-023 plus the cycle record",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794076727.5624423,
+      "timestamp_str": "2026-11-07 21:38:47",
+      "agent": "opencode:weft-cycles"
+    },
+    {
+      "task_id": "weft-cycle-01",
+      "phase": "in_progress",
+      "phase_num": 4,
+      "description": "[3/4] Phase 4 green: 89/89 tests, 5/5 aikit gates, dogfood 0 page errors with the Escape-reopen-Next flow, before/after pair at 1440x900 on the same first-chamber solve; checklists: passed",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1794076737.899494,
+      "timestamp_str": "2026-11-07 21:38:57",
+      "agent": "opencode:weft-cycles"
+    },
+    {
+      "task_id": "weft-cycle-01",
+      "phase": "completed",
+      "phase_num": 5,
+      "description": "Task 'weft-cycle-01' completed successfully.",
+      "status": "completed",
+      "timestamp": 1794076747.369465,
+      "timestamp_str": "2026-11-07 21:39:07",
+      "agent": "opencode:weft-cycles"
     }
   ]
 }
