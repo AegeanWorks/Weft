@@ -302,6 +302,54 @@ async function main() {
       );
     }
 
+    await connection.evaluate(`(() => {
+      const solved = {};
+      for (let index = 1; index <= ${TOTAL_CHAMBERS}; index += 1) {
+        solved['ghost-' + String(index).padStart(2, '0')] = {
+          bestMs: 1000 + index,
+          hints: 0,
+          moves: 3,
+          at: '2026-11-07T00:00:00.000Z',
+          stars: 3
+        };
+      }
+      localStorage.setItem('weft.progress.v1', JSON.stringify({
+        version: 1,
+        solved,
+        settings: { sound: false },
+        lastLevel: 'ghost-${TOTAL_CHAMBERS}'
+      }));
+    })()`);
+    await connection.send("Page.navigate", { url: `${url}?screen=title` });
+    await wait(900);
+    const poisonedTitle = await connection.evaluate(`(() => ({
+      title: document.getElementById('title-progress').textContent,
+      saved: Object.keys(JSON.parse(localStorage.getItem('weft.progress.v1') || '{}').solved || {}).length
+    }))()`);
+    if (
+      poisonedTitle.saved !== TOTAL_CHAMBERS ||
+      !poisonedTitle.title.startsWith(`${TOTAL_CHAMBERS} chambers`)
+    ) {
+      throw new Error(
+        `Unknown chamber ids inflated the title: saved=${poisonedTitle.saved}, title=${poisonedTitle.title}.`,
+      );
+    }
+    await connection.send("Page.navigate", { url: `${url}?screen=levels` });
+    await wait(900);
+    const poisonedLevels = await connection.evaluate(`(() => ({
+      header: document.getElementById('levels-progress').textContent,
+      unlocked: [...document.querySelectorAll('.level-card')].filter((card) => !card.disabled).length
+    }))()`);
+    if (
+      !poisonedLevels.header.startsWith(`0 of ${TOTAL_CHAMBERS} woven`) ||
+      poisonedLevels.unlocked !== 1
+    ) {
+      throw new Error(
+        `Unknown chamber ids inflated the index: header=${poisonedLevels.header}, unlocked=${poisonedLevels.unlocked}.`,
+      );
+    }
+    await connection.evaluate("localStorage.removeItem('weft.progress.v1')");
+
     await connection.send("Page.navigate", { url: `${url}?screen=levels` });
     await wait(900);
 
