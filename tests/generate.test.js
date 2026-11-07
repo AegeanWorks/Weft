@@ -56,13 +56,18 @@ test("the daily chamber is deterministic, valid and date-stamped", () => {
   assertSolvable(level);
 });
 
-test("daily generation is quick enough for a click", () => {
-  const started = performance.now();
-  createDailyLevel("2026-10-30");
-  assert.ok(performance.now() - started < 500, "daily generation took over 500 ms");
+test("daily generation stays within its search budget", () => {
+  const stats = {};
+  const level = createDailyLevel("2026-10-30", stats);
+  assert.ok(stats.attempts >= 1, "the generator reported no search attempt");
+  assert.ok(
+    stats.nodes <= 24000,
+    `daily generation spent ${stats.nodes} search nodes`,
+  );
+  assertSolvable(level);
 });
 
-test("previously slow dates stay interactive", () => {
+test("previously slow dates stay within a bounded search", () => {
   for (const key of [
     "2026-10-26",
     "2026-10-27",
@@ -71,11 +76,15 @@ test("previously slow dates stay interactive", () => {
     "2026-11-04",
     "2024-02-28",
   ]) {
-    const started = performance.now();
-    const level = createDailyLevel(key);
+    const stats = {};
+    const level = createDailyLevel(key, stats);
     assert.ok(
-      performance.now() - started < 1500,
-      `daily ${key} took over 1500 ms`,
+      stats.attempts <= 16,
+      `daily ${key} needed ${stats.attempts} search attempts`,
+    );
+    assert.ok(
+      stats.nodes <= 16000,
+      `daily ${key} spent ${stats.nodes} search nodes`,
     );
     assertSolvable(level);
   }

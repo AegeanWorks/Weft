@@ -115,10 +115,24 @@ function remainingIsConnected(size, visited) {
  * different budget can only change which valid puzzle a seed yields, never
  * whether it is valid.
  */
-function hamiltonianPath(size, random, attemptBudget = 1000, attempts = 24) {
+function hamiltonianPath(
+  size,
+  random,
+  attemptBudget = 1000,
+  attempts = 24,
+  stats = null,
+) {
   const total = size * size;
 
+  if (stats) {
+    stats.attempts = 0;
+    stats.nodes = 0;
+  }
+
   for (let attempt = 0; attempt < attempts; attempt += 1) {
+    if (stats) {
+      stats.attempts += 1;
+    }
     const start = [random.int(size), random.int(size)];
     const path = [start];
     const visited = new Set([key(start[0], start[1])]);
@@ -129,6 +143,9 @@ function hamiltonianPath(size, random, attemptBudget = 1000, attempts = 24) {
         return true;
       }
       nodes += 1;
+      if (stats) {
+        stats.nodes += 1;
+      }
       if (nodes > attemptBudget) {
         return false;
       }
@@ -252,9 +269,9 @@ function runLengthCheck(total, pairCount, minimum) {
  * Build one chamber from a spec. `index` rotates the palette so neighbouring
  * chambers do not open on the same colours.
  */
-export function generateLevel(spec, index = 0) {
+export function generateLevel(spec, index = 0, stats = null) {
   const random = makeRandom(spec.seed);
-  const path = hamiltonianPath(spec.size, random);
+  const path = hamiltonianPath(spec.size, random, 1000, 24, stats);
   const segments = cutPath(path, spec.pairs, random, spec.balanced === true);
   const offset = (index * 2) % COLORS.length;
   const rotated = [...COLORS.slice(offset), ...COLORS.slice(0, offset)];

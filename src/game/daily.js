@@ -27,7 +27,7 @@ export function dailyLabel(key) {
   });
 }
 
-export function createDailyLevel(key = dateKey()) {
+export function createDailyLevel(key = dateKey(), stats = null) {
   const index = hashSeed(`weft-daily-${key}`) % COLORS.length;
   return generateLevel(
     {
@@ -39,5 +39,6 @@ export function createDailyLevel(key = dateKey()) {
       balanced: true,
     },
     index,
+    stats,
   );
 }
