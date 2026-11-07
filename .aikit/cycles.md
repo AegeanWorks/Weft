@@ -99,3 +99,61 @@ repeat one that is already covered.
     `node scratch/weft-play.mjs reset-undo-time`.
   - After capture: current build on `http://127.0.0.1:4175`, same
     `reset-hint-state` run plus `reset-clean-time`.
+
+## Cycle 3 — UI readability: How to play opens at its heading on mobile
+
+- **Area**: UI readability at short viewports (help dialog), distinct from the
+  victory flow and Reset integrity covered earlier.
+- **Baseline**: commit `45d324f`; `npm test` 89/89 pass; `python aikit.py check weft`
+  5/5 gates pass; dogfood green.
+- **Finding**: at 390x844 the help dialog has 876px of content in a 718px frame.
+  Native `showModal` auto-focuses the only focusable child, the footer Ready
+  button, so opening `?preview=help` left `scrollTop=158`, the heading at
+  `-45.7px` and `activeElement` on the Ready button; the title and first rule
+  were hidden. At 1440x900 it still scrolled 21px and focused Ready. The pre-fix
+  dogfood help check failed with
+  `[FAIL] Weft dogfood: How to play did not open at its heading: open=true,
+  scrollTop=21, active=.`
+- **Dead ends (one line each)**: the 12x12 mobile cell size was already recorded
+  as a 44px constraint in ADR-014 and is not reopened; all seven captured states
+  had `scrollWidth === clientWidth`, so no horizontal-overflow fix was warranted.
+- **Fix**: `fix(ui): open help at its heading on short viewports` (`8da1bd1`).
+  The help heading is focusable via `tabindex="-1"`; `openHelp` focuses it after
+  `showModal` and resets `scrollTop` to 0. No layout, save or game-rule change.
+- **Visual proof**: same URL/state/viewport (390x844, fresh profile,
+  `?preview=help`):
+  - before (`45d324f`): `assets/screenshots/2026-11-07-help-mobile-before.png`
+    — opens mid-rule 1, no title.
+  - after (`8da1bd1`): `assets/screenshots/2026-11-07-help-mobile-after.png`
+    — opens at “How to weave / One loom, twenty-four chambers” with rules 1-4.
+- **Played run**: `npm run dogfood` opens How to play with a real mouse click at
+  1440x900, asserts `scrollTop=0` and `activeElement=help-title`, presses Escape,
+  and verifies focus returns to `btn-how`; it then completes the chamber index,
+  a 3-thread solve, the victory recovery, the Reset check, the 12x12 finale and
+  the daily with 0 page errors. A 390x844 real-click replay
+  (`node scratch/weft-play.mjs help-click`) returns `open=true, scrollTop=0,
+  active=help-title`.
+- **Gates after the fix**: `npm test` 89/89 pass; `npm run dogfood` OK with
+  `0 page errors`; `python aikit.py check weft` 5/5 (test, mechanics, hygiene,
+  guidelines, secrets); `python aikit.py ui verify weft` OK before closing the
+  bounded surface task.
+- **Commands run and results**:
+  - `npm test` -> 89 tests, 89 pass, 0 fail.
+  - `npm run dogfood` -> pre-fix FAIL (help heading hidden), post-fix
+    `[OK] Weft dogfood: title, 24 chambers, a 3-thread solve, the victory dialog,
+    the 12x12 finale and the daily weave; 0 page errors.`
+  - `python aikit.py check weft` -> 5/5 gates passed.
+  - Before capture: current build `45d324f` on `http://127.0.0.1:4175`,
+    `WEFT_WIDTH=390 WEFT_HEIGHT=844 node scratch/weft-play.mjs help-state`.
+  - After capture: same viewport and scenario on the fixed tree, plus a real
+    `help-click` replay at 390x844.
+- **Gate repair (same cycle, required to finish the gate)**: the UI fast proof
+  failed twice on the pre-existing `previously slow dates stay interactive`
+  wall-clock assertion while the workstation was at 100% CPU; 2024-02-28 took
+  12.4s. Replaced the two wall-clock assertions with deterministic search-work
+  bounds (ADR-026), commit `test(generate): pin bounded daily search work
+  instead of wall time` (`5abb160`). `npm test` then passed 89/89 and
+  `python aikit.py check weft` returned 5/5 under the same load. One dogfood
+  help click also missed when the real window stayed 800x600 under a 1440x900
+  emulation; `test(dogfood): match the browser window to the emulated viewport`
+  (`1c2a8c5`) pinned both, and three consecutive dogfood runs passed.

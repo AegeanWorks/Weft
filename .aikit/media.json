@@ -194,6 +194,44 @@
         "score": 92,
         "reviewed_at": "2026-11-07"
       }
+    },
+    {
+      "path": "assets/screenshots/2026-11-07-help-mobile-before.png",
+      "alt": "Weft How to play dialog opening mid-rule on a 390px viewport at 2026-11-07",
+      "caption": "Pre-fix build 45d324f at 390x844: How to play opens scrolled 158px down, hiding the title and first rule.",
+      "commit": "45d324f18a85cf3b2d4995c2a7e8984f4565622e",
+      "taken_at": "2026-11-07",
+      "viewport": "390x844",
+      "width": 390,
+      "height": 844,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 390x844 from a fresh profile: the dialog starts mid-sentence on rule 1, the header is above the scroll frame and the Ready button is the visible focus target.",
+        "score": 88,
+        "reviewed_at": "2026-11-07"
+      }
+    },
+    {
+      "path": "assets/screenshots/2026-11-07-help-mobile-after.png",
+      "alt": "Weft How to play dialog opening at its heading on a 390px viewport at 2026-11-07",
+      "caption": "Fixed build 8da1bd1 at 390x844: the same How to play dialog opens at the title with all four rules readable.",
+      "commit": "8da1bd149ea7d79d41f056531af4aaa073b607d6",
+      "taken_at": "2026-11-07",
+      "viewport": "390x844",
+      "width": 390,
+      "height": 844,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 390x844 from a fresh profile with the same dialog: the How to weave eyebrow, One loom heading, and rules 1-4 are visible from the top of the frame.",
+        "score": 93,
+        "reviewed_at": "2026-11-07"
+      }
     }
   ]
 }
