@@ -588,6 +588,18 @@ async function main() {
         `The action cues are not distinct in the browser: ${JSON.stringify(audioFrequencies)}.`,
       );
     }
+    await clickSelector(connection, "#btn-levels");
+    await wait(400);
+    const returnedTo = await connection.evaluate(`(() => ({
+      screen: document.body.dataset.screen,
+      active: document.activeElement?.dataset?.level ?? "",
+      level: document.getElementById('level-name').textContent
+    }))()`);
+    if (returnedTo.screen !== "levels" || returnedTo.active !== LEVELS[1].id) {
+      throw new Error(
+        `Chambers did not return to the current chamber card: screen=${returnedTo.screen}, active=${returnedTo.active}.`,
+      );
+    }
 
     await connection.send("Page.navigate", { url: `${url}?screen=levels` });
     await wait(900);
