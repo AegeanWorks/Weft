@@ -804,6 +804,11 @@ button {
   letter-spacing: -0.03em;
 }
 
+.modal h2:focus,
+.modal h2:focus-visible {
+  outline: none;
+}
+
 .rules {
   display: grid;
   gap: 12px;
