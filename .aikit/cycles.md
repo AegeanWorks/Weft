@@ -202,3 +202,46 @@ repeat one that is already covered.
   - `python aikit.py check weft` -> 5/5 gates passed.
   - Before/after capture: `node scratch/weft-play.mjs poisoned-save` at
     1440x900 against the pre-fix and fixed trees on `http://127.0.0.1:4175`.
+
+## Cycle 5 — Graphics and effects: chamber cards preview their looms
+
+- **Area**: graphics/effects on the chamber index, distinct from the mobile
+  dialog readability of cycle 3 and the count-integrity work of cycle 4.
+- **Baseline**: commit `1b6d36d`; `npm test` 90/90 pass; `python aikit.py check weft`
+  5/5 gates pass; dogfood green.
+- **Finding**: every card carried the same decorative circle, so the 5x5 opener
+  and the 12x12 finale looked alike apart from text. There was no way to see a
+  chamber's spool distribution or density before opening it. The new dogfood
+  check failed with `[FAIL] Weft dogfood: The chamber previews are incomplete:
+  minis=0, firstSpools=0, lastSpools=0.`
+- **Fix**: `feat(ui): preview each chamber's spool layout on its card`
+  (`a44b721`). A generated `.level-mini` SVG draws the frame, grid and one
+  coloured dot per spool from the existing pair data; it sits behind the card
+  text as a watermark and replaces the generic circle. No solution lines, so no
+  route spoiler. No asset, save, engine or click-target change.
+- **Visual proof**: same viewport/state (1440x900, fresh profile,
+  `?screen=levels`):
+  - before (`1b6d36d`): `assets/screenshots/2026-11-07-level-previews-before.png`
+    — all cards show the same faint circle.
+  - after (`a44b721`): `assets/screenshots/2026-11-07-level-previews-after.png`
+    — each card shows its own grid and spool dots; the 12x12 cards read denser
+    than the 5x5 opener. A 390x844 render was also checked and fits without
+    horizontal overflow.
+- **Played run**: `npm run dogfood` now verifies 24 previews, six spool dots on
+  First Thread, eighteen on The Eternal Weave, then opens First Thread by
+  clicking its card and completes the whole help, solve, victory recovery,
+  Reset, 12x12 and daily flow with 0 page errors.
+- **Gates after the fix**: `npm test` 90/90 pass; `npm run dogfood` OK with
+  `0 page errors`; `python aikit.py check weft` 5/5 (test, mechanics, hygiene,
+  guidelines, secrets); `python aikit.py ui verify weft` OK before closing the
+  bounded surface task.
+- **Commands run and results**:
+  - `npm test` -> 90 tests, 90 pass, 0 fail.
+  - `npm run dogfood` -> pre-fix FAIL (no previews), post-fix
+    `[OK] Weft dogfood: title, 24 chambers, a 3-thread solve, the victory dialog,
+    the 12x12 finale and the daily weave; 0 page errors.`
+  - `python aikit.py check weft` -> 5/5 gates passed.
+  - Before capture: worktree at `1b6d36d`, `node scripts/serve.mjs --port 4189`,
+    `node scratch/weft-play.mjs levels` with `WEFT_ROOT=http://127.0.0.1:4189`.
+  - After capture: current build on `http://127.0.0.1:4175`, same scenario at
+    1440x900 and 390x844.

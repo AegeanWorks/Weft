@@ -270,6 +270,44 @@
         "score": 93,
         "reviewed_at": "2026-11-07"
       }
+    },
+    {
+      "path": "assets/screenshots/2026-11-07-level-previews-before.png",
+      "alt": "Weft chamber index with generic card circles at 2026-11-07",
+      "caption": "Pre-fix build 1b6d36d at 1440x900: every chamber card carries the same decorative circle and only text distinguishes the looms.",
+      "commit": "1b6d36d6caf4d994102af488a6816eab733327de",
+      "taken_at": "2026-11-07",
+      "viewport": "1440x900",
+      "width": 1440,
+      "height": 900,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 1440x900 from a fresh profile: all cards show the same faint bottom-right circle; size and thread count are text-only.",
+        "score": 88,
+        "reviewed_at": "2026-11-07"
+      }
+    },
+    {
+      "path": "assets/screenshots/2026-11-07-level-previews-after.png",
+      "alt": "Weft chamber index with per-chamber loom previews at 2026-11-07",
+      "caption": "Fixed build a44b721 at 1440x900: each card shows its own grid and coloured spool dots, so density and layout are visible before opening.",
+      "commit": "a44b721a44e70ff93b699eba02cbb131a1970772",
+      "taken_at": "2026-11-07",
+      "viewport": "1440x900",
+      "width": 1440,
+      "height": 900,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 1440x900 from a fresh profile: every card carries a distinct loom grid and spool dots; the 12x12 cards read visibly denser than the 5x5 opener.",
+        "score": 93,
+        "reviewed_at": "2026-11-07"
+      }
     }
   ]
 }
