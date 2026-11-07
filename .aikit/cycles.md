@@ -321,3 +321,44 @@ repeat one that is already covered.
   - `python aikit.py check weft` -> 5/5 gates passed.
   - Before/after keyboard state: `node scratch/weft-play.mjs skip-link` against
     the pre-fix and fixed trees on `http://127.0.0.1:4175`.
+
+## Cycle 8 — Progression and saves: a daily link cannot back-fill history
+
+- **Area**: daily save integrity and history truthfulness, distinct from the
+  campaign-total filter of cycle 4.
+- **Baseline**: commit `9d08d08`; `npm test` 94/94 pass; `python aikit.py check weft`
+  5/5 gates pass; dogfood green.
+- **Finding**: a played `/?daily=2026-11-06` run loaded `Daily weave · 6 Kas
+  2026`, solved it, saved `days["2026-11-06"]`, and the index showed 6 Kas solved
+  with a 1-day streak while 7 Kas was missed. ADR-011 and the README say a missed
+  daily cannot be back-filled, so a stored or shared past link could rewrite the
+  record.
+- **Fix**: `fix(daily): clamp every daily open to the local day` (`8795c41`).
+  The pure `currentDailyKey` helper returns the requested date only when it is
+  today; `openDaily` uses it, so past/future/malformed daily links open today.
+  `createDailyLevel` still accepts any key for tests and generation. No save
+  schema change.
+- **Visual proof**: same URL/state/viewport (1440x900, fresh profile,
+  `?daily=2026-11-06`):
+  - before (`9d08d08`): `assets/screenshots/2026-11-07-daily-backfill-before.png`
+    — kicker `Daily weave · 6 KAS 2026` and the 6 Kas board.
+  - after (`8795c41`): `assets/screenshots/2026-11-07-daily-backfill-after.png`
+    — the same URL shows `Daily weave · 7 KAS 2026` and today's board.
+- **Played run**: a real solve of the past-link run saved only `2026-11-06` and
+  the history showed 6 Kas solved / 7 Kas missed; the same scenario after the fix
+  loaded today, saved only `2026-11-07`, and the history showed 6 Kas missed /
+  7 Kas solved. `npm run dogfood` opens yesterday's link, requires today's board
+  and no daily save, then solves today's daily and checks the seven-day history
+  with 0 page errors.
+- **Gates after the fix**: `npm test` 95/95 pass; `npm run dogfood` OK with
+  `0 page errors`; `python aikit.py check weft` 5/5 (test, mechanics, hygiene,
+  guidelines, secrets); `python aikit.py ui verify weft` OK before closing the
+  bounded surface task.
+- **Commands run and results**:
+  - `npm test` -> 95 tests, 95 pass, 0 fail.
+  - `npm run dogfood` -> `[OK] Weft dogfood: title, 24 chambers, a 3-thread
+    solve, the victory dialog, the 12x12 finale and the daily weave; 0 page
+    errors.`
+  - `python aikit.py check weft` -> 5/5 gates passed.
+  - Before/after daily: `node scratch/weft-play.mjs daily-backfill` against the
+    pre-fix and fixed trees on `http://127.0.0.1:4175`.

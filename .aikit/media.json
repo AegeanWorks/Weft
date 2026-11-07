@@ -346,6 +346,44 @@
         "score": 93,
         "reviewed_at": "2026-11-07"
       }
+    },
+    {
+      "path": "assets/screenshots/2026-11-07-daily-backfill-before.png",
+      "alt": "Weft past-daily link opening 6 November at 2026-11-07",
+      "caption": "Pre-fix build 9d08d08: ?daily=2026-11-06 opens the 6 Kas daily and its result can be recorded into history.",
+      "commit": "9d08d08d39d1fd09903ef865ee77f40a8106dc7c",
+      "taken_at": "2026-11-07",
+      "viewport": "1440x900",
+      "width": 1440,
+      "height": 900,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 1440x900 from a fresh profile: the kicker reads Daily weave, 6 Kas 2026, 7x7 and the board is the historical daily.",
+        "score": 89,
+        "reviewed_at": "2026-11-07"
+      }
+    },
+    {
+      "path": "assets/screenshots/2026-11-07-daily-backfill-after.png",
+      "alt": "Weft past-daily link clamped to 7 November at 2026-11-07",
+      "caption": "Fixed build 8795c41: the same ?daily=2026-11-06 URL opens today's 7 Kas daily, so history cannot be back-filled.",
+      "commit": "8795c41424ed2d8d443bd54e76353157fc3828f8",
+      "taken_at": "2026-11-07",
+      "viewport": "1440x900",
+      "width": 1440,
+      "height": 900,
+      "status": "approved",
+      "review": {
+        "status": "approved",
+        "reviewer": "agent:opencode",
+        "method": "vision",
+        "notes": "Real headless-Edge capture at 1440x900 from a fresh profile with the identical past-date URL: the kicker reads Daily weave, 7 Kas 2026, 7x7 and the board is today's daily.",
+        "score": 93,
+        "reviewed_at": "2026-11-07"
+      }
     }
   ]
 }
