@@ -7,6 +7,8 @@
 
 A zero-dependency thread-routing puzzle: draw glowing threads between matching spools, fill every cell of the loom, and restore the tapestry across twenty-four chambers, with a fresh 7×7 daily weave. The whole game is static HTML, CSS and ES modules, so it runs from any static host — including the AegeanWorks Play page.
 
+> **Archived**: Retired after the mobile-market review: a polished portfolio puzzle with a strong daily mode, but not a practical download-driven mobile product without a landscape and large-board redesign, retention content, and a marketing plan. (archived 2026-11-08). This project is read-only; its GitHub repository is archived.
+
 ## ⚡ 30-Second Cold-Start Quick Reference
 
 - **Runtime Prerequisites**: Node.js 20+ (tested on Node 26.9.0) for the local server, tests and level generator; a modern browser with ES modules, pointer events, `<dialog>` and `localStorage` for play. No `npm install`, no network access and no runtime dependencies.
